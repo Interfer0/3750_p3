@@ -17,7 +17,7 @@ var app = express();
 
 // mongoose setup
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/project2');
+mongoose.connect('mongodb://localhost/Balderdash');
 
 // create a persisent session store re-using our mongoose connection
 // It creates/uses a collection called "sessions" by default
