@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -60,4 +59,15 @@ a {
 #gameMat{
     height:65vh;
     width:95vw;
+}
+
+footer {
+    position: fixed;
+    bottom: 1.5vh;
+    height: 1vh;
+    background-color: #f8f8f8;
+}
+
+p.copyright {
+    margin: 15px 0 0;
 }
