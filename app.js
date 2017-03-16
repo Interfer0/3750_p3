@@ -26,8 +26,6 @@ var app = express();
 
 // mongoose setup
 mongoose.connect(dbConfig.url);
-////mongoose.Promise = global.Promise;
-//mongoose.connect('mongodb://localhost/Balderdash');
 
 // create a persisent session store re-using our mongoose connection
 // It creates/uses a collection called "sessions" by default
@@ -87,7 +85,7 @@ app.use(expressValidator({
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
