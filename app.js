@@ -7,17 +7,27 @@ var bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
 const passport = require('passport');
+
+var dbConfig = require('./db.js');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log('Connected to Database');
+});
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var game = require('./routes/game');
 
 var app = express();
 
 // mongoose setup
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Balderdash');
+mongoose.connect(dbConfig.url);
+////mongoose.Promise = global.Promise;
+//mongoose.connect('mongodb://localhost/Balderdash');
 
 // create a persisent session store re-using our mongoose connection
 // It creates/uses a collection called "sessions" by default
@@ -82,9 +92,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/', game);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log('here 404 yo');
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
