@@ -28,27 +28,15 @@ $(document).ready(function () {
     document.getElementById('gameMat').appendChild(initialGameScreen());
 
     function initialGameScreen(rtn){
-        var testdiv = document.createElement('div');
-        testdiv.id = "test";
-        testdiv.innerHTML = "testbvbvvv";
-        return testdiv;
-    }
-    /*
-    $('.send_on_enter').keydown(function (event) {
-        if (event.keyCode == 13) { // enter key has keyCode = 13
-            if(message.val().length == 0){
-                return false;
+        //get the initial display screen and load it into gameMat
+        $.get("/game/initialGame",function(res){
+                //console.log(res);
+                document.getElementById('gameMat').innerHTML = res;            
             }
-            socket.emit('c2smsg', message.val());
-            chatWindow.append('<strong>You:</strong> ' + message.val() + '<br>');
-            chatWindow.animate({
-                scrollTop: chatWindow[0].scrollHeight
-            }, 1000);
-            message.val('');
-            return false;
-        }
-    });
-    */
+        );
+    }
+
+
     socket.on('whoami', data => {
         username = data.username;
     });
@@ -60,6 +48,10 @@ $(document).ready(function () {
     });
 
     socket.on('s2cmsg', function (data) {
+        //check message to determine what to do with it
+
+
+
         chatWindow.append('<strong>' + data.person + ':</strong> ' + data.message + '<br>');
         scrollChatWindow();
     });
@@ -98,4 +90,56 @@ $(document).ready(function () {
         }, 1000);
     }
 
+
+    
 });
+$(document).on("click", "#submitRoomNumber", joinRoom);
+
+
+//moving this here instead of on ready. 
+//Had to do this since I need to work with buttons and elements that are handled
+//after the initial page load. 
+
+    //get catagories
+    function getCatagories()
+    {
+        
+    }
+    //send new game info
+    //join room
+    function joinRoom()
+    {
+        $.ajax({
+            type: "POST",
+            url: "/game/joinRoom",
+            contentType: 'application/json',
+            data: JSON.stringify({room : document.getElementById('roomInput').value}),
+            dataType: "json",
+            success: function (response)
+            {
+                console.log("teest");
+            },
+            error : function (response, e)
+            {
+                console.log("reee");
+            }
+
+        })
+    }
+    //wait in new room
+    //add new user 
+        //if new room full add continue button
+    //receive/display categories
+    //send picked question
+    //receive picked question
+    //send answer
+        //wait
+    //receive/pick answers answers
+    //send picked 
+        //wait
+    //recieve/display answers/scores
+    //send continue
+    //Display final scores
+    //send continue
+    //main screen
+
