@@ -1,5 +1,5 @@
 {
-  "name": "project2",
+  "name": "project3",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -24,7 +24,7 @@
     "passport-http": "*",
     "passport-local": "*",
     "passport.socketio": "^3.7.0",
-    "bcryptjs": "*",
+    "bcryptjs": "^2.4.3",
     "jquery": "*"
   }
 }
