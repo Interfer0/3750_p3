@@ -8,8 +8,5 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Chat' });
 });
 
-router.get('/chatroom', ensureAuthenticated, (req, res, next) => {
-  res.render('chatroom', { title: 'Chat Room' });
-});
 
 module.exports = router;
