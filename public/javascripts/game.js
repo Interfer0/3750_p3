@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
     // let usersOnline = [];
-    let socket = io.connect('http://localhost:3000');
+    socket = io.connect('http://localhost:3000');
     let chatForm = $('#chatForm');
     let message = $('#chatInput');
     let chatWindow = $('#chatWindow');
@@ -25,12 +25,11 @@ $(document).ready(function () {
     });
     
     document.getElementById('gameMat').innerHTML = '';
-    document.getElementById('gameMat').appendChild(initialGameScreen());
+    document.getElementById('gameMat').innerHTML = initialGameScreen();
 
     function initialGameScreen(rtn){
         //get the initial display screen and load it into gameMat
-        $.get("/game/initialGame",function(res){
-                //console.log(res);
+        $.get("/game/initialGameRoom",function(res){
                 document.getElementById('gameMat').innerHTML = res;            
             }
         );
@@ -42,16 +41,12 @@ $(document).ready(function () {
     });
 
     socket.on('connect', function (data) {
-        chatWindow.append('<strong>You</strong> joined the chatroom<br>');
         socket.emit('getUser');
         socket.emit('getUsers');
     });
 
     socket.on('s2cmsg', function (data) {
         //check message to determine what to do with it
-
-
-
         chatWindow.append('<strong>' + data.person + ':</strong> ' + data.message + '<br>');
         scrollChatWindow();
     });
@@ -94,8 +89,9 @@ $(document).ready(function () {
     
 });
 $(document).on("click", "#submitRoomNumber", joinRoom);
+$(document).on("click", "#newGameButton", newGameRoom);
 
-
+var socket;
 //moving this here instead of on ready. 
 //Had to do this since I need to work with buttons and elements that are handled
 //after the initial page load. 
@@ -105,6 +101,18 @@ $(document).on("click", "#submitRoomNumber", joinRoom);
     {
         
     }
+    
+    
+    function newGameRoom()
+    {   
+        socket.emit('newGameRoom',"",function(response) {
+            document.getElementById('gameMat').innerHTML = response; 
+        })
+
+    };
+    
+
+
     //send new game info
     //join room
     function joinRoom()
@@ -117,7 +125,7 @@ $(document).on("click", "#submitRoomNumber", joinRoom);
             dataType: "json",
             success: function (response)
             {
-                console.log("teest");
+                document.getElementById('gameMat').innerHTML = response; 
             },
             error : function (response, e)
             {
