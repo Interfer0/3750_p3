@@ -3,6 +3,11 @@ html, body {
   background: #111;
 }
 
+h1 {
+  color: white;
+  text-align: center;
+}
+
 .spinner {
   position: absolute;
   top: 50%;
