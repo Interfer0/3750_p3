@@ -1,7 +1,17 @@
 style
-      include spinner.css
+      include ../public/stylesheets/spinner.css
       
 h1 Waiting for game to start!
+div#listPlayers
+    table
+        thead
+            tr: th Players
+        tbody
+            each name in json
+                tr
+                    td
+                        name.username
+
 .spinner
   - var n = 0
   
