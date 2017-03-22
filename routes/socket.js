@@ -5,7 +5,6 @@ module.exports = (io) => {
     let users = [];
 
     io.sockets.on('connection', socket => {
-        
         // TODO: show all current usernames in users div on chatroom page
         
         const user = { name: socket.request.user.name, username: socket.request.user.username };
@@ -33,6 +32,12 @@ module.exports = (io) => {
         socket.on('disconnect', socket => {
             io.sockets.emit('userLoggedOut', user.username);
             users.splice(users.indexOf(user.username),1); // remove from user tracker
+        });
+
+        socket.on('newGameRoom', function (req, res){
+            console.log('test');
+            var pug = require('pug');
+            res(pug.renderFile('views/includes/newGame.pug'));
         });
 
     });// end on connection event

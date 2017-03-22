@@ -6,7 +6,7 @@ router.get('/game', (req, res, next) => {
 });
 
 //send the initial game window
-router.get('/game/initialGame', (req, res, next) => {
+router.get('/game/initialGameRoom', (req, res, next) => {
     res.render('includes/initialGame');
 });
 
@@ -22,6 +22,11 @@ router.post('/game/joinRoom', (req, res, next) => {
 
     //if user is not logged in, redirect to login page. Though this should never happen
     res.status(200).json({ message:"FAILED!"});
+});
+
+//attempt to join room
+router.post('/game/newGameRoom', (req, res, next) => {
+    res.render('includes/newGame');
 });
 
 module.exports = router;
