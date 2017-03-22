@@ -16,3 +16,22 @@ function namechange(roomname,room){
    }
 }
 
+users = [];
+
+users.push({user:username,user:roomid})
+
+function adduser(username, roomid){
+    users.push({user:username, user:roomid});
+    return users;
+}
+
+function removeuser(username, roomid){
+    var x = users.indexOf(username);
+    if(x >= 0){
+        users.splice(x,1);
+    }
+}
+
+exports.adduser = adduser;
+exports.removeuser = removeuser;
+exports.namechange = namechange;

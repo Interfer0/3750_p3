@@ -56,72 +56,10 @@ a {
     text-align: center;
 }
 
-#gameMat{
-    height:65vh;
-    width:95vw;
+#listPlayers{
+    float: right;
+    background: #a94442;
+    font-family: sans-serif;
+    color: white;
+    font-size: 2.5em;
 }
-
-footer {
-    position: fixed;
-    bottom: 1.5vh;
-    height: 1vh;
-    background-color: #f8f8f8;
-}
-
-p.copyright {
-    margin: 15px 0 0;
-}
-
-
-
-#gameInitial{
-
-    width: 100%;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-}
-#enterRoom{
-    margin-top: 10vh;
-    margin-right: auto;
-    margin-left: auto;
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#roomInput{
-    width:20vw;
-    min-height:5vh;
-}
-
-#initialButtons{
-    margin-top: 30vh;
-    margin-right: auto;
-    margin-left: auto;
-    min-width: 100%;
-    display:flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-
-
-
-/* Game Wide CSS */
-.gameButtons{
-    width: auto;
-    padding: 20px;
-    border-radius: 50%;
-    background: linear-gradient(to bottom right, lightgray , lightblue);
-}
-
-#gameMat{
- width : 95vw;
- height: 83vh;
- margin-right: auto;
- margin-left: auto;
- background-color:lightcyan;
-}
-
-/* End Game Wide CSS */
