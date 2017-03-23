@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-mongoose.connect('localhost:27017/Balderdash')
 const Schema = mongoose.Schema;
  
 // Categories Schema
@@ -17,7 +16,7 @@ const Categories = mongoose.model('Categories', CategoriesSchema)
 //const Categories = module.exports = mongoose.model('Categories', CategoriesSchema);
  
 //find and get data
-router.get('/', function(req, res, next) {
+/*router.get('/', function(req, res, next) {
     Categories.find()
         .then(function(doc) {
         res.render('index', {items: doc});
@@ -34,4 +33,4 @@ router.post('/insert', function(req, res, next) {
     var category = new Categories(item);
     category.save();
     res.reditrect('/');
-});
+});*/

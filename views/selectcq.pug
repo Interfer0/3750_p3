@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    li.dropdown.btn.btn-default
+      span.glyphicon.glyphicon-th-list
+        |  Select Categories
+        span.caret
+      ul.dropdown-menu.dropdown-toggle(data-toggle="dropdown")
+          li
+            a(href='addcqa.pug') Add a Category
+          li 
+            a(href="#") another action
+    br
+    br
+    li.dropdown.btn.btn-default
+      span.glyphicon.glyphicon-th-list
+        |  Select Question
+        span.caret
+      ul.dropdown-menu.dropdown-toggle(data-toggle="dropdown")
+          li
+            a(href="#") Add a Question
+          li 
+            a(href="#") another action
