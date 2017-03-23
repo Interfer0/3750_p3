@@ -1,9 +1,10 @@
-block content
-        div#gameInitial
-            div#enterRoom
-                input(type="text", id="roomInput", placeholder="enter asdfasdfasd")
-                br
-                button#submitRoomNumber.gameButtons Enter Room...
-            div#initialButtons
-                button#newGameButton.gameButtons New Game
-                button#manageQuestions.gameButtons Manage Questions & Catagories
+block content 
+        div#gameInitial 
+            div#enterRoom 
+                input(type="text", id="roomInput", value="temproom")
+                input(type="text", id="catInput", value="tempCat")
+                input(type="text", id="playerInput", placeholder="# of players")
+                input(type="text", id="gamesInput", placeholder="# of Games")                          
+            div#initialButtons 
+                button#newGameSubmitButton.gameButtons New Game 
+                button#cancelQuestions.gameButtons cancel

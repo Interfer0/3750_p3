@@ -90,6 +90,8 @@ $(document).ready(function () {
 });
 $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
+$(document).on("click", "#newGameSubmitButton", startNewGame);
+$(document).on("click", "#cancelQuestions", cancelNewGame);
 
 var socket;
 //moving this here instead of on ready. 
@@ -105,15 +107,37 @@ var socket;
     
     function newGameRoom()
     {   
+        //this won't work? If we are not in any room yet. But it may work actually. 
         socket.emit('newGameRoom',"",function(response) {
             document.getElementById('gameMat').innerHTML = response; 
         })
 
     };
+
+    function cancelNewGame()
+    {
+        $.get("/game/initialGameRoom",function(res){
+                document.getElementById('gameMat').innerHTML = res;            
+            }
+        );
+    }
     
 
 
     //send new game info
+    function startNewGame()
+    {
+        //prepare the information 
+
+        //send the information handle return
+
+                //handle failure
+                //redirect to waiting if successful
+
+    };
+
+
+
     //join room
     function joinRoom()
     {
