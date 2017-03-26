@@ -10,7 +10,7 @@ const passportSocketIo = require('passport.socketio');
 var debug = require('debug')('project2:server');
 var http = require('http');
 var socket = require('socket.io');
-var socketController = require('../routes/socket');
+var socketController = require('../contoller/gamecontroller');
 const cookieParser = require('cookie-parser');
 
 /**
