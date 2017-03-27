@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    .container
+        h1 Game Over
+        include ./includes/messages.pug
+        <ul>
+            <li><data values=users:userId>player 1</data></li>
+            <li><data values=users:userId>player 2</data></li>
+            <li><data values=users:userId>player 3</data></li>
+            <li><data values=users:userId>player 4</data></li>
+            <li><data values=users:userId>player 5</data></li>
+            <li><data values=users:userId>player 6</data></li>
+        </ul>
+
+        br
+
+        <div class='row-fluid'>
+            <span>
+                button.btn.btn-primary(type='submit') Play Again?
+            </span>
+            <span>
+                button.btn.btn-primary(type='submit') Quit
+            </span>
+        </div>
+        //a.btn.btn-default.btn-sm(href='/users/login') Login Now

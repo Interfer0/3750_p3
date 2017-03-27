@@ -29,4 +29,9 @@ router.post('/game/newGameRoom', (req, res, next) => {
     res.render('includes/newGame');
 });
 
+// gameover
+router.get('/game/gameover', (req, res, next) => {
+    res.render('gameover');
+});
+
 module.exports = router;
