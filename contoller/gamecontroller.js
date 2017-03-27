@@ -52,6 +52,28 @@ module.exports = (io) => {
             res(pug.renderFile('views/includes/newGame.pug'));
         });
 
+        socket.on('createNewGame', function(req,res) {
+            var roomname = req.roomname; //string of desired roomname;
+            var catInput = req.catInput; //a array of all categories selected
+            var playerInput = req.playerInput; //int of # of players
+            var numberofgames = req.gamesInput; //int of # of games
+
+            //if roomname exists in roomlist, send back warning message
+
+            //create the new game object
+
+                //add user user list for new room
+
+            //place user in new room
+
+            //Send success, send roomname
+            
+        });
+
+        socket.on('getCats', function(req,res) {
+            //get the categories, 
+        });
+
     });// end on connection event
 
 };

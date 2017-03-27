@@ -101,7 +101,10 @@ var socket;
     //get catagories
     function getCatagories()
     {
-        
+        socket.emit('getCats',"",function(response) {
+            document.getElementById('CatList ').innerHTML = response; 
+        });
+
     }
     
     
@@ -110,7 +113,7 @@ var socket;
         //this won't work? If we are not in any room yet. But it may work actually. 
         socket.emit('newGameRoom',"",function(response) {
             document.getElementById('gameMat').innerHTML = response; 
-        })
+        });
 
     };
 
@@ -127,6 +130,19 @@ var socket;
     //send new game info
     function startNewGame()
     {
+        var roomname = document.getElementById('roomInput').value; //string of desired roomname;
+        var playerInput = document.getElementById('playerInput').value; //int of # of players
+        var numberofgames = document.getElementById('gamesInput').value; //int of # of games
+        var catInput = [];
+        for(aaa in catInput){ //a array of all categories selected
+            catInput.push("fdgs");
+        }
+        socket.emit("createNewGame",{
+            "roomname" : roomname,
+            "playerInput" : playerInput,
+            "numberofgames" : numberofgames,
+            "catInput" : catInput
+        });
         //prepare the information 
 
         //send the information handle return
