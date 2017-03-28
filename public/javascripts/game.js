@@ -139,9 +139,9 @@ var socket;
         }
         socket.emit("createNewGame",{
             "roomname" : roomname,
-            "playerInput" : playerInput,
-            "numberofgames" : numberofgames,
-            "catInput" : catInput
+            "players" : playerInput,
+            "gameRounds" : numberofgames,
+            "category" : catInput
         });
         //prepare the information 
 
