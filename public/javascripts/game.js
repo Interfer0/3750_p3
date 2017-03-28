@@ -26,6 +26,10 @@ $(document).ready(function () {
     
     document.getElementById('gameMat').innerHTML = '';
     document.getElementById('gameMat').innerHTML = initialGameScreen();
+    console.log(socket);
+    socket.emit('getUsers', function(res){
+        console.log(res);
+    })
 
     function initialGameScreen(rtn){
         //get the initial display screen and load it into gameMat

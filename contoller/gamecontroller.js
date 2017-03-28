@@ -12,7 +12,7 @@ module.exports = (io) => {
     io.sockets.on('connection', socket => {
 
          const user = { name: socket.request.user.name, username: socket.request.user.username };
-        //running_games.push({roomid:1234,name:newroom});
+        
 
         function namechange(roomname,room){
             if(running_games.indexOf(roomname) >= 0){
@@ -31,6 +31,11 @@ module.exports = (io) => {
         });
 
         socket.on('getUsers', (callback) => {
+            //get users room
+            //get usernames in users room
+            //send the list
+            console.log(io.nsps['/'].adapter.rooms);
+            console.log(users);
             io.to(socket.id).emit('userList', users); // only send userList to newly connected user
         });
         
@@ -84,7 +89,7 @@ module.exports = (io) => {
             /*Don't know how to make this work yet. It needs to add the player as 
             a player on the players screen under names.*/ 
             res.status(200).send(  
-                pug.renderFile('views/includes/waitForPlayers.pug',["room" = roomname])
+                pug.renderFile('views/includes/waitForPlayers.pug',[room = roomname])
                 );
         });
 
