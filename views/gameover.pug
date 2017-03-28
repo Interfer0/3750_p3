@@ -1,10 +1,11 @@
-extends layout
+extends layout2
 
 block content
     .container
         h1 Game Over
         include ./includes/messages.pug
         <ul>
+            //Need to modify to display player data
             <li><data values=users:userId>player 1</data></li>
             <li><data values=users:userId>player 2</data></li>
             <li><data values=users:userId>player 3</data></li>
