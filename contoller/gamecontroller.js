@@ -67,22 +67,25 @@ module.exports = (io) => {
                 }
             });
             //create the new game object
-            var gm1 = new inst.Game(roomname,category,players,gamerounds);
+            var gm = new inst.Game(roomname,category,players,gamerounds);
             
-            gm1.roomname = roomname;
-            gm1.category = category;
-            gm1.players = players;
-            gm1.gamerounds = gamerounds;
-            running_games[roomname] = gm1;
+            gm.roomname = roomname;
+            gm.category = category;
+            gm.players = players;
+            gm.gamerounds = gamerounds;
+            running_games[roomname] = gm;
 
             console.log(running_games);
-            console.log(running_games[roomname]);
                 //add user to user list for new room
 
             //place user in new room
 
             //Send success, send roomname
-            
+            /*Don't know how to make this work yet. It needs to add the player as 
+            a player on the players screen under names.*/ 
+            res.status(200).send(  
+                pug.renderFile('views/includes/waitForPlayers.pug',["room" = roomname])
+                );
         });
 
         socket.on('getCats', function(req,res) {

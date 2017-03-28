@@ -1,5 +1,6 @@
 
 exports.Game = class Game{
+    
     constructor(roomname,category,players,gamerounds){
         this.roomname = roomname;
         this.category = category;
