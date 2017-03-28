@@ -4,7 +4,7 @@ module.exports = (io) => {
     // used to populate initial list of online users
     let users = [];
     let running_games = [];
-    let Game = require("./game");
+    let inst = require("./game");
         /*
         ie:  running_game({roomid:1234,name:1234});
         ***user can change the name property
@@ -53,11 +53,11 @@ module.exports = (io) => {
         });
 
         socket.on('createNewGame', function(req,res) {
-            console.log(req);
+            //console.log(req);
             var roomname = req.roomname; //string of desired roomname;
             var category = req.category; //a array of all categories selected
             var players = req.players; //int of # of players
-            var gameRounds = req.gameRounds; //int of # of games
+            var gamerounds = req.gamerounds; //int of # of games
 
             //if roomname exists in roomlist, send back warning message
             running_games.filter(function(item){
@@ -67,25 +67,16 @@ module.exports = (io) => {
                 }
             });
             //create the new game object
-            let gm1 = new require('./game');
+            var gm1 = new inst.Game(roomname,category,players,gamerounds);
             
             gm1.roomname = roomname;
             gm1.category = category;
             gm1.players = players;
-            gm1.gameRounds = gameRounds;
-            
+            gm1.gamerounds = gamerounds;
+            running_games[roomname] = gm1;
 
-            running_games.push(gm1);
-            let gm = new require('./game');
-            
-            gm.roomname = "dsf";
-            gm.category = category;
-            gm.players = players;
-            gm.gameRounds = gameRounds;
-            
-
-            running_games.push(gm);
             console.log(running_games);
+            console.log(running_games[roomname]);
                 //add user to user list for new room
 
             //place user in new room

@@ -140,7 +140,7 @@ var socket;
         socket.emit("createNewGame",{
             "roomname" : roomname,
             "players" : playerInput,
-            "gameRounds" : numberofgames,
+            "gamerounds" : numberofgames,
             "category" : catInput
         });
         //prepare the information 
