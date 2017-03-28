@@ -6,7 +6,7 @@ block content
         include ./includes/messages.pug
         <ul>
             //Need to modify to display player data
-            <li><data values=users:userId>player 1</data></li>
+            <li><data values=users:userId></data></li>
             <li><data values=users:userId>player 2</data></li>
             <li><data values=users:userId>player 3</data></li>
             <li><data values=users:userId>player 4</data></li>
@@ -23,4 +23,5 @@ block content
             <span>
                 button.btn.btn-primary(type='submit') Quit
             </span>
-        </div
+        </div>
+        //a.btn.btn-default.btn-sm(href='/users/login') Login Now

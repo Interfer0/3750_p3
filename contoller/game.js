@@ -29,3 +29,16 @@ function randomHost(response){
 function countRounds(){
     gameRounds = gameRounds - 1;
 }
+
+function questionButton(){
+    var btn = document.createElement("button");
+    var newbutton = 'test';
+        //document.getElementById(select random buttonid)
+    document.body.insertBefore(btn, newbutton);
+
+    //reference found online for 
+    //for(var i = 0; i < results.row.length; i++){
+        //var data = results.row.item(i)[];
+        //alert(data);
+    //}
+}

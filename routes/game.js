@@ -34,4 +34,14 @@ router.get('/game/gameover', (req, res, next) => {
     res.render('gameover');
 });
 
+//select game question
+router.get('/game/playgame/question', (req, res, next) => {
+    res.render('playgameSelectQuestion');
+});
+
+//select game submit answer
+router.get('/game/playgame/playeranswer', (req, res, next) => {
+    res.render('playgameSubmitAnswer');
+});
+
 module.exports = router;

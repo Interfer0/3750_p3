@@ -1,0 +1,54 @@
+extends layout2
+
+block content
+    .container
+        h1 Game Over
+        include ./includes/messages.pug
+
+        <script type='text/javascript'>
+            var questionArray = [];
+            window.onload = function(){
+                var i; buttonsToCreate, buttonContainer, newButton;
+                buttonsToCreate = ['button1', 'button2', 'button3', 'button4', 'button5'];
+                buttonContainer = document.getElementById('this_element_containers_mybuttons');
+                for (i=0; i < buttonsToCreate.length; i++){
+                    newButton = document.createElement('input');
+                    newButton.type 'button';
+                    newButton.value = buttonsToCreate[i];
+
+                    //function to test needs to send question to players
+                    newButton.onclick = function(){
+                        alert('You Press' + this.id);
+                        arrayToModify[arrayToModify.length] = this.id;
+                    };
+
+                    buttonContainer.appendChild(newButton);
+                }
+            };
+        </script>
+
+        <div id='this_element_containers_mybuttons'>
+        </div>
+
+        <input type='button' onclick='alert(arrayToModify);' value='show the buttons I have clicked' />
+
+        //- //a.btn.btn-default.btn-sm(href='/users/login') Login Now
+
+        //- <ul>
+        //-     //Need to modify to display player data
+        //-     <li><data values=users:userId></data></li>
+        //-     <li><data values=users:userId>player 2</data></li>
+        //-     <li><data values=users:userId>player 3</data></li>
+        //-     <li><data values=users:userId>player 4</data></li>
+        //-     <li><data values=users:userId>player 5</data></li>
+        //-     <li><data values=users:userId>player 6</data></li>
+        //- </ul>
+
+        //- br
+
+        //- <div class='row-fluid'>
+        //-         button.btn.btn-primary(type='button') Play Again?
+        //-         button.btn.btn-primary(type='submit') Quit
+        //-     </span>
+        //- </div>
+        //- //a.btn.btn-default.btn-sm(href='/users/login') Login Now
