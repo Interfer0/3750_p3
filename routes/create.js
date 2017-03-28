@@ -3,11 +3,11 @@ var router = express.Router();
 
 /* GET create page. */
 router.get('/create', function(req, res, next) {
-  res.render('addcqa', { title: 'Create categories and questions' });
+  res.render('addCategory', { title: 'Create categories and questions' });
 });
 
 // Process Add Category
-router.post('/addcqa', (req, res, next) => {
+router.post('/addCategory', (req, res, next) => {
     const categories = req.body.categories;
 
     req.checkBody('categories', 'Category name is required').notEmpty();
@@ -15,7 +15,7 @@ router.post('/addcqa', (req, res, next) => {
     let errors = req.validationErrors();
 
     if (errors) {
-        res.render('addcqa', {
+        res.render('addCategory', {
             errors: errors
         });
     } else {
@@ -26,7 +26,7 @@ router.post('/addcqa', (req, res, next) => {
         Category.newCategory(newCategory, (err, category) => {
             if (err) throw err;
             req.flash('success_msg','You have created a new category');
-            res.redirect('/create/addcqa');
+            res.redirect('/create/addCategory');
         });
 
     }

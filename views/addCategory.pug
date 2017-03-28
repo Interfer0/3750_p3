@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    .container
+        h1 Add Category Form
+        //include ./includes/messages.pug
+        form(method='post', action='/create/addCategory')
+            .form-group
+                label Category
+                <select>#addCategory
+                    <option>
+                input.form-control(type='text', name='categories', placeholder='Category Name', required)
+            button.btn.btn-primary(type='submit') Save Category
+            br
+        h1 Add Question Form
+        //include ./includes/messages.pug
+        form(method='post', action='/create/addcqa')
+            .form-group
+                label Question
+                input.form-control(type='text', name='question', placeholder='Question', required)
+                br
+                label Answer
+                input.form-control(type='text', name='answer', placeholder='Answer', required)
+            button.btn.btn-primary(type='submit') Save Category

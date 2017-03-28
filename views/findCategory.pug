@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    form(method='post', action='/users/register?????')
+            .form-group
+                label Category
+                input.form-control(type='text', name='categories', placeholder='Enter Category', required)
+            .form-group
+                label Question
+                input.form-control(type='text', name='question', placeholder='Enter Question', required)
+            .form-group
+                label Answer
+                input.form-control(type='text', name='answer', placeholder='Enter Question', required)
+            button.btn.btn-primary(type='submit') Find
