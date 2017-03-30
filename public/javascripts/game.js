@@ -30,6 +30,7 @@ $(document).ready(function () {
     socket.emit('getUsers', function(res){
         console.log(res);
     })
+    socket.emit('roomUsers');
 
     function initialGameScreen(rtn){
         //get the initial display screen and load it into gameMat

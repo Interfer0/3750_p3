@@ -11,8 +11,8 @@ module.exports = (io) => {
         */
     io.sockets.on('connection', socket => {
 
-         const user = { name: socket.request.user.name, username: socket.request.user.username };
-        
+         const user = socket.request.user.username;
+         users[socket.id] = socket.request.user.username;
 
         function namechange(roomname,room){
             if(running_games.indexOf(roomname) >= 0){
@@ -31,12 +31,22 @@ module.exports = (io) => {
         });
 
         socket.on('getUsers', (callback) => {
-            //get users room
-            //get usernames in users room
-            //send the list
-            console.log(io.nsps['/'].adapter.rooms);
-            console.log(users);
             io.to(socket.id).emit('userList', users); // only send userList to newly connected user
+        });
+
+        socket.on('roomUsers', (claaback) => {
+            socket.join("bob");
+            var roomMembers = [];
+           
+
+            for( var member in io.sockets.adapter.rooms['bob'].sockets ) {
+                console.log(users[member]);
+            }
+            //console.log(socket.request.user);
+            console.log(socket);
+            console.log(io.sockets.adapter.rooms);
+            //console.log(socket.id);
+            //console.log(io.sockets.adapter.rooms['bob'].sockets);
         });
         
         // Client to Server message
