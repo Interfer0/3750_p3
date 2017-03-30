@@ -2,16 +2,37 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
  
 // Categories Schema
-const CategoriesSchema = new Schema({
-    categories: {
+// const CategoriesSchema = new Schema({
+//     categories: {
+//         type: String
+//     },
+//     question: [{
+//     }]
+// }, {collection: 'Categories'});
+
+const CategorySchema = new Schema({
+    categoryName: {
         type: String
-    },
-    question: [{
-    }]
+    }
 }, {collection: 'Categories'});
  
-//model of CategoriesSchema
-const Categories = mongoose.model('Categories', CategoriesSchema)
+//model of QuestionSchema
+const Categories = mongoose.model('Categories', CategorySchema)
+
+const QuestionSchema = new Schema({
+    categoryName: {
+        type: String
+    },
+    question: {
+        type: String
+    },
+    answer: {
+        type: String
+    }
+}, {collection: 'Questions'});
+ 
+//model of QuestionSchema
+const Questions = mongoose.model('Questions', QuestionSchema)
  
 //const Categories = module.exports = mongoose.model('Categories', CategoriesSchema);
  
