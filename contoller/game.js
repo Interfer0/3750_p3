@@ -1,9 +1,27 @@
-var gamecontoller = require("./gamecontroller") 
+// var gamecontoller = require("./gamecontroller") 
 
-var gameRounds;
-function createGame(req, res){
-    console.log("Game creation has been initialized");
-    gameRounds = req.rounds;
+var io;
+var gameSocket;
+
+exports.initGame = function(sio, socket){
+    io = sio;
+    gameSocket = socket;
+    gameSocket.emit('connected',{message: "You are connected!"});
+
+    gameSocket.on('createNewGame', createNewGame);
+    gameSocket.on('roomFull',startGame);
+    gameSocket.on('nextRound', nextRound);
+
+    gameSocket.on('playJoinsGame', playerJoinsGame);
+    gameSocket.on('playerAnswer', playerAnswer);
+    
+
+}
+
+function createNewGame(){
+   var thisGameId = (Math.random()*1000) | 0;
+   this.emit('newGameCreated',{gameId: thisGameId, mySocketId: this.id});
+   this.join(thisGameId.toString());
 }
 
 users = [];
