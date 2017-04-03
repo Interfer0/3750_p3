@@ -2,13 +2,13 @@
 $(document).ready(function () {
     // let usersOnline = [];
     socket = io.connect('http://localhost:3000');
-    let chatForm = $('#chatForm');
-    let message = $('#chatInput');
-    let chatWindow = $('#chatWindow');
-    let username = '';
-    let usersul = $('#userList');
-    let error = $('#error');
-    let users = [];
+    var chatForm = $('#chatForm');
+    var message = $('#chatInput');
+    var chatWindow = $('#chatWindow');
+    var username = '';
+    var usersul = $('#userList');
+    var error = $('#error');
+    var users = [];
 
     chatForm.on('submit', function(e){
             e.preventDefault(); // prevent actual form submission
@@ -183,8 +183,20 @@ var socket;
     //add new user 
         //if new room full add continue button
     //receive/display categories
+    //display Questions
+    function selectQuestion(data){
+        console.log("select a question from the list")
+    }
+
     //send picked question
+    function clickedQuestion(){
+        console.log("return selected question");
+        socket.emit('displayQuestion', displayQuestion);
+    }
     //receive picked question
+    function displayQuestion(data){
+
+    }
     //send answer
         //wait
     //receive/pick answers answers
