@@ -1,5 +1,5 @@
 
-$(document).ready(function () {
+//$(document).ready(function () {
     // let usersOnline = [];
     socket = io.connect('http://localhost:3000');
     let chatForm = $('#chatForm');
@@ -9,11 +9,10 @@ $(document).ready(function () {
     let usersul = $('#userList');
     let error = $('#error');
     let users = [];
-
-    
+    socket.emit('connect');
     document.getElementById('gameMat').innerHTML = '';
     document.getElementById('gameMat').innerHTML = initialGameScreen();
-    //console.log(socket);
+    
 
     function initialGameScreen(rtn){
         //get the initial display screen and load it into gameMat
@@ -29,11 +28,8 @@ $(document).ready(function () {
 
     socket.on('connect', function (data) {
         socket.emit('connected', (res) => {
-            socket.emit('getUser');
-            socket.emit('getUsers');
-            socket.emit('roomUsers');
+            
         });
-
     });
 
     socket.on('s2cmsg', function (data) {
@@ -61,7 +57,7 @@ $(document).ready(function () {
     socket.on('userLoggedOut', (data) => {
         chatWindow.append('<span class="pull-right logout"><strong>' + data + '</strong> left the chat room</span><br>');
         $("#" + data).remove();
-        scrollChatWindow();
+       // scrollChatWindow();
     });
 
     socket.on('userLoggedIn', (data) => {
@@ -70,12 +66,14 @@ $(document).ready(function () {
         scrollChatWindow();
     });
 
-    socket.on('userListRoom', (data) => )
+    socket.on('updateUsers', (data) => {
+        updatewaitlist(data.users);
+    })
 
 
 
     
-});
+//});
 $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
 $(document).on("click", "#newGameSubmitButton", startNewGame);
@@ -132,10 +130,10 @@ var socket;
             "category" : catInput
         }, function (res){
             //handle failure
-
+            console.log(res);
             if(res.status == 200)
             {
-                document.getElementById('gameMat').innerHTML = res.page;   
+                document.getElementById('gameMat').innerHTML = res.page; 
             }
         });
 
@@ -147,6 +145,10 @@ var socket;
     function joinRoom()
     {
         socket.emit('joinRoom',{room : document.getElementById('roomInput').value}, function(res){
+            if(res.status == 200)
+            {
+                document.getElementById('gameMat').innerHTML = res.page;   
+            }
             //if room does not exist
 
             //if room full
@@ -155,6 +157,20 @@ var socket;
 
         });
     }
+
+    function updatewaitlist(users){
+        var myEle = document.getElementById('gameMat');
+        console.log(myEle.innerHTML);
+        var myElem = document.querySelector('#playerlist');
+        console.log(myElem);
+        console.log(document.querySelector('#playerlist'));
+        if (myElem != null){
+            for( var e in users){
+                console.log(users[e].user);
+                myElem.innerHTML += (users[e].user + "<br>");
+            }
+        }
+    };
     //wait in new room
     //add new user 
         //if new room full add continue button

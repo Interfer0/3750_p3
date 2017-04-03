@@ -7,6 +7,7 @@ exports.Game = class Game{
         this.players = players;
         this.gamerounds = gamerounds;
         this.users = [];
+        this.round = 1;
     };
 
     cnslPrint(){
@@ -20,13 +21,20 @@ exports.Game = class Game{
 
 
 
-    addUserToRoom(response, socket, {user:username, user:roomid}){
-        socket.join(user.roomid);
+    addUserToRoom(socket, username){
+        //console.log(socket);
+        socket.join(this.roomname);
         //socket.to(user.roomid).emit(function_name);
-        socket.to(user.roomid).emit(user.username + " has join the game.");
-        users.push({user:roomid, user:username});
-        console.log(user.username + " has joined " + user.roomid);
-        response.render('user',{username:user.username});
+        socket.to(this.roomname).emit(username + " has join the game.");
+        var found = this.users.some(function (el){
+            return el.user === username;
+        })
+        if(!found)
+        {
+            this.users.push({user:username, screen:"wait1"});
+        }
+        console.log(username + " has joined " + this.roomname);
+        socket.to(this.roomname).emit('updateUsers', {users : this.users});
     }
 
     randomHost(response){

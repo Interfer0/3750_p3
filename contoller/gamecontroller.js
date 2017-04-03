@@ -30,13 +30,7 @@ module.exports = (io) => {
             }
         }
 
-        // do the the following on connection 
-        //socket.broadcast.emit('userLoggedIn', user.username);
-        //users.push(user.username);
-
-        socket.on('connected', function (req, res) {
-            socket.join("bob");
-            user.roomname = "bob";            
+        socket.on('connected', function (req, res){            
         });
         
         socket.on('getUser', (callback) => {
@@ -51,10 +45,11 @@ module.exports = (io) => {
             var roomMembers = [];
             //console.log(user.roomname);
             //console.log(io.sockets.adapter.rooms);
-
+            console.log(io.sockets.adapter.rooms[user.roomname].sockets);
             for( var member in io.sockets.adapter.rooms[user.roomname].sockets ) {
                 console.log(users[member]);
             }
+
             io.to(user.roomname).emit('userListRoom', roomMembers); 
             //console.log(socket.request.user);
             //console.log(socket.adapter.nsp.adapter.sids);
@@ -105,10 +100,7 @@ module.exports = (io) => {
             gm.gamerounds = gamerounds;
             running_games[roomname] = gm;
 
-            //console.log(running_games);
-                //add user to user list for new room
-
-            //place user in new room
+            gm.addUserToRoom(socket, user.username);
 
             user.roomname = roomname;
             //Send success, send roomname
@@ -120,6 +112,28 @@ module.exports = (io) => {
                 page :
                     pug.renderFile('views/includes/waitForPlayers.pug',[room = roomname])
             });
+        });
+
+        socket.on('joinRoom', function(req,res) {
+            var gm;
+            
+            //check if room exists return room doesn't exist if false
+            if(running_games[req.room] != null)
+            {
+                gm = running_games[req.room];
+                console.log(user.username);
+                gm.addUserToRoom(socket, user.username);
+                res({  
+                    status:
+                        200,
+                    page :
+                        pug.renderFile('views/includes/waitForPlayers.pug',[room = gm.roomname])
+                });
+            }
+            //add user to room
+            
+            
+            
         });
 
         socket.on('getCats', function(req,res) {
