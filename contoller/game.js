@@ -31,7 +31,7 @@ exports.Game = class Game{
         })
         if(!found)
         {
-            this.users.push({user:username, screen:"wait1"});
+            this.users.push({user:username, screen:"wait1", socketID:socket.id});
         }
         console.log(username + " has joined " + this.roomname);
         socket.to(this.roomname).emit('updateUsers', {users : this.users});
@@ -50,4 +50,8 @@ exports.Game = class Game{
     countRounds(){
         gameRounds = gameRounds - 1;
     }
+
+   displayQuestion(){ 
+        socket.emit() 
+    } 
 };

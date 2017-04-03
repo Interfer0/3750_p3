@@ -70,6 +70,20 @@
         updatewaitlist(data.users);
     })
 
+    //display Questions 
+    function selectQuestion(data){ 
+        console.log("select a question from the list") 
+    } 
+ 
+    //send picked question 
+    function clickedQuestion(){ 
+        console.log("return selected question"); 
+        socket.emit('displayQuestion', displayQuestion); 
+    } 
+    //receive picked question 
+    function displayQuestion(data){ 
+ 
+    } 
 
 
     
