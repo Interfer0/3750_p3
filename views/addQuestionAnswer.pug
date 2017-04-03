@@ -4,7 +4,7 @@ block content
     .container
         h1 Add Question Form
         //include ./includes/messages.pug
-        form(method='post', action='/create/addcqa')
+        form(method='post', action='/create/addQuestionAnswer')
             .form-group
                 //- label Category
                 //- <select>#addCategory
@@ -17,4 +17,4 @@ block content
                 br
                 label Answer
                 input.form-control(type='text', name='answer', placeholder='Answer', required)
-            button.btn.btn-primary(type='submit') Save Category
+            button.btn.btn-primary(type='submit') Save Question and Answer

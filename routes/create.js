@@ -54,27 +54,4 @@ router.post('/create/addQuestionAnswer', (req, res, next) => {
 });
 
 
-
-
-//     req.checkBody('categories', 'Category name is required').notEmpty();
-
-//     let errors = req.validationErrors();
-
-//     if (errors) {
-//         res.render('addCategory', {
-//             errors: errors
-//         });
-//     } else {
-//         const newCategory = new Category({
-//             categories: categories,
-//         });
-
-//         Category.newCategory(newCategory, (err, category) => {
-//             if (err) throw err;
-//             req.flash('success_msg','You have created a new category');
-//             res.redirect('/select');
-//         });
-//     }
-// });
-
 module.exports = router;
