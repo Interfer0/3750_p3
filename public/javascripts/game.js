@@ -10,27 +10,10 @@ $(document).ready(function () {
     let error = $('#error');
     let users = [];
 
-    chatForm.on('submit', function(e){
-            e.preventDefault(); // prevent actual form submission
-            socket.emit('c2smsg', message.val());
-                if(message.val().length == 0){
-                    return false;
-                }
-            chatWindow.append('<strong>You:</strong> ' + message.val() + '<br>');
-            chatWindow.animate({
-                scrollTop: chatWindow[0].scrollHeight
-            }, 1000);
-            message.val('');
-            return false;
-    });
     
     document.getElementById('gameMat').innerHTML = '';
     document.getElementById('gameMat').innerHTML = initialGameScreen();
-    console.log(socket);
-    socket.emit('getUsers', function(res){
-        console.log(res);
-    })
-    socket.emit('roomUsers');
+    //console.log(socket);
 
     function initialGameScreen(rtn){
         //get the initial display screen and load it into gameMat
@@ -40,14 +23,17 @@ $(document).ready(function () {
         );
     }
 
-
     socket.on('whoami', data => {
         username = data.username;
     });
 
     socket.on('connect', function (data) {
-        socket.emit('getUser');
-        socket.emit('getUsers');
+        socket.emit('connected', (res) => {
+            socket.emit('getUser');
+            socket.emit('getUsers');
+            socket.emit('roomUsers');
+        });
+
     });
 
     socket.on('s2cmsg', function (data) {
@@ -84,11 +70,8 @@ $(document).ready(function () {
         scrollChatWindow();
     });
 
-    function scrollChatWindow() {
-        chatWindow.animate({
-            scrollTop: chatWindow[0].scrollHeight
-        }, 1000);
-    }
+    socket.on('userListRoom', (data) => )
+
 
 
     
@@ -147,13 +130,14 @@ var socket;
             "players" : playerInput,
             "gamerounds" : numberofgames,
             "category" : catInput
+        }, function (res){
+            //handle failure
+
+            if(res.status == 200)
+            {
+                document.getElementById('gameMat').innerHTML = res.page;   
+            }
         });
-        //prepare the information 
-
-        //send the information handle return
-
-                //handle failure
-                //redirect to waiting if successful
 
     };
 
@@ -162,22 +146,14 @@ var socket;
     //join room
     function joinRoom()
     {
-        $.ajax({
-            type: "POST",
-            url: "/game/joinRoom",
-            contentType: 'application/json',
-            data: JSON.stringify({room : document.getElementById('roomInput').value}),
-            dataType: "json",
-            success: function (response)
-            {
-                document.getElementById('gameMat').innerHTML = response; 
-            },
-            error : function (response, e)
-            {
-                console.log("reee");
-            }
+        socket.emit('joinRoom',{room : document.getElementById('roomInput').value}, function(res){
+            //if room does not exist
 
-        })
+            //if room full
+
+            //if join accepted
+
+        });
     }
     //wait in new room
     //add new user 
