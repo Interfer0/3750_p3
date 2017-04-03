@@ -1,31 +1,53 @@
-var gamecontoller = require("./gamecontroller") 
 
-var gameRounds;
-function createGame(req, res){
-    console.log("Game creation has been initialized");
-    gameRounds = req.rounds;
-}
+exports.Game = class Game{
 
-users = [];
-function addUserToRoom(response, socket, {user:username, user:roomid}){
-    socket.join(user.roomid);
-    //socket.to(user.roomid).emit(function_name);
-    socket.to(user.roomid).emit(user.username + " has join the game.");
-    users.push({user:roomid, user:username});
-    console.log(user.username + " has joined " + user.roomid);
-    response.render('user',{username:user.username});
-}
+    constructor(roomname,category,players,gamerounds){
+        this.roomname = roomname;
+        this.category = category;
+        this.players = players;
+        this.gamerounds = gamerounds;
+        this.users = [];
+        this.round = 1;
+    };
 
-function randomHost(response){
-    var x = users.length;
-    if(x > 1 && gameRounds > 0){
-        var host = users[Math.floor(Math.random() * x)];
-        return host;
-    }else{
-        return "wait for more players";
+    cnslPrint(){
+        console.log("worked");
     }
-}
 
-function countRounds(){
-    gameRounds = gameRounds - 1;
-}
+    createGame(req, res){
+        console.log("Game creation has been initialized");
+        gameRounds = req.rounds;
+    }
+
+
+
+    addUserToRoom(socket, username){
+        //console.log(socket);
+        socket.join(this.roomname);
+        //socket.to(user.roomid).emit(function_name);
+        socket.to(this.roomname).emit(username + " has join the game.");
+        var found = this.users.some(function (el){
+            return el.user === username;
+        })
+        if(!found)
+        {
+            this.users.push({user:username, screen:"wait1"});
+        }
+        console.log(username + " has joined " + this.roomname);
+        socket.to(this.roomname).emit('updateUsers', {users : this.users});
+    }
+
+    randomHost(response){
+        var x = users.length;
+        if(x > 1 && gameRounds > 0){
+            var host = users[Math.floor(Math.random() * x)];
+            return host;
+        }else{
+            return "wait for more players";
+        }
+    }
+
+    countRounds(){
+        gameRounds = gameRounds - 1;
+    }
+};

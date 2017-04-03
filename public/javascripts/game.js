@@ -1,5 +1,5 @@
 
-$(document).ready(function () {
+//$(document).ready(function () {
     // let usersOnline = [];
     socket = io.connect('http://localhost:3000');
     let chatForm = $('#chatForm');
@@ -9,23 +9,10 @@ $(document).ready(function () {
     let usersul = $('#userList');
     let error = $('#error');
     let users = [];
-
-    chatForm.on('submit', function(e){
-            e.preventDefault(); // prevent actual form submission
-            socket.emit('c2smsg', message.val());
-                if(message.val().length == 0){
-                    return false;
-                }
-            chatWindow.append('<strong>You:</strong> ' + message.val() + '<br>');
-            chatWindow.animate({
-                scrollTop: chatWindow[0].scrollHeight
-            }, 1000);
-            message.val('');
-            return false;
-    });
-    
+    socket.emit('connect');
     document.getElementById('gameMat').innerHTML = '';
     document.getElementById('gameMat').innerHTML = initialGameScreen();
+    
 
     function initialGameScreen(rtn){
         //get the initial display screen and load it into gameMat
@@ -35,14 +22,14 @@ $(document).ready(function () {
         );
     }
 
-
     socket.on('whoami', data => {
         username = data.username;
     });
 
     socket.on('connect', function (data) {
-        socket.emit('getUser');
-        socket.emit('getUsers');
+        socket.emit('connected', (res) => {
+            
+        });
     });
 
     socket.on('s2cmsg', function (data) {
@@ -70,7 +57,7 @@ $(document).ready(function () {
     socket.on('userLoggedOut', (data) => {
         chatWindow.append('<span class="pull-right logout"><strong>' + data + '</strong> left the chat room</span><br>');
         $("#" + data).remove();
-        scrollChatWindow();
+       // scrollChatWindow();
     });
 
     socket.on('userLoggedIn', (data) => {
@@ -79,15 +66,14 @@ $(document).ready(function () {
         scrollChatWindow();
     });
 
-    function scrollChatWindow() {
-        chatWindow.animate({
-            scrollTop: chatWindow[0].scrollHeight
-        }, 1000);
-    }
+    socket.on('updateUsers', (data) => {
+        updatewaitlist(data.users);
+    })
+
 
 
     
-});
+//});
 $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
 $(document).on("click", "#newGameSubmitButton", startNewGame);
@@ -101,7 +87,10 @@ var socket;
     //get catagories
     function getCatagories()
     {
-        
+        socket.emit('getCats',"",function(response) {
+            document.getElementById('CatList ').innerHTML = response; 
+        });
+
     }
     
     
@@ -110,7 +99,7 @@ var socket;
         //this won't work? If we are not in any room yet. But it may work actually. 
         socket.emit('newGameRoom',"",function(response) {
             document.getElementById('gameMat').innerHTML = response; 
-        })
+        });
 
     };
 
@@ -127,12 +116,26 @@ var socket;
     //send new game info
     function startNewGame()
     {
-        //prepare the information 
-
-        //send the information handle return
-
-                //handle failure
-                //redirect to waiting if successful
+        var roomname = document.getElementById('roomInput').value; //string of desired roomname;
+        var playerInput = document.getElementById('playerInput').value; //int of # of players
+        var numberofgames = document.getElementById('gamesInput').value; //int of # of games
+        var catInput = [];
+        for(aaa in catInput){ //a array of all categories selected
+            catInput.push("fdgs");
+        }
+        socket.emit("createNewGame",{
+            "roomname" : roomname,
+            "players" : playerInput,
+            "gamerounds" : numberofgames,
+            "category" : catInput
+        }, function (res){
+            //handle failure
+            console.log(res);
+            if(res.status == 200)
+            {
+                document.getElementById('gameMat').innerHTML = res.page; 
+            }
+        });
 
     };
 
@@ -141,23 +144,33 @@ var socket;
     //join room
     function joinRoom()
     {
-        $.ajax({
-            type: "POST",
-            url: "/game/joinRoom",
-            contentType: 'application/json',
-            data: JSON.stringify({room : document.getElementById('roomInput').value}),
-            dataType: "json",
-            success: function (response)
+        socket.emit('joinRoom',{room : document.getElementById('roomInput').value}, function(res){
+            if(res.status == 200)
             {
-                document.getElementById('gameMat').innerHTML = response; 
-            },
-            error : function (response, e)
-            {
-                console.log("reee");
+                document.getElementById('gameMat').innerHTML = res.page;   
             }
+            //if room does not exist
 
-        })
+            //if room full
+
+            //if join accepted
+
+        });
     }
+
+    function updatewaitlist(users){
+        var myEle = document.getElementById('gameMat');
+        console.log(myEle.innerHTML);
+        var myElem = document.querySelector('#playerlist');
+        console.log(myElem);
+        console.log(document.querySelector('#playerlist'));
+        if (myElem != null){
+            for( var e in users){
+                console.log(users[e].user);
+                myElem.innerHTML += (users[e].user + "<br>");
+            }
+        }
+    };
     //wait in new room
     //add new user 
         //if new room full add continue button

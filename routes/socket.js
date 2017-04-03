@@ -10,7 +10,7 @@ module.exports = (io) => {
         const user = { name: socket.request.user.name, username: socket.request.user.username };
 
         // do the the following on connection 
-        socket.broadcast.emit('userLoggedIn', user.username);
+        //socket.broadcast.emit('userLoggedIn', user.username);
         users.push(user.username);
         
         socket.on('getUser', (callback) => {
