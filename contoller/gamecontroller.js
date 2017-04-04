@@ -93,12 +93,17 @@ module.exports = (io) => {
             var gamerounds = req.gamerounds; //int of # of games
 
             //if roomname exists in roomlist, send back warning message
-            running_games.filter(function(item){
-                if(roomname == item.name)
-                {
-                    res.send({status:400,page:""});
-                };
-            });
+            var i = null;
+            for(i = 0;running_games.length > i; i += 1){
+                if(running_games[i].roomname === roomname){
+                    console.log("room already in use");
+                }
+                else{
+                   res.send({status:400,page:""});
+                }
+            }
+
+
             //create the new game object
             var gm = new inst.Game(roomname,category,players,gamerounds);
             
@@ -106,7 +111,7 @@ module.exports = (io) => {
             gm.category = category;
             gm.players = players;
             gm.gamerounds = gamerounds;
-            running_games[roomname] = gm;
+            running_games.push(gm);
 
             gm.addUserToRoom(socket, user.username);
 
