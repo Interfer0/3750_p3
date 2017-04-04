@@ -22,7 +22,7 @@ module.exports = (io) => {
          users[socket.id] = socket.request.user.username;
           
 
-        function namechange(roomname,room){
+        function checkRoomName(roomname,room){
             if(running_games.indexOf(roomname) >= 0){
                 return "room already being used";
             }else{
@@ -74,7 +74,15 @@ module.exports = (io) => {
 
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
-            res(pug.renderFile('views/includes/newGame.pug'));
+            var room = validRoomNumber();
+            res({  
+                status:
+                    200,
+                page :
+                    pug.renderFile('views/includes/newGame.pug'),
+                roomid: 
+                    room
+            });
         });
 
         socket.on('createNewGame', function(req,res) {
@@ -142,6 +150,17 @@ module.exports = (io) => {
 
         function getUser() {
             return user;
+        }
+
+        function validRoomNumber(){
+            var num = (Math.random()*10000) | 0;
+            var i = null;
+            for(i = 0;running_games.length > i; i += 1){
+                if(running_games[i].roomname === num){
+                    return validRoomNumber();
+                }
+            }
+            return num;
         }
 
     });// end on connection event

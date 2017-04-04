@@ -111,8 +111,9 @@ var socket;
     function newGameRoom()
     {   
         //this won't work? If we are not in any room yet. But it may work actually. 
-        socket.emit('newGameRoom',"",function(response) {
-            document.getElementById('gameMat').innerHTML = response; 
+        socket.emit('newGameRoom',"",function(res) {
+            document.getElementById('gameMat').innerHTML = res.page;
+            document.querySelector("#roomInput").value = res.roomid; 
         });
 
     };
