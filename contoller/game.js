@@ -21,7 +21,7 @@ exports.Game = class Game{
 
 
 
-    addUserToRoom(socket, username){
+    addUserToRoom(socket, username, ret){
         //console.log(socket);
         socket.join(this.roomname);
         //socket.to(user.roomid).emit(function_name);
@@ -35,6 +35,7 @@ exports.Game = class Game{
         }
         console.log(username + " has joined " + this.roomname);
         socket.to(this.roomname).emit('updateUsers', {users : this.users});
+        ret(this.users);
     }
 
     randomHost(response){
