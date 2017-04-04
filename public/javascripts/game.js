@@ -9,15 +9,20 @@
     let usersul = $('#userList');
     let error = $('#error');
     let users = [];
+    let curScreen = "wait1";
     socket.emit('connect');
     document.getElementById('gameMat').innerHTML = '';
     document.getElementById('gameMat').innerHTML = initialGameScreen();
     
 
     function initialGameScreen(rtn){
+        
         //get the initial display screen and load it into gameMat
         $.get("/game/initialGameRoom",function(res){
-                document.getElementById('gameMat').innerHTML = res;            
+                document.getElementById('gameMat').innerHTML = res;  
+                socket.emit('whoami',"", function (data) {
+                    username = data.usr;
+                });          
             }
         );
     }
@@ -67,9 +72,21 @@
     });
 
     socket.on('updateUsers', (data) => {
-        console.log(data);
+        //console.log(data);
         updatewaitlist(data.users);
     })
+
+    socket.on('gotoPickQuestion', (data) => {
+        console.log(username + " | " + data.user);
+        if(data.user == username)
+        {
+            var button = document.createElement("button");
+            button.id = "continueToPickButton";
+            button.innerHTML = "Pick Question!";
+            var Elem = document.querySelector('#continueToPick');
+            Elem.appendChild(button);
+        }
+    });
 
     //display Questions 
     function selectQuestion(data){ 
@@ -177,8 +194,8 @@ var socket;
         });
     }
 
-    function updatewaitlist(users, curScreen){
-        
+    function updatewaitlist(users){
+        //console.log(users);
         var myElem = document.querySelector('#playerlist');
         while(myElem.firstChild) {
             myElem.removeChild(myElem.firstChild);
@@ -186,7 +203,7 @@ var socket;
 
         if (myElem != null){
             for( var e in users){
-                console.log(curScreen + "  " + users[e].screen)
+                //console.log(curScreen + users[e].screen);
                 if(curScreen == users[e].screen)
                 {
                     var div = document.createElement('div',users[e].user);

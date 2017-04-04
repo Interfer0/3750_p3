@@ -25,7 +25,7 @@ exports.Game = class Game{
         //console.log(socket);
         socket.join(this.roomname);
         //socket.to(user.roomid).emit(function_name);
-        socket.to(this.roomname).emit(username + " has join the game.");
+        //socket.to(this.roomname).emit(username + " has join the game.");
         var found = this.users.some(function (el){
             return el.user === username;
         })
@@ -39,13 +39,18 @@ exports.Game = class Game{
     }
 
     randomHost(response){
-        var x = users.length;
-        if(x > 1 && gameRounds > 0){
-            var host = users[Math.floor(Math.random() * x)];
-            return host;
-        }else{
-            return "wait for more players";
-        }
+        var x = this.users.length;
+        //if(x > 1 && gameRounds > 0){
+            var host = this.users[Math.floor(Math.random() * x)];
+            return host.user;
+        //}else{
+        //    return "wait for more players";
+        //}
+    }
+
+    randomPlayerContinue(sio,userid, response){
+        this.currentPlayer = userid;
+       sio.to(this.roomname).emit('gotoPickQuestion', {user:userid});
     }
 
     countRounds(){

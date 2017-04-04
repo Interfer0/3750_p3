@@ -32,6 +32,8 @@ module.exports = (io) => {
 
         socket.on('connected', function (req, res){            
         });
+
+        
         
         socket.on('getUser', (callback) => {
             io.to(socket.id).sockets.emit('whoami', user);
@@ -83,6 +85,10 @@ module.exports = (io) => {
                 roomid: 
                     room
             });
+        });
+
+        socket.on('whoami', function(req, res){ 
+            res({ usr: users[socket.id]});           
         });
 
         socket.on('createNewGame', function(req,res) {
@@ -142,7 +148,6 @@ module.exports = (io) => {
             if(running_games[req.room] != null)
             {
                 gm = running_games[req.room];
-                console.log(user.username);
                 var roomUsers;
                 gm.addUserToRoom(socket, user.username, function(ret) {
                     roomUsers = ret;
@@ -159,8 +164,26 @@ module.exports = (io) => {
                     stage:
                         "wait1"
                 });
+                
+                //if room is now full, pick a random user and send them the next button. 
+                if(gm.players == gm.users.length)
+                {
+                    if(gm.currentPlayer == undefined)
+                    {
+                        var x = gm.randomHost();
+                        var uid = Object.keys(users).find(key=> users[key] === x);
+                        console.log (x + " " + uid);
+                        gm.randomPlayerContinue(io,x);
+                    }
+                    else if(gm.currentPlayer == user.username)
+                    {
+                        gm.randomPlayerContinue(io, user.username);
+                    }
+
+                }
+
             }
-            //add user to room
+            
             
             
             
