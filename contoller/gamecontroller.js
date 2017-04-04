@@ -99,9 +99,11 @@ module.exports = (io) => {
             gm.players = players;
             gm.gamerounds = gamerounds;
             running_games[roomname] = gm;
-
-            gm.addUserToRoom(socket, user.username);
-
+            var roomUsers;
+            gm.addUserToRoom(socket, user.username, function(ret) {
+                roomUsers = ret;
+            });
+            //console.log(Ulist);
             user.roomname = roomname;
             //Send success, send roomname
             /*Don't know how to make this work yet. It needs to add the player as 
@@ -110,7 +112,13 @@ module.exports = (io) => {
                 status:
                     200,
                 page :
-                    pug.renderFile('views/includes/waitForPlayers.pug',[room = roomname])
+                    pug.renderFile('views/includes/wait01.pug',[room = roomname]),
+                users :
+                    roomUsers,
+                room :
+                    roomname,
+                stage:
+                    "wait1"
             });
         });
 
@@ -122,12 +130,21 @@ module.exports = (io) => {
             {
                 gm = running_games[req.room];
                 console.log(user.username);
-                gm.addUserToRoom(socket, user.username);
+                var roomUsers;
+                gm.addUserToRoom(socket, user.username, function(ret) {
+                    roomUsers = ret;
+                });
                 res({  
                     status:
                         200,
                     page :
-                        pug.renderFile('views/includes/waitForPlayers.pug',[room = gm.roomname])
+                        pug.renderFile('views/includes/wait01.pug',[room = gm.roomname]),
+                    users :
+                        roomUsers,
+                    room :
+                        req.room,
+                    stage:
+                        "wait1"
                 });
             }
             //add user to room
@@ -148,7 +165,15 @@ module.exports = (io) => {
 
 };
 
-
+    function getrandomroom() 
+    {
+        //create random int
+        if(runninggames.contain(randomenumber))
+        {
+            randomenumber = getrandomroom();
+        }
+        return randomenumber;
+    }
 
 
 /*
