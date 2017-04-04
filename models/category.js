@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
- 
+
 // Categories Schema
 // const CategoriesSchema = new Schema({
 //     categories: {
@@ -12,13 +12,16 @@ const Schema = mongoose.Schema;
 
 const CategorySchema = new Schema({
     categoryName: {
-        type: String
+        type: String, unique: true, required: true
     }
 }, {collection: 'Categories'});
- 
+
+//var category = mongoose.model('category', CategorySchema);
+
+
 //model of QuestionSchema
 const Categories = mongoose.model('Categories', CategorySchema)
-
+//question schema loop through and get all unique items and return
 const QuestionSchema = new Schema({
     categoryName: {
         type: String
