@@ -67,6 +67,7 @@
     });
 
     socket.on('updateUsers', (data) => {
+        console.log(data);
         updatewaitlist(data.users);
     })
 
@@ -144,10 +145,11 @@ var socket;
             "category" : catInput
         }, function (res){
             //handle failure
-            console.log(res);
             if(res.status == 200)
-            {
+            {   
                 document.getElementById('gameMat').innerHTML = res.page; 
+                updatewaitlist(res.users);
+                updateTitle(res.room);
             }
         });
 
@@ -162,6 +164,8 @@ var socket;
             if(res.status == 200)
             {
                 document.getElementById('gameMat').innerHTML = res.page;   
+                updatewaitlist(res.users);
+                updateTitle(res.room);
             }
             //if room does not exist
 
@@ -173,18 +177,26 @@ var socket;
     }
 
     function updatewaitlist(users){
-        var myEle = document.getElementById('gameMat');
-        console.log(myEle.innerHTML);
+        console.log(users[0].screen);
         var myElem = document.querySelector('#playerlist');
-        console.log(myElem);
-        console.log(document.querySelector('#playerlist'));
+        while(myElem.firstChild) {
+            myElem.removeChild(myElem.firstChild);
+        }
         if (myElem != null){
             for( var e in users){
-                console.log(users[e].user);
-                myElem.innerHTML += (users[e].user + "<br>");
+                var div = document.createElement('div',users[e].user);
+                div.innerHTML = users[e].user;
+                myElem.appendChild(div);
             }
         }
     };
+
+    function updateTitle(room)
+    {
+        var myElem = document.querySelector('#roomnametitle');
+        myElem.innerHTML = room;
+    }
+    
     //wait in new room
     //add new user 
         //if new room full add continue button
