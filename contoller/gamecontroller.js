@@ -112,11 +112,13 @@ module.exports = (io) => {
                 status:
                     200,
                 page :
-                    pug.renderFile('views/includes/waitForPlayers.pug',[room = roomname]),
+                    pug.renderFile('views/includes/wait01.pug',[room = roomname]),
                 users :
                     roomUsers,
                 room :
-                    roomname
+                    roomname,
+                stage:
+                    "wait1"
             });
         });
 
@@ -136,11 +138,13 @@ module.exports = (io) => {
                     status:
                         200,
                     page :
-                        pug.renderFile('views/includes/waitForPlayers.pug',[room = gm.roomname]),
+                        pug.renderFile('views/includes/wait01.pug',[room = gm.roomname]),
                     users :
                         roomUsers,
                     room :
-                        req.room
+                        req.room,
+                    stage:
+                        "wait1"
                 });
             }
             //add user to room
@@ -161,7 +165,15 @@ module.exports = (io) => {
 
 };
 
-
+    function getrandomroom() 
+    {
+        //create random int
+        if(runninggames.contain(randomenumber))
+        {
+            randomenumber = getrandomroom();
+        }
+        return randomenumber;
+    }
 
 
 /*

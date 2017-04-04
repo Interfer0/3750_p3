@@ -148,7 +148,7 @@ var socket;
             if(res.status == 200)
             {   
                 document.getElementById('gameMat').innerHTML = res.page; 
-                updatewaitlist(res.users);
+                updatewaitlist(res.users, res.stage);
                 updateTitle(res.room);
             }
         });
@@ -164,7 +164,7 @@ var socket;
             if(res.status == 200)
             {
                 document.getElementById('gameMat').innerHTML = res.page;   
-                updatewaitlist(res.users);
+                updatewaitlist(res.users, res.stage);
                 updateTitle(res.room);
             }
             //if room does not exist
@@ -176,17 +176,22 @@ var socket;
         });
     }
 
-    function updatewaitlist(users){
-        console.log(users[0].screen);
+    function updatewaitlist(users, curScreen){
+        
         var myElem = document.querySelector('#playerlist');
         while(myElem.firstChild) {
             myElem.removeChild(myElem.firstChild);
         }
+
         if (myElem != null){
             for( var e in users){
-                var div = document.createElement('div',users[e].user);
-                div.innerHTML = users[e].user;
-                myElem.appendChild(div);
+                console.log(curScreen + "  " + users[e].screen)
+                if(curScreen == users[e].screen)
+                {
+                    var div = document.createElement('div',users[e].user);
+                    div.innerHTML = users[e].user;
+                    myElem.appendChild(div);
+                }
             }
         }
     };
@@ -198,6 +203,7 @@ var socket;
     }
     
     //wait in new room
+    
     //add new user 
         //if new room full add continue button
     //receive/display categories
