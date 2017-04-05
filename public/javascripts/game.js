@@ -92,8 +92,15 @@
     socket.on('gotoAnswer', (data) => {
         console.log(data);
         document.getElementById('gameMat').innerHTML = data.page;
-        document.querySelector("#displayquestion") .innerHTML = data.question;
+        document.querySelector("#question") .innerHTML = data.question;
     });
+    /*
+    function displayQuestionandAnswer()
+    {
+        socket.emit('displayQuestionandAnswer',"",function(res){
+            document.getElementById('question').innerHTML = res.question;
+        });
+    };*/
 
     //display Questions 
     function selectQuestion(data){ 
@@ -105,6 +112,7 @@
         console.log("return selected question"); 
         socket.emit('displayQuestion', displayQuestion); 
     } 
+
     //receive picked question 
     function displayQuestion(data){ 
  
@@ -147,12 +155,7 @@ var socket;
 
     }
     
-    function displayQuestionandAnswer()
-    {
-        socket.emit('displayQuestionandAnswer',"",function(res){
-            document.getElementById('question').innerHTML = res.question;
-        });
-    };
+    
     
     function newGameRoom()
     {   

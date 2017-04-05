@@ -83,7 +83,36 @@ module.exports = (io) => {
                     pug.renderFile('views/includes/displayQuestions.pug')
             });
         });
+        
+        socket.on('continueToPickclick', function(req,res){
+            res({  
+                status:
+                    200,
+                page :
+                    pug.renderFile('views/includes/questionsPick.pug'),
+                stage:
+                    "questionsPick"
+            });
+        });
 
+
+        socket.on('questionpicked', function(req,res) {
+
+            var gm = running_games[user.roomname];
+            //console.log(gm);
+            //save question in game
+            gm.pickquestion(io,req, function(res) {
+                //console.log(res);
+                io.to(user.roomname).emit('gotoAnswer', {
+                    question:
+                        res.question,
+                    page: 
+                        pug.renderFile('views/includes/requestAnswers.pug')
+                });
+            });
+        });
+
+        /*
         socket.on('displayQuestionandAnswer', function(req, res){
             var pug = require('pug');
             var question = choosenQuestion();
@@ -96,6 +125,8 @@ module.exports = (io) => {
                     question
             });
         });
+        */
+        
 
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
@@ -206,32 +237,9 @@ module.exports = (io) => {
             } 
         });
 
-        socket.on('questionpicked', function(req,res) {
+        
 
-            var gm = running_games[user.roomname];
-            //console.log(gm);
-            //save question in game
-            gm.pickquestion(io,req, function(res) {
-                //console.log(res);
-                io.to(user.roomname).emit('gotoAnswer', {
-                    question:
-                        res.question,
-                    page: 
-                        pug.renderFile('views/includes/answerQuestion.pug')
-                });
-            });
-        });
-
-        socket.on('continueToPickclick', function(req,res){
-            res({  
-                status:
-                    200,
-                page :
-                    pug.renderFile('views/includes/questionsPick.pug'),
-                stage:
-                    "questionsPick"
-            });
-        });
+        
 
         socket.on('getCats', function(req,res) {
             //get the categories, 
