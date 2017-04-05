@@ -77,11 +77,12 @@
     })
 
     socket.on('gotoPickQuestion', (data) => {
-        console.log(username + " | " + data.user);
+        //console.log(username + " | " + data.user);
         if(data.user == username)
         {
             var button = document.createElement("button");
             button.id = "continueToPickButton";
+            button.className = "btn-info";
             button.innerHTML = "Pick Question!";
             var Elem = document.querySelector('#continueToPick');
             Elem.appendChild(button);
@@ -110,11 +111,26 @@ $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
 $(document).on("click", "#newGameSubmitButton", startNewGame);
 $(document).on("click", "#cancelQuestions", cancelNewGame);
+$(document).on("click", "#continueToPickButton", continueToPickButton)
+
+//#cheatToQuestDisplay should be changed to any button pressed for a question
+//That click will then take the question, or question id and return it to the server
+//This will cause all users to advance to the next page
+$(document).on('click', "#cheatToQuestDisplay", toQuestDisplay)  
 
 var socket;
-//moving this here instead of on ready. 
-//Had to do this since I need to work with buttons and elements that are handled
-//after the initial page load. 
+
+    function toQuestDisplay()
+    {
+        socket.emit('questionpicked', {question:"What is your favorite Color?", questionid:012});
+    }
+
+    function continueToPickButton()
+    {
+        socket.emit('continueToPickclick',"",function(response) {
+            document.getElementById('gameMat').innerHTML = response.page; 
+        });
+    }
 
     //get catagories
     function getCatagories()

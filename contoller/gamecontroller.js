@@ -147,6 +147,7 @@ module.exports = (io) => {
             //check if room exists return room doesn't exist if false
             if(running_games[req.room] != null)
             {
+                user.roomname = req.room;
                 gm = running_games[req.room];
                 var roomUsers;
                 gm.addUserToRoom(socket, user.username, function(ret) {
@@ -163,8 +164,7 @@ module.exports = (io) => {
                         req.room,
                     stage:
                         "wait1"
-                });
-                
+                });            
                 //if room is now full, pick a random user and send them the next button. 
                 if(gm.players == gm.users.length)
                 {
@@ -179,14 +179,27 @@ module.exports = (io) => {
                     {
                         gm.randomPlayerContinue(io, user.username);
                     }
-
                 }
+            } 
+        });
 
-            }
-            
-            
-            
-            
+        socket.on('questionpicked', function(req,res) {
+
+            var gm = running_games[user.roomname];
+            console.log(gm);
+            //save question in game
+            gm.pickquestion(io,sio);
+        });
+
+        socket.on('continueToPickclick', function(req,res){
+            res({  
+                status:
+                    200,
+                page :
+                    pug.renderFile('views/includes/questionsPick.pug'),
+                stage:
+                    "questionsPick"
+            });
         });
 
         socket.on('getCats', function(req,res) {

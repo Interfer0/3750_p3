@@ -19,7 +19,9 @@ exports.Game = class Game{
         gameRounds = req.rounds;
     }
 
-
+    pickquestion(io,req){
+        
+    }
 
     addUserToRoom(socket, username, ret){
         //console.log(socket);
