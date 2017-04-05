@@ -8,6 +8,9 @@ exports.Game = class Game{
         this.gamerounds = gamerounds;
         this.users = [];
         this.round = 1;
+        this.roundquestion = {};
+        
+        
     };
 
     cnslPrint(){
@@ -19,8 +22,17 @@ exports.Game = class Game{
         gameRounds = req.rounds;
     }
 
-    pickquestion(io,req){
+    pickquestion(sio,req, res){
+        this.roundquestion = "Where am I?";// this needs to get the question from db in its scheme BSON
+
         
+        //update all users to createAnswer screen
+
+        for( var i = 0, len = this.users.length; i<len; i++)
+        {
+            this.users[i].screen = "answering";
+        }
+        res({question:this.roundquestion});
     }
 
     addUserToRoom(socket, username, ret){

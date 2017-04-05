@@ -186,9 +186,17 @@ module.exports = (io) => {
         socket.on('questionpicked', function(req,res) {
 
             var gm = running_games[user.roomname];
-            console.log(gm);
+            //console.log(gm);
             //save question in game
-            gm.pickquestion(io,sio);
+            gm.pickquestion(io,req, function(res) {
+                //console.log(res);
+                io.to(user.roomname).emit('gotoAnswer', {
+                    question:
+                        res.question,
+                    page: 
+                        pug.renderFile('views/includes/answerQuestion.pug')
+                });
+            });
         });
 
         socket.on('continueToPickclick', function(req,res){

@@ -89,6 +89,12 @@
         }
     });
 
+    socket.on('gotoAnswer', (data) => {
+        console.log(data);
+        document.getElementById('gameMat').innerHTML = data.page;
+        document.querySelector("#displayquestion") .innerHTML = data.question;
+    });
+
     //display Questions 
     function selectQuestion(data){ 
         console.log("select a question from the list") 
