@@ -72,6 +72,29 @@ module.exports = (io) => {
             users.splice(users.indexOf(user.username),1); // remove from user tracker
         });
 
+        socket.on('displayQuestions', function(req, res){
+            var pug = require('pug');
+            res({
+                status:
+                    200,
+                page:
+                    pug.renderFile('views/includes/displayQuestions.pug')
+            });
+        });
+
+        socket.on('displayQuestionandAnswer', function(req, res){
+            var pug = require('pug');
+            var question = choosenQuestion();
+            res({
+                status:
+                    200,
+                page:
+                    pug.renderFile('views/includes/displayQuestionandAnswer.pug'),
+                question:
+                    question
+            });
+        });
+
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
             var room = validRoomNumber();

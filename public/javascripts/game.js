@@ -107,6 +107,12 @@ var socket;
 
     }
     
+    function displayQuestionandAnswer()
+    {
+        socket.emit('displayQuestionandAnswer',"",function(res){
+            document.getElementById('question').innerHTML = res.question;
+        });
+    };
     
     function newGameRoom()
     {   
