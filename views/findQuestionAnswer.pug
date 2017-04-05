@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    form(method='post', action='/users/register?????')
+    form(method='get', action='/find/Question')
             .form-group
                 label Category
                 input.form-control(type='text', name='categories', placeholder='Enter Category', required)
@@ -10,5 +10,5 @@ block content
                 input.form-control(type='text', name='question', placeholder='Enter Question', required)
             .form-group
                 label Answer
-                input.form-control(type='text', name='answer', placeholder='Enter Question', required)
+                input.form-control(type='text', name='answer', placeholder='Enter Answer', required)
             button.btn.btn-primary(type='submit') Find

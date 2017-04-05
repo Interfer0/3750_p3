@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    //- <script>
+    //-   var category = #{resultArray.categoryName}
+    //- </script>
+    form(method='get', action='/update/Question')
+            <select>#selectCategory
+              <option> Choose Category
+            </select>
+            .form-group
+                label Category
+                input.form-control(type='text', name='categories', placeholder='Enter Category', required)
+            .form-group
+                label Question
+                input.form-control(type='text', name='question', placeholder='Enter Question', required)
+            .form-group
+                label Answer
+                input.form-control(type='text', name='answer', placeholder='Enter Answer', required)
+            .form-group
+                label New Category
+                input.form-control(type='text', name='newCategories', placeholder='Enter New Category', required)
+            .form-group
+                label New Question
+                input.form-control(type='text', name='newQuestion', placeholder='Enter New Question', required)
+            .form-group
+                label New Answer
+                input.form-control(type='text', name='newAnswer', placeholder='Enter New Answer', required)
+            button.btn.btn-primary(type='submit') Update
+    
