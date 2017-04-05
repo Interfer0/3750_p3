@@ -32,6 +32,8 @@ module.exports = (io) => {
 
         socket.on('connected', function (req, res){            
         });
+
+        
         
         socket.on('getUser', (callback) => {
             io.to(socket.id).sockets.emit('whoami', user);
@@ -72,6 +74,60 @@ module.exports = (io) => {
             users.splice(users.indexOf(user.username),1); // remove from user tracker
         });
 
+        socket.on('displayQuestions', function(req, res){
+            var pug = require('pug');
+            res({
+                status:
+                    200,
+                page:
+                    pug.renderFile('views/includes/displayQuestions.pug')
+            });
+        });
+        
+        socket.on('continueToPickclick', function(req,res){
+            res({  
+                status:
+                    200,
+                page :
+                    pug.renderFile('views/includes/questionsPick.pug'),
+                stage:
+                    "questionsPick"
+            });
+        });
+
+
+        socket.on('questionpicked', function(req,res) {
+
+            var gm = running_games[user.roomname];
+            //console.log(gm);
+            //save question in game
+            gm.pickquestion(io,req, function(res) {
+                //console.log(res);
+                io.to(user.roomname).emit('gotoAnswer', {
+                    question:
+                        res.question,
+                    page: 
+                        pug.renderFile('views/includes/requestAnswers.pug')
+                });
+            });
+        });
+
+        /*
+        socket.on('displayQuestionandAnswer', function(req, res){
+            var pug = require('pug');
+            var question = choosenQuestion();
+            res({
+                status:
+                    200,
+                page:
+                    pug.renderFile('views/includes/displayQuestionandAnswer.pug'),
+                question:
+                    question
+            });
+        });
+        */
+        
+
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
             var room = validRoomNumber();
@@ -83,6 +139,10 @@ module.exports = (io) => {
                 roomid: 
                     room
             });
+        });
+
+        socket.on('whoami', function(req, res){ 
+            res({ usr: users[socket.id]});           
         });
 
         socket.on('createNewGame', function(req,res) {
@@ -141,8 +201,8 @@ module.exports = (io) => {
             //check if room exists return room doesn't exist if false
             if(running_games[req.room] != null)
             {
+                user.roomname = req.room;
                 gm = running_games[req.room];
-                console.log(user.username);
                 var roomUsers;
                 gm.addUserToRoom(socket, user.username, function(ret) {
                     roomUsers = ret;
@@ -158,13 +218,28 @@ module.exports = (io) => {
                         req.room,
                     stage:
                         "wait1"
-                });
-            }
-            //add user to room
-            
-            
-            
+                });            
+                //if room is now full, pick a random user and send them the next button. 
+                if(gm.players == gm.users.length)
+                {
+                    if(gm.currentPlayer == undefined)
+                    {
+                        var x = gm.randomHost();
+                        var uid = Object.keys(users).find(key=> users[key] === x);
+                        console.log (x + " " + uid);
+                        gm.randomPlayerContinue(io,x);
+                    }
+                    else if(gm.currentPlayer == user.username)
+                    {
+                        gm.randomPlayerContinue(io, user.username);
+                    }
+                }
+            } 
         });
+
+        
+
+        
 
         socket.on('getCats', function(req,res) {
             //get the categories, 
