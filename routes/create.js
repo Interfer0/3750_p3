@@ -101,6 +101,9 @@ router.post('/delete/category', function(req, res, next) {
   var item = {
         categoryName: req.body.categoryName.toLowerCase(),
     };
+  var question = {
+        categoryName: req.body.categoryName.toLowerCase()
+    };
 
     mongo.connect(url, function(err, db) {
         assert.equal(null, err);
@@ -109,6 +112,19 @@ router.post('/delete/category', function(req, res, next) {
                 db.collection('CategorySchema').deleteOne(item, function(err, result) {
                     assert.equal(null, err);
                     console.log('Category Deleted');
+                    db.close();
+                });
+            }
+        });
+    });
+
+    mongo.connect(url, function(err, db) {
+        assert.equal(null, err);
+        db.collection('QuestionSchema').find({categoryName: question.categoryName}).count(function(error, result) {
+            if (result != 0 && error == null) {
+                db.collection('QuestionSchema').remove(question, function(err, result) {
+                    assert.equal(null, err);
+                    console.log('Question and Answer Deleted');
                     db.close();
                 });
             }
