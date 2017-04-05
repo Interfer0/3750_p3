@@ -8,6 +8,9 @@ exports.Game = class Game{
         this.gamerounds = gamerounds;
         this.users = [];
         this.round = 1;
+        this.roundquestion = {};
+        
+        
     };
 
     cnslPrint(){
@@ -19,13 +22,24 @@ exports.Game = class Game{
         gameRounds = req.rounds;
     }
 
+    pickquestion(sio,req, res){
+        this.roundquestion = "Where am I?";// this needs to get the question from db in its scheme BSON
 
+        
+        //update all users to createAnswer screen
 
-    addUserToRoom(socket, username){
+        for( var i = 0, len = this.users.length; i<len; i++)
+        {
+            this.users[i].screen = "answering";
+        }
+        res({question:this.roundquestion});
+    }
+
+    addUserToRoom(socket, username, ret){
         //console.log(socket);
         socket.join(this.roomname);
         //socket.to(user.roomid).emit(function_name);
-        socket.to(this.roomname).emit(username + " has join the game.");
+        //socket.to(this.roomname).emit(username + " has join the game.");
         var found = this.users.some(function (el){
             return el.user === username;
         })
@@ -35,16 +49,22 @@ exports.Game = class Game{
         }
         console.log(username + " has joined " + this.roomname);
         socket.to(this.roomname).emit('updateUsers', {users : this.users});
+        ret(this.users);
     }
 
     randomHost(response){
-        var x = users.length;
-        if(x > 1 && gameRounds > 0){
-            var host = users[Math.floor(Math.random() * x)];
-            return host;
-        }else{
-            return "wait for more players";
-        }
+        var x = this.users.length;
+        //if(x > 1 && gameRounds > 0){
+            var host = this.users[Math.floor(Math.random() * x)];
+            return host.user;
+        //}else{
+        //    return "wait for more players";
+        //}
+    }
+
+    randomPlayerContinue(sio,userid, response){
+        this.currentPlayer = userid;
+       sio.to(this.roomname).emit('gotoPickQuestion', {user:userid});
     }
 
     countRounds(){

@@ -9,15 +9,20 @@
     let usersul = $('#userList');
     let error = $('#error');
     let users = [];
+    let curScreen = "wait1";
     socket.emit('connect');
     document.getElementById('gameMat').innerHTML = '';
     document.getElementById('gameMat').innerHTML = initialGameScreen();
     
 
     function initialGameScreen(rtn){
+        
         //get the initial display screen and load it into gameMat
         $.get("/game/initialGameRoom",function(res){
-                document.getElementById('gameMat').innerHTML = res;            
+                document.getElementById('gameMat').innerHTML = res;  
+                socket.emit('whoami',"", function (data) {
+                    username = data.usr;
+                });          
             }
         );
     }
@@ -67,8 +72,28 @@
     });
 
     socket.on('updateUsers', (data) => {
+        //console.log(data);
         updatewaitlist(data.users);
     })
+
+    socket.on('gotoPickQuestion', (data) => {
+        //console.log(username + " | " + data.user);
+        if(data.user == username)
+        {
+            var button = document.createElement("button");
+            button.id = "continueToPickButton";
+            button.className = "btn-info";
+            button.innerHTML = "Pick Question!";
+            var Elem = document.querySelector('#continueToPick');
+            Elem.appendChild(button);
+        }
+    });
+
+    socket.on('gotoAnswer', (data) => {
+        console.log(data);
+        document.getElementById('gameMat').innerHTML = data.page;
+        document.querySelector("#displayquestion") .innerHTML = data.question;
+    });
 
     //display Questions 
     function selectQuestion(data){ 
@@ -92,11 +117,26 @@ $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
 $(document).on("click", "#newGameSubmitButton", startNewGame);
 $(document).on("click", "#cancelQuestions", cancelNewGame);
+$(document).on("click", "#continueToPickButton", continueToPickButton)
+
+//#cheatToQuestDisplay should be changed to any button pressed for a question
+//That click will then take the question, or question id and return it to the server
+//This will cause all users to advance to the next page
+$(document).on('click', "#cheatToQuestDisplay", toQuestDisplay)  
 
 var socket;
-//moving this here instead of on ready. 
-//Had to do this since I need to work with buttons and elements that are handled
-//after the initial page load. 
+
+    function toQuestDisplay()
+    {
+        socket.emit('questionpicked', {question:"What is your favorite Color?", questionid:012});
+    }
+
+    function continueToPickButton()
+    {
+        socket.emit('continueToPickclick',"",function(response) {
+            document.getElementById('gameMat').innerHTML = response.page; 
+        });
+    }
 
     //get catagories
     function getCatagories()
@@ -151,10 +191,11 @@ var socket;
             "category" : catInput
         }, function (res){
             //handle failure
-            console.log(res);
             if(res.status == 200)
-            {
+            {   
                 document.getElementById('gameMat').innerHTML = res.page; 
+                updatewaitlist(res.users, res.stage);
+                updateTitle(res.room);
             }
         });
 
@@ -169,6 +210,8 @@ var socket;
             if(res.status == 200)
             {
                 document.getElementById('gameMat').innerHTML = res.page;   
+                updatewaitlist(res.users, res.stage);
+                updateTitle(res.room);
             }
             //if room does not exist
 
@@ -180,19 +223,33 @@ var socket;
     }
 
     function updatewaitlist(users){
-        var myEle = document.getElementById('gameMat');
-        console.log(myEle.innerHTML);
+        //console.log(users);
         var myElem = document.querySelector('#playerlist');
-        console.log(myElem);
-        console.log(document.querySelector('#playerlist'));
+        while(myElem.firstChild) {
+            myElem.removeChild(myElem.firstChild);
+        }
+
         if (myElem != null){
             for( var e in users){
-                console.log(users[e].user);
-                myElem.innerHTML += (users[e].user + "<br>");
+                //console.log(curScreen + users[e].screen);
+                if(curScreen == users[e].screen)
+                {
+                    var div = document.createElement('div',users[e].user);
+                    div.innerHTML = users[e].user;
+                    myElem.appendChild(div);
+                }
             }
         }
     };
+
+    function updateTitle(room)
+    {
+        var myElem = document.querySelector('#roomnametitle');
+        myElem.innerHTML = room;
+    }
+    
     //wait in new room
+    
     //add new user 
         //if new room full add continue button
     //receive/display categories

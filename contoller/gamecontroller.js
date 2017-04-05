@@ -32,6 +32,8 @@ module.exports = (io) => {
 
         socket.on('connected', function (req, res){            
         });
+
+        
         
         socket.on('getUser', (callback) => {
             io.to(socket.id).sockets.emit('whoami', user);
@@ -108,6 +110,10 @@ module.exports = (io) => {
             });
         });
 
+        socket.on('whoami', function(req, res){ 
+            res({ usr: users[socket.id]});           
+        });
+
         socket.on('createNewGame', function(req,res) {
             //console.log(req);
             var roomname = req.roomname; //string of desired roomname;
@@ -134,10 +140,12 @@ module.exports = (io) => {
             gm.category = category;
             gm.players = players;
             gm.gamerounds = gamerounds;
-            running_games.push(gm);
-
-            gm.addUserToRoom(socket, user.username);
-
+            running_games[roomname] = gm;
+            var roomUsers;
+            gm.addUserToRoom(socket, user.username, function(ret) {
+                roomUsers = ret;
+            });
+            //console.log(Ulist);
             user.roomname = roomname;
             //Send success, send roomname
             /*Don't know how to make this work yet. It needs to add the player as 
@@ -146,7 +154,13 @@ module.exports = (io) => {
                 status:
                     200,
                 page :
-                    pug.renderFile('views/includes/waitForPlayers.pug',[room = roomname])
+                    pug.renderFile('views/includes/wait01.pug',[room = roomname]),
+                users :
+                    roomUsers,
+                room :
+                    roomname,
+                stage:
+                    "wait1"
             });
         });
 
@@ -156,20 +170,67 @@ module.exports = (io) => {
             //check if room exists return room doesn't exist if false
             if(running_games[req.room] != null)
             {
+                user.roomname = req.room;
                 gm = running_games[req.room];
-                console.log(user.username);
-                gm.addUserToRoom(socket, user.username);
+                var roomUsers;
+                gm.addUserToRoom(socket, user.username, function(ret) {
+                    roomUsers = ret;
+                });
                 res({  
                     status:
                         200,
                     page :
-                        pug.renderFile('views/includes/waitForPlayers.pug',[room = gm.roomname])
+                        pug.renderFile('views/includes/wait01.pug',[room = gm.roomname]),
+                    users :
+                        roomUsers,
+                    room :
+                        req.room,
+                    stage:
+                        "wait1"
+                });            
+                //if room is now full, pick a random user and send them the next button. 
+                if(gm.players == gm.users.length)
+                {
+                    if(gm.currentPlayer == undefined)
+                    {
+                        var x = gm.randomHost();
+                        var uid = Object.keys(users).find(key=> users[key] === x);
+                        console.log (x + " " + uid);
+                        gm.randomPlayerContinue(io,x);
+                    }
+                    else if(gm.currentPlayer == user.username)
+                    {
+                        gm.randomPlayerContinue(io, user.username);
+                    }
+                }
+            } 
+        });
+
+        socket.on('questionpicked', function(req,res) {
+
+            var gm = running_games[user.roomname];
+            //console.log(gm);
+            //save question in game
+            gm.pickquestion(io,req, function(res) {
+                //console.log(res);
+                io.to(user.roomname).emit('gotoAnswer', {
+                    question:
+                        res.question,
+                    page: 
+                        pug.renderFile('views/includes/answerQuestion.pug')
                 });
-            }
-            //add user to room
-            
-            
-            
+            });
+        });
+
+        socket.on('continueToPickclick', function(req,res){
+            res({  
+                status:
+                    200,
+                page :
+                    pug.renderFile('views/includes/questionsPick.pug'),
+                stage:
+                    "questionsPick"
+            });
         });
 
         socket.on('getCats', function(req,res) {
@@ -195,7 +256,15 @@ module.exports = (io) => {
 
 };
 
-
+    function getrandomroom() 
+    {
+        //create random int
+        if(runninggames.contain(randomenumber))
+        {
+            randomenumber = getrandomroom();
+        }
+        return randomenumber;
+    }
 
 
 /*

@@ -42,10 +42,10 @@ router.post('/register', (req, res, next) => {
     const password = req.body.password;
     const password2 = req.body.password2;
 
-    req.checkBody('fname', 'First name field is required').notEmpty();
-    req.checkBody('lname', 'Last name field is required').notEmpty();
-    req.checkBody('email', 'Email field is required').notEmpty();
-    req.checkBody('email', 'Email must be a valid email addressd').isEmail();
+    //req.checkBody('fname', 'First name field is required').notEmpty();
+    //req.checkBody('lname', 'Last name field is required').notEmpty();
+    //req.checkBody('email', 'Email field is required').notEmpty();
+    //req.checkBody('email', 'Email must be a valid email addressd').isEmail();
     req.checkBody('username', 'Username field is required').notEmpty();
     req.checkBody('username', 'Username can only be alphanum and _ -').matches(/^[0-9A-Z-_]+$/i);
     req.checkBody('password', 'Password field is required').notEmpty();
