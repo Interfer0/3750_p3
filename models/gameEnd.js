@@ -12,13 +12,13 @@ const gameEndSchema = mongoose.Schema({
         type: String
     },
     numberOfQuestions: {
-        type: Int
+        type: Number 
     },
     playerScores: [{
-        type: Int
+        type: Number 
     }],
     numRounds: {
-        type: Int
+        type: Number 
     },
     dateTimeGameEnd: {
         type: Date,
@@ -26,4 +26,4 @@ const gameEndSchema = mongoose.Schema({
     }
 });
 
-const gameEnd = module.exports = mongoose.model('gameEnd', UserSchema);
+const gameEnd = module.exports = mongoose.model('gameEnd', gameEndSchema);
