@@ -6,6 +6,7 @@ var assert = require('assert');
 
 var url = 'mongodb://localhost:27017/Balderdash';
 
+////////////////////////////////////////////////////////////////////////////////////////////*INSERT CATEGORY*/
 /* GET create page. */
 router.get('/Category/create', function(req, res, next) {
   res.render('addCategory', { title: 'Create categories' });
@@ -29,11 +30,9 @@ router.post('/create/addCategory', (req, res, next) => {
             }
         });
     });
-
-
     res.redirect('/select');
 });
-///////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////*INSERT QUESTION & ANSWER*/
 /* GET create page. */
 router.get('/Question/create', function(req, res, next) {
   res.render('addQuestionAnswer', { title: 'Create Questions and Answers' });
@@ -59,11 +58,9 @@ router.post('/create/addQuestionAnswer', (req, res, next) => {
             }
         });
     });
-
     res.redirect('/select');
 });
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////*DELETE*/
 /* GET delete page. */
 router.get('/Delete/QuestionAnswer', function(req, res, next) {
   res.render('deleteQuestionAnswer', { title: 'Delete categories' });
@@ -133,7 +130,7 @@ router.post('/delete/category', function(req, res, next) {
     res.redirect('/select');
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////*FIND*/
 /* GET find page. */
 router.get('/Find/create', function(req, res, next) {
   res.render('findQuestionAnswer', { title: 'Find questions and answers' });
@@ -155,7 +152,7 @@ router.get('/find/Question', function(req, res, next) {
     });
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////*UPDATE*/
 //get update page
 router.get('/Update/QuestionAnswer', function(req, res, next) {
   res.render('updateQuestionAnswer', { title: 'Update questions and answers' });
@@ -188,6 +185,37 @@ router.post('/update/Question', function(req, res, next) {
     });
   });
   res.render('/updateQuestionAnswer', {items: resultArray});
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////*INSERT GAME-END INFO*/
+router.get('/endGame/create', function(req, res, next) {
+  res.render('######addQuestionAnswer', { title: 'End of Game Information' });
+});
+// Process Add Question
+router.post('/create/######addQuestionAnswer', (req, res, next) => {
+    var endInfo = {
+        gameRoomName: req.body.gameRoomName.toLowerCase(),
+        player: req.body.player.toLowerCase(),
+        winner: req.body.winner.toLowerCase(),
+        numberOfQuestions: req.body.numberOfQuestions,
+        playerScores: req.body.playerScores,
+        numberOfRounds: req.body.numberOfRounds,
+        dateTimeGameEnd: req.body.dateTimeGameEnd
+    };
+
+    mongo.connect(url, function(err, db) {
+        assert.equal(null, err);
+        db.collection('gameEndSchema').find({gameRoomName: endInfo.gameRoomName, player: endInfo.player, winner: endInfo.winner, numberOfQuestions: endInfo.numberOfQuestions, playerScores: endInfo.playerScores, numberOfRounds: endInfo.numberOfRounds, dateTimeGameEnd: endInfo.dateTimeGameEnd}).count(function(error, result) {
+            if (result == 0 && error == null) {
+                db.collection('gameEndSchema').insertOne(endInfo, function(err, result) {
+                    assert.equal(null, err);
+                    console.log('End Of Game Info Saved');
+                    db.close();
+                });
+            }
+        });
+    });
+    res.redirect('/select');
 });
 
 module.exports = router;

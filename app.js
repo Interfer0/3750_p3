@@ -98,7 +98,7 @@ app.use('/', create);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log('here 404 yo');
+  console.log('HERE IS THE 404 ERROR LINE 101 app.js');
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
