@@ -3,8 +3,9 @@ var router = express.Router();
 var mongo = require('mongodb').MongoClient;
 var objectId = require('mongodb').ObjectID;
 var assert = require('assert');
-
+const mongoose = require('mongoose');
 var url = 'mongodb://localhost:27017/Balderdash';
+const categories = mongoose.model('CategorySchema');
 
 ////////////////////////////////////////////////////////////////////////////////////////////*INSERT CATEGORY*/
 /* GET create page. */
@@ -35,13 +36,17 @@ router.post('/create/addCategory', (req, res, next) => {
 ////////////////////////////////////////////////////////////////////////////////////////////*INSERT QUESTION & ANSWER*/
 /* GET create page. */
 router.get('/Question/create', function(req, res, next) {
-  res.render('addQuestionAnswer', { title: 'Create Questions and Answers' });
+    categories.find().then(cat => {
+        res.render('addQuestionAnswer', { title: 'Create Questions and Answers', categories: cat});
+    })
+    .catch(next);
+
 });
 
 // Process Add Question
 router.post('/create/addQuestionAnswer', (req, res, next) => {
     var question = {
-        categoryName: req.body.categoryName.toLowerCase(),
+        categoryName: req.body.category,
         question: req.body.question.toLowerCase(),
         answer: req.body.answer.toLowerCase()
     };

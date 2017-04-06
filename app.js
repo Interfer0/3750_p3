@@ -18,6 +18,10 @@ db.once('open', function() {
     console.log('Connected to Database');
 });
 
+require('./models/category');
+require('./models/gameEnd');
+require('./models/user');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./routes/game');
@@ -89,6 +93,7 @@ app.use(expressValidator({
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/', index);
 app.use('/users', users);

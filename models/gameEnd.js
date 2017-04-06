@@ -12,10 +12,10 @@ const gameEndSchema = mongoose.Schema({
         type: String
     },
     numberOfQuestions: {
-        type: Number
+        type: Number 
     },
     playerScores: [{
-        type: Number
+        type: Number 
     }],
     numberOfRounds: {
         type: Number
