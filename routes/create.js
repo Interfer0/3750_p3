@@ -99,6 +99,7 @@ router.get('/Delete/Category', function(req, res, next) {
   res.render('deleteCategory', { title: 'Delete categories' });
 });
 
+//process delete category
 router.post('/delete/category', function(req, res, next) {
   var item = {
         categoryName: req.body.categoryName.toLowerCase(),
@@ -141,6 +142,7 @@ router.get('/Find/create', function(req, res, next) {
   res.render('findQuestionAnswer', { title: 'Find questions and answers' });
 });
 
+//process find question
 router.get('/find/Question', function(req, res, next) {
     var resultArray = [];
     mongo.connect(url, function(err, db) {
@@ -163,18 +165,18 @@ router.get('/Update/QuestionAnswer', function(req, res, next) {
   res.render('updateQuestionAnswer', { title: 'Update questions and answers' });
 });
 
+//process update question
 router.post('/update/Question', function(req, res, next) {
   var question = {
         categoryName: req.body.categoryName.toLowerCase(),
         question: req.body.question.toLowerCase(),
         answer: req.body.answer.toLowerCase()
   };
-
-    var newQuestion = {
+  var newQuestion = {
         newCategoryName: req.body.categoryName.toLowerCase(),
         newQuestion: req.body.question.toLowerCase(),
         newAnswer: req.body.answer.toLowerCase()
-    };
+  };
   var id = question.id;
 
   mongo.connect(url, function(err, db) {
