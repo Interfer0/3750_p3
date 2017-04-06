@@ -68,13 +68,16 @@ router.post('/create/addQuestionAnswer', (req, res, next) => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////*DELETE*/
 /* GET delete page. */
 router.get('/Delete/QuestionAnswer', function(req, res, next) {
-  res.render('deleteQuestionAnswer', { title: 'Delete categories' });
+    categories.find().then(cat => {
+        res.render('deleteQuestionAnswer', { title: 'Delete categories', categories: cat });
+    })
+    .catch(next);
 });
 
 //Process Delete C,Q,A
 router.post('/delete/questionAnswer', function(req, res, next) {
   var question = {
-        categoryName: req.body.categoryName.toLowerCase(),
+        categoryName: req.body.category,
         question: req.body.question.toLowerCase(),
         answer: req.body.answer.toLowerCase()
     };
