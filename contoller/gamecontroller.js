@@ -160,7 +160,7 @@ module.exports = (io) => {
                     roomUsers = ret;
                 });
                 //console.log(Ulist);
-                user.roomname = roomname+"r";
+                user.roomname = roomname;
                 //Send success, send roomname
                 /*Don't know how to make this work yet. It needs to add the player as 
                 a player on the players screen under names.*/ 
@@ -231,7 +231,7 @@ module.exports = (io) => {
 
         function validRoomNumber(){
             var num = (Math.random()*10000) | 0;
-            var found = running_games[roomname];
+            var found = running_games[num];
             if(found){
                 return validRoomNumber();
             }
