@@ -14,12 +14,16 @@ nav.navbar.navbar-default
       ul.nav.navbar-nav
         //- li  
           //- a(href='/') Home
-        li
-          a(href='/game') Gameroom
+        //-li
+          //-a(href='/game') Gameroom
       ul.nav.navbar-nav.navbar-right
         if isLoggedIn
           li
-            a(href='/users/logout') Logout          
+            a(href='/users/logout') Logout
+          li
+          a(href='/game') Gameroom  
+          //-li
+          //-a(href='/select') Select Question    
         else
           li
             a(href='/users/login') Login
