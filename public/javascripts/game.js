@@ -125,14 +125,19 @@ $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
 $(document).on("click", "#newGameSubmitButton", startNewGame);
 $(document).on("click", "#cancelQuestions", cancelNewGame);
-$(document).on("click", "#continueToPickButton", continueToPickButton)
+$(document).on("click", "#continueToPickButton", continueToPickButton);
 
 //#cheatToQuestDisplay should be changed to any button pressed for a question
 //That click will then take the question, or question id and return it to the server
 //This will cause all users to advance to the next page
-$(document).on('click', "#cheatToQuestDisplay", toQuestDisplay)  
-
+$(document).on('click', "#cheatToQuestDisplay", toQuestDisplay);  
+$(document).on('click', "#manageQuestions", toManage);
 var socket;
+
+    function toManage()
+    {
+         window.location.href = '/select';
+    } 
 
     function toQuestDisplay()
     {
