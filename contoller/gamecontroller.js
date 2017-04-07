@@ -1,4 +1,15 @@
-module.exports = (io) => {
+module.exports = (io, Categories) => {
+
+    const mongoose = require('mongoose');
+    var url = 'mongodb://localhost:27017/Balderdash';
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function() {
+        console.log('Connected from game controller');
+    });
+    //var Categories = require('../models/catModel')(mongoose);
+
+
 
     // server side tracker of logged in users
     // used to populate initial list of online users
@@ -129,12 +140,11 @@ module.exports = (io) => {
         });
 
         socket.on('createNewGame', function(req,res) {
-            //console.log(req);
             var roomname = req.roomname; //string of desired roomname;
             var category = req.category; //a array of all categories selected
             var players = req.players; //int of # of players
             var gamerounds = req.gamerounds; //int of # of games
-
+            console.log(category);
             //if roomname exists in roomlist, send back warning message
             var found = running_games[roomname];
             if(found)
@@ -222,7 +232,12 @@ module.exports = (io) => {
         });
 
         socket.on('getCats', function(req,res) {
-            //get the categories, 
+            Categories.find('', function(data, categories) {
+                res({
+                    categories:
+                        categories
+                });
+            })
         });
 
         function getUser() {

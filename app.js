@@ -22,11 +22,7 @@ require('./models/category');
 require('./models/gameEnd');
 require('./models/user');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var game = require('./routes/game');
-var select = require('./routes/select');
-var create = require('./routes/create');
+
 
 var app = express();
 
@@ -36,6 +32,14 @@ mongoose.connect(dbConfig.url);
 // create a persisent session store re-using our mongoose connection
 // It creates/uses a collection called "sessions" by default
 const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection });
+
+const Cat = require('./models/catModel')(mongoose);
+
+var index = require('./routes/index');
+var users = require('./routes/users');
+var game = require('./routes/game');
+var select = require('./routes/select');
+var create = require('./routes/create')(Cat);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -122,3 +126,4 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 module.exports.sessionStore = sessionStore;
+module.exports.Cat = Cat;

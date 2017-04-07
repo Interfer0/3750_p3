@@ -9,6 +9,10 @@ const sessionStore = require('../app').sessionStore;
 const passportSocketIo = require('passport.socketio');
 var debug = require('debug')('project2:server');
 var http = require('http');
+
+
+var Categories = require('../app').Cat;
+
 var socket = require('socket.io');
 var socketController = require('../contoller/gamecontroller');
 const cookieParser = require('cookie-parser');
@@ -41,7 +45,7 @@ io.use(passportSocketIo.authorize({
   store: sessionStore,        // requires a sessionstore, not a memorystore
 }));
 
-socketController(io);
+socketController(io,Categories);
 
 
 /**

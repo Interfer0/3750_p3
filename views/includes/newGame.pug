@@ -1,8 +1,12 @@
 block content 
         div#gameInitial 
             div#enterRoom 
+                
                 input(type="text", id="roomInput" value="temproom")
-                div#CatList                        
+                select#CatList.catlists(size=16 onChange="moveToMyList()")
+                    option(value=-1 )
+                select#myCatList.catlists(size=16 onChange="moveToList()")
+                    option(value=-1 )                      
                 input(type="text", id="playerInput", placeholder="# of players")
                 input(type="text", id="gamesInput", placeholder="# of Games")                          
                 br
@@ -13,5 +17,4 @@ block content
                         button#newGameSubmitButton.btn-info Create Game 
                     div.col-sm-4
                         button#cancelQuestions.btn-info Cancel
-                script.
-                    getCatagories();
+             

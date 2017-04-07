@@ -109,7 +109,10 @@ p.copyright {
     justify-content: space-around; 
 } 
  
- 
+.catlists{
+  width:100px;
+
+}
  
  
 /* Game Wide CSS */ 
