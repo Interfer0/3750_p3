@@ -154,6 +154,16 @@ var socket;
     {
         socket.emit('getCats',"",function(response) {
             document.getElementById('CatList ').innerHTML = response; 
+            
+            var catlist = document.querySelector('#CatList' );
+            for(var r in cats)
+            {
+                var option = document.createElement("option");
+                option.text= cats[r].categoryName;
+                option.value= cats[r]._is;
+                catlist.add(option);
+            }
+            
         });
 
     }
@@ -172,7 +182,17 @@ var socket;
             document.getElementById('gameMat').innerHTML = res.page;
             document.querySelector("#roomInput").value = res.roomid; 
         });
-        socket.emit('getCats');
+        socket.emit('getCats', "", function(res){
+            console.log(res.categories)
+            var catlist = document.querySelector('#CatList' );
+            for(var r in res.categories)
+            {
+                var option = document.createElement("option");
+                option.text= res.categories[r].categoryName;
+                option.value= res.categories[r]._id;
+                catlist.add(option);
+            }
+        });
 
     };
 
@@ -193,8 +213,13 @@ var socket;
         var playerInput = document.getElementById('playerInput').value; //int of # of players
         var numberofgames = document.getElementById('gamesInput').value; //int of # of games
         var catInput = [];
-        for(aaa in catInput){ //a array of all categories selected
-            catInput.push("fdgs");
+        
+        var cats = document.querySelector('#myCatList').options;
+        for(aaa in cats){ //a array of all categories selected
+            if(!isNaN(aaa) && cats[aaa].value != "-1")
+            {
+                catInput[cats[aaa].value] = cats[aaa].text;
+            }
         }
         socket.emit("createNewGame",{
             "roomname" : roomname,
@@ -259,6 +284,29 @@ var socket;
         var myElem = document.querySelector('#roomnametitle');
         myElem.innerHTML = room;
     }
+
+
+function moveToMyList()
+{
+  var catlist = document.querySelector('#CatList');  
+  var mycatlist = document.querySelector('#myCatList');
+  if(catlist.options[catlist.selectedIndex].value != -1){
+    mycatlist.add(catlist.options[catlist.selectedIndex]);
+  }
+  catlist.selectedIndex = -1;
+  mycatlist.selectedIndex = -1;
+}
+
+function moveToList()
+{
+  var catlist = document.querySelector('#CatList');  
+  var mycatlist = document.querySelector('#myCatList');
+  if(mycatlist.options[mycatlist.selectedIndex].value != -1){
+    catlist.add(mycatlist.options[mycatlist.selectedIndex]);
+  }
+  catlist.selectedIndex = -1;
+  mycatlist.selectedIndex = -1;
+}
     
     //wait in new room
     

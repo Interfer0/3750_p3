@@ -1,4 +1,4 @@
-module.exports = (io) => {
+module.exports = (io, Categories) => {
 
     const mongoose = require('mongoose');
     var url = 'mongodb://localhost:27017/Balderdash';
@@ -7,7 +7,7 @@ module.exports = (io) => {
     db.once('open', function() {
         console.log('Connected from game controller');
     });
-    var Categories = require('../models/catModel')(mongoose);
+    //var Categories = require('../models/catModel')(mongoose);
 
 
 
@@ -233,8 +233,11 @@ module.exports = (io) => {
         });
 
         socket.on('getCats', function(req,res) {
-            Categories.find('', function(data, data2) {
-                console.log(data2);
+            Categories.find('', function(data, categories) {
+                res({
+                    categories:
+                        categories
+                });
             })
         });
 
