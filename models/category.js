@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+/*
 const CategorySchema = new Schema({
     categoryName: {
         type: String, unique: true, required: true
@@ -9,6 +9,8 @@ const CategorySchema = new Schema({
 
 //model of QuestionSchema
 const Categories = mongoose.model('CategorySchema', CategorySchema)
+*/
+
 //question schema loop through and get all unique items and return
 const QuestionSchema = new Schema({
     categoryName: {

@@ -1,5 +1,16 @@
 module.exports = (io) => {
 
+    const mongoose = require('mongoose');
+    var url = 'mongodb://localhost:27017/Balderdash';
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function() {
+        console.log('Connected from game controller');
+    });
+    var Categories = require('../models/catModel')(mongoose);
+
+
+
     // server side tracker of logged in users
     // used to populate initial list of online users
     let users = [];
@@ -222,7 +233,9 @@ module.exports = (io) => {
         });
 
         socket.on('getCats', function(req,res) {
-            //get the categories, 
+            Categories.find('', function(data, data2) {
+                console.log(data2);
+            })
         });
 
         function getUser() {

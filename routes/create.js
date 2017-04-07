@@ -5,7 +5,7 @@ var objectId = require('mongodb').ObjectID;
 var assert = require('assert');
 const mongoose = require('mongoose');
 var url = 'mongodb://localhost:27017/Balderdash';
-const categories = mongoose.model('CategorySchema');
+//const categories = mongoose.model('CategorySchema');
 
 ////////////////////////////////////////////////////////////////////////////////////////////*INSERT CATEGORY*/
 /* GET create page. */
@@ -21,9 +21,9 @@ router.post('/create/addCategory', (req, res, next) => {
 
     mongo.connect(url, function(err, db) {
         assert.equal(null, err);
-        db.collection('CategorySchema').find({categoryName: item.categoryName}).count(function(error, result) {
+        db.collection('categoryschemas').find({categoryName: item.categoryName}).count(function(error, result) {
             if (result == 0 && error == null) {
-                db.collection('CategorySchema').insertOne(item, function(err, result) {
+                db.collection('categoryschemas').insertOne(item, function(err, result) {
                     assert.equal(null, err);
                     console.log('Category inserted');
                     db.close();
@@ -84,9 +84,9 @@ router.post('/delete/questionAnswer', function(req, res, next) {
 
     mongo.connect(url, function(err, db) {
         assert.equal(null, err);
-        db.collection('QuestionSchema').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+        db.collection('categoryschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
             if (result != 0 && error == null) {
-                db.collection('QuestionSchema').deleteOne(question, function(err, result) {
+                db.collection('categoryschemas').deleteOne(question, function(err, result) {
                     assert.equal(null, err);
                     console.log('Question and Answer Deleted');
                     db.close();
@@ -113,9 +113,9 @@ router.post('/delete/category', function(req, res, next) {
 
     mongo.connect(url, function(err, db) {
         assert.equal(null, err);
-        db.collection('CategorySchema').find({categoryName: item.categoryName}).count(function(error, result) {
+        db.collection('categoryschemas').find({categoryName: item.categoryName}).count(function(error, result) {
             if (result != 0 && error == null) {
-                db.collection('CategorySchema').deleteOne(item, function(err, result) {
+                db.collection('categoryschemas').deleteOne(item, function(err, result) {
                     assert.equal(null, err);
                     console.log('Category Deleted');
                     db.close();

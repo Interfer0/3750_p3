@@ -172,6 +172,7 @@ var socket;
             document.getElementById('gameMat').innerHTML = res.page;
             document.querySelector("#roomInput").value = res.roomid; 
         });
+        socket.emit('getCats');
 
     };
 
