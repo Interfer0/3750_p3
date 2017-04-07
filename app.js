@@ -18,9 +18,15 @@ db.once('open', function() {
     console.log('Connected to Database');
 });
 
+require('./models/category');
+require('./models/gameEnd');
+require('./models/user');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./routes/game');
+var select = require('./routes/select');
+var create = require('./routes/create');
 
 var app = express();
 
@@ -88,13 +94,16 @@ app.use(expressValidator({
 //app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/', game);
+app.use('/', select);
+app.use('/', create);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log('here 404 yo');
+  console.log('HERE IS THE 404 ERROR LINE 101 app.js');
   var err = new Error('Not Found');
   err.status = 404;
   next(err);

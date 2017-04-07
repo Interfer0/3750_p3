@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    .container
+        h1 Delete Question and Answer Form
+        //include ./includes/messages.pug
+        form(method='post', action='/delete/questionAnswer')
+            .form-group
+                label Category
+                    select.form-control(type='select', name='category')#category
+                        each cat in categories
+                            option(value=cat.categoryName) #{cat.categoryName}
+                br
+                label Question
+                input.form-control(type='text', id='question', name='question', placeholder='Question')
+                br
+                label Answer
+                input.form-control(type='text', id='answer', name='answer', placeholder='Answer')
+            button.btn.btn-primary(type='submit') Delete Category, Question, Answer

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    .container
+        h1 Delete Category Form
+        //include ./includes/messages.pug
+        form(method='post', action='/delete/category')
+            .form-group
+                //- label Category
+                //- <select>#addCategory
+                //-     <option>
+                label Category
+                input.form-control(type='text', id='catergoryName', name='categoryName', placeholder='Category', required)
+            button.btn.btn-primary(type='submit') Delete Category
