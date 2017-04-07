@@ -9,6 +9,7 @@ exports.Game = class Game{
         this.users = [];
         this.round = 1;
         this.roundquestion = {};
+        this.answers = [];
         
         
     };
@@ -36,13 +37,20 @@ exports.Game = class Game{
     }
 
     addUserToRoom(socket, username, ret){
+        //console.log(socket);
         socket.join(this.roomname);
+        //socket.to(user.roomid).emit(function_name);
+        //socket.to(this.roomname).emit(username + " has join the game.");
         var found = this.users.some(function (el){
             return el.user === username;
         })
         if(!found)
         {
-            this.users.push({user:username, screen:"wait1", socketID:socket.id});
+            this.users.push({
+                user:username, 
+                screen:"wait1", 
+                socketID:socket.id
+            });
         }
         console.log(username + " has joined " + this.roomname);
         socket.to(this.roomname).emit('updateUsers', {users : this.users});
@@ -57,6 +65,21 @@ exports.Game = class Game{
         //}else{
         //    return "wait for more players";
         //}
+    }
+
+    saveUsersAnswer(req, username)
+    {
+        console.log(req);
+        console.log(this.users);
+        var found = this.users.some(function (el){
+            return el.user === username;
+        })
+        if(found)
+        {
+            this.answers.push({roundUsersAnswer:req, user:username,pickedanswer:"", score:0});
+
+        }
+        console.log(this.users);
     }
 
     randomPlayerContinue(sio,userid, response){

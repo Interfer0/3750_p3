@@ -153,7 +153,8 @@ var socket;
     function getCatagories()
     {
         socket.emit('getCats',"",function(response) {
-            document.getElementById('CatList ').innerHTML = response; 
+            console.log(response);
+            document.getElementById('CatList').innerHTML = response; 
             
             var catlist = document.querySelector('#CatList' );
             for(var r in cats)
@@ -183,6 +184,7 @@ var socket;
             document.querySelector("#roomInput").value = res.roomid; 
         });
         socket.emit('getCats', "", function(res){
+            console.log(res);
             var catlist = document.querySelector('#CatList' );
             for(var r in res.categories)
             {

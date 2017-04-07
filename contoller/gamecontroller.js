@@ -1,21 +1,19 @@
-module.exports = (io, Categories) => {
-
-    const mongoose = require('mongoose');
-    var url = 'mongodb://localhost:27017/Balderdash';
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function() {
-        console.log('Connected from game controller');
-    });
-    //var Categories = require('../models/catModel')(mongoose);
-
-
+module.exports = (io, Categories) => { 
+ 
+    const mongoose = require('mongoose'); 
+    var url = 'mongodb://localhost:27017/Balderdash'; 
+    var db = mongoose.connection; 
+    db.on('error', console.error.bind(console, 'connection error:')); 
+    db.once('open', function() { 
+        console.log('Connected from game controller'); 
+    }); 
+    //var Categories = require('../models/catModel')(mongoose); 
 
     // server side tracker of logged in users
     // used to populate initial list of online users
     let users = [];
     let assignedRoom = [];
-    let running_games = {};
+    let running_games = [];
     let inst = require("./game");
     let pug = require('pug');
         /*
@@ -31,10 +29,21 @@ module.exports = (io, Categories) => {
             };
          
          users[socket.id] = socket.request.user.username;
+          
+
+        function checkRoomName(roomname,room){
+            if(running_games.indexOf(roomname) >= 0){
+                return "room already being used";
+            }else{
+                running_games.push({roomid:room, name:roomname});
+            }
+        }
 
         socket.on('connected', function (req, res){            
         });
 
+        
+        
         socket.on('getUser', (callback) => {
             io.to(socket.id).sockets.emit('whoami', user);
         });
@@ -45,20 +54,13 @@ module.exports = (io, Categories) => {
 
         socket.on('roomUsers', (callback) => {
             var roomMembers = [];
-            //console.log(user.roomname);
-            //console.log(io.sockets.adapter.rooms);
+
             console.log(io.sockets.adapter.rooms[user.roomname].sockets);
             for( var member in io.sockets.adapter.rooms[user.roomname].sockets ) {
                 console.log(users[member]);
             }
 
             io.to(user.roomname).emit('userListRoom', roomMembers); 
-            //console.log(socket.request.user);
-            //console.log(socket.adapter.nsp.adapter.sids);
-            //console.log(socket.adapter.nsp.adapter.rooms);
-            //console.log(io.sockets.adapter.rooms);
-            //console.log(socket.id);
-            //console.log(io.sockets.adapter.rooms['bob'].sockets);
         });
         
         // Client to Server message
@@ -112,15 +114,29 @@ module.exports = (io, Categories) => {
             });
         });
 
-        socket.on('chosenAnswer',function(req,res){
+        socket.on('submitAnswer',function(req,res) {
+            console.log(req);
             var gm = running_games[user.roomname];
-            gm.storePickedAnswer(req);
-            gm.moveUserToWait2(io);
+            gm.saveUsersAnswer(req, user.username);
+            
+
+        });
+
+        /*
+        socket.on('displayQuestionandAnswer', function(req, res){
+            var pug = require('pug');
+            var question = choosenQuestion();
             res({
+                status:
+                    200,
                 page:
-                    pug.renderFile('views/includes/wait2.pug')
+                    pug.renderFile('views/includes/displayQuestionandAnswer.pug'),
+                question:
+                    question
             });
         });
+        */
+        
 
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
@@ -140,53 +156,53 @@ module.exports = (io, Categories) => {
         });
 
         socket.on('createNewGame', function(req,res) {
+            //console.log(req);
             var roomname = req.roomname; //string of desired roomname;
             var category = req.category; //a array of all categories selected
             var players = req.players; //int of # of players
             var gamerounds = req.gamerounds; //int of # of games
-            console.log(category);
+
             //if roomname exists in roomlist, send back warning message
-            var found = running_games[roomname];
-            if(found)
-            {
-                res({
-                    status:
-                        400,
-                    data:
-                        "Room already exists!"
-                });
+            var i = null;
+            for(i = 0;running_games.length > i; i += 1){
+                if(running_games[i].roomname === roomname){
+                    console.log("room already in use");
+                }
+                else{
+                   res.send({status:400,page:""});
+                }
             }
-            else{
-                //create the new game object
-                var gm = new inst.Game(roomname,category,players,gamerounds);
-                
-                gm.roomname = roomname;
-                gm.category = category;
-                gm.players = players;
-                gm.gamerounds = gamerounds;
-                running_games[roomname] = gm;
-                var roomUsers;
-                gm.addUserToRoom(socket, user.username, function(ret) {
-                    roomUsers = ret;
-                });
-                //console.log(Ulist);
-                user.roomname = roomname;
-                //Send success, send roomname
-                /*Don't know how to make this work yet. It needs to add the player as 
-                a player on the players screen under names.*/ 
-                res({  
-                    status:
-                        200,
-                    page :
-                        pug.renderFile('views/includes/wait01.pug',[room = roomname]),
-                    users :
-                        roomUsers,
-                    room :
-                        roomname,
-                    stage:
-                        "wait1"
-                });
-            }
+
+
+            //create the new game object
+            var gm = new inst.Game(roomname,category,players,gamerounds);
+            
+            gm.roomname = roomname;
+            gm.category = category;
+            gm.players = players;
+            gm.gamerounds = gamerounds;
+            running_games[roomname] = gm;
+            var roomUsers;
+            gm.addUserToRoom(socket, user.username, function(ret) {
+                roomUsers = ret;
+            });
+            //console.log(Ulist);
+            user.roomname = roomname;
+            //Send success, send roomname
+            /*Don't know how to make this work yet. It needs to add the player as 
+            a player on the players screen under names.*/ 
+            res({  
+                status:
+                    200,
+                page :
+                    pug.renderFile('views/includes/wait01.pug',[room = roomname]),
+                users :
+                    roomUsers,
+                room :
+                    roomname,
+                stage:
+                    "wait1"
+            });
         });
 
         socket.on('joinRoom', function(req,res) {
@@ -231,13 +247,17 @@ module.exports = (io, Categories) => {
             } 
         });
 
+        
+
+        
+
         socket.on('getCats', function(req,res) {
-            Categories.find('', function(data, categories) {
-                res({
-                    categories:
-                        categories
-                });
-            })
+             Categories.find('', function(data, categories) { 
+                res({ 
+                    categories: 
+                        categories 
+                }); 
+            }) 
         });
 
         function getUser() {
@@ -246,9 +266,11 @@ module.exports = (io, Categories) => {
 
         function validRoomNumber(){
             var num = (Math.random()*10000) | 0;
-            var found = running_games[num];
-            if(found){
-                return validRoomNumber();
+            var i = null;
+            for(i = 0;running_games.length > i; i += 1){
+                if(running_games[i].roomname === num){
+                    return validRoomNumber();
+                }
             }
             return num;
         }
@@ -257,3 +279,45 @@ module.exports = (io, Categories) => {
 
 };
 
+    function getrandomroom() 
+    {
+        //create random int
+        if(runninggames.contain(randomenumber))
+        {
+            randomenumber = getrandomroom();
+        }
+        return randomenumber;
+    }
+
+
+/*
+
+
+    running_games.push({roomid:1234,name:"newroom"});
+
+        function namechange(roomname,room){
+            if(running_games.indexOf(roomname) >= 0){
+                return "room already being used";
+            }else{
+                running_games.push({roomid:room, name:roomname});
+            }
+        }
+
+    //users.push({user:username,user:"roomid"})
+
+    function adduser(username, roomid){
+        users.push({user:username, user:roomid});
+        return users;
+    }
+
+    function removeuser(username, roomid){
+        var x = users.indexOf(username);
+        if(x >= 0){
+            users.splice(x,1);
+        }
+    }
+
+    exports.adduser = adduser;
+    exports.removeuser = removeuser;
+    exports.namechange = namechange;
+*/
