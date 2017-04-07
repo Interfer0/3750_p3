@@ -13,7 +13,7 @@ module.exports = (io, Categories) => {
     // used to populate initial list of online users
     let users = [];
     let assignedRoom = [];
-    let running_games = [];
+    let running_games = {};
     let inst = require("./game");
     let pug = require('pug');
         /*
@@ -78,11 +78,15 @@ module.exports = (io, Categories) => {
 
         socket.on('displayQuestions', function(req, res){
             var pug = require('pug');
+            var gm = running_games[user.roomname];
+            var questions = gm.getQuestions(Categories);
             res({
                 status:
                     200,
                 page:
-                    pug.renderFile('views/includes/displayQuestions.pug')
+                    pug.renderFile('views/includes/displayQuestions.pug'),
+                questions:
+                    questions
             });
         });
         
@@ -122,20 +126,21 @@ module.exports = (io, Categories) => {
 
         });
 
-        /*
+        
         socket.on('displayQuestionandAnswer', function(req, res){
-            var pug = require('pug');
-            var question = choosenQuestion();
+            var gm = running_games[user.roomname]; 
+            gm.storePickedAnswer(req); 
+            gm.moveUserToWait2(io); 
             res({
                 status:
                     200,
                 page:
-                    pug.renderFile('views/includes/displayQuestionandAnswer.pug'),
+                    pug.renderFile('views/includes/wait2.pug'),
                 question:
                     question
             });
         });
-        */
+        
         
 
         socket.on('newGameRoom', function (req, res){
@@ -266,13 +271,11 @@ module.exports = (io, Categories) => {
 
         function validRoomNumber(){
             var num = (Math.random()*10000) | 0;
-            var i = null;
-            for(i = 0;running_games.length > i; i += 1){
-                if(running_games[i].roomname === num){
-                    return validRoomNumber();
-                }
-            }
+            var found = running_games[roomname]; 
+            if(found){ 
+                return validRoomNumber(); 
             return num;
+            }
         }
 
     });// end on connection event
@@ -289,35 +292,3 @@ module.exports = (io, Categories) => {
         return randomenumber;
     }
 
-
-/*
-
-
-    running_games.push({roomid:1234,name:"newroom"});
-
-        function namechange(roomname,room){
-            if(running_games.indexOf(roomname) >= 0){
-                return "room already being used";
-            }else{
-                running_games.push({roomid:room, name:roomname});
-            }
-        }
-
-    //users.push({user:username,user:"roomid"})
-
-    function adduser(username, roomid){
-        users.push({user:username, user:roomid});
-        return users;
-    }
-
-    function removeuser(username, roomid){
-        var x = users.indexOf(username);
-        if(x >= 0){
-            users.splice(x,1);
-        }
-    }
-
-    exports.adduser = adduser;
-    exports.removeuser = removeuser;
-    exports.namechange = namechange;
-*/

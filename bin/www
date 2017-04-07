@@ -12,6 +12,7 @@ var http = require('http');
 
 
 var Categories = require('../app').Cat;
+var Questions = require('../app').Quest;
 
 var socket = require('socket.io');
 var socketController = require('../contoller/gamecontroller');
@@ -45,7 +46,7 @@ io.use(passportSocketIo.authorize({
   store: sessionStore,        // requires a sessionstore, not a memorystore
 }));
 
-socketController(io,Categories);
+socketController(io,Categories,Quest);
 
 
 /**

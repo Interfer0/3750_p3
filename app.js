@@ -34,6 +34,7 @@ mongoose.connect(dbConfig.url);
 const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection });
 
 const Cat = require('./models/catModel')(mongoose);
+const Quest = require('./models/')
 
 var index = require('./routes/index');
 var users = require('./routes/users');

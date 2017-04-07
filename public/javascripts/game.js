@@ -114,8 +114,9 @@
     } 
 
     //receive picked question 
-    function displayQuestion(data){ 
- 
+    function toQuestDisplay(id, question) 
+    { 
+        socket.emit('questionpicked', {questionid:id, question: question}); 
     } 
     
 //});

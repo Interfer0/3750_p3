@@ -12,6 +12,7 @@ exports.Game = class Game{
         this.answers = [];
         
         
+        
     };
 
     cnslPrint(){
@@ -77,7 +78,6 @@ exports.Game = class Game{
         if(found)
         {
             this.answers.push({roundUsersAnswer:req, user:username,pickedanswer:"", score:0});
-
         }
         console.log(this.users);
     }
@@ -94,4 +94,10 @@ exports.Game = class Game{
    displayQuestion(){ 
         socket.emit() 
     } 
+
+    getQuestions(Categories, Questions)
+    {
+
+    }
+
 };
