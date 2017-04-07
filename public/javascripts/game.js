@@ -183,7 +183,6 @@ var socket;
             document.querySelector("#roomInput").value = res.roomid; 
         });
         socket.emit('getCats', "", function(res){
-            console.log(res.categories)
             var catlist = document.querySelector('#CatList' );
             for(var r in res.categories)
             {
@@ -217,8 +216,8 @@ var socket;
         var cats = document.querySelector('#myCatList').options;
         for(aaa in cats){ //a array of all categories selected
             if(!isNaN(aaa) && cats[aaa].value != "-1")
-            {
-                catInput[cats[aaa].value] = cats[aaa].text;
+            {   
+                catInput.push({_id:cats[aaa].value,categoryName:cats[aaa].text});
             }
         }
         socket.emit("createNewGame",{

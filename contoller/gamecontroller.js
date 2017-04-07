@@ -140,12 +140,11 @@ module.exports = (io, Categories) => {
         });
 
         socket.on('createNewGame', function(req,res) {
-            //console.log(req);
             var roomname = req.roomname; //string of desired roomname;
             var category = req.category; //a array of all categories selected
             var players = req.players; //int of # of players
             var gamerounds = req.gamerounds; //int of # of games
-
+            console.log(category);
             //if roomname exists in roomlist, send back warning message
             var found = running_games[roomname];
             if(found)

@@ -36,10 +36,7 @@ exports.Game = class Game{
     }
 
     addUserToRoom(socket, username, ret){
-        //console.log(socket);
         socket.join(this.roomname);
-        //socket.to(user.roomid).emit(function_name);
-        //socket.to(this.roomname).emit(username + " has join the game.");
         var found = this.users.some(function (el){
             return el.user === username;
         })
