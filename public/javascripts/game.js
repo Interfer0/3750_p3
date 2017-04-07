@@ -117,8 +117,6 @@
     function displayQuestion(data){ 
  
     } 
-
-
     
 //});
 $(document).on("click", "#submitRoomNumber", joinRoom);
@@ -134,9 +132,9 @@ $(document).on('click', "#cheatToQuestDisplay", toQuestDisplay)
 
 var socket;
 
-    function toQuestDisplay()
+    function toQuestDisplay(id, question)
     {
-        socket.emit('questionpicked', {question:"What is your favorite Color?", questionid:012});
+        socket.emit('questionpicked', {questionid:id, question: question});
     }
 
     function continueToPickButton()
@@ -154,8 +152,13 @@ var socket;
         });
 
     }
-    
-    
+
+  
+    function chosenAnswer(req){
+        socket.emit('chosenAnswer',req, function(data){
+            document.getElementById('gameMat').innerHTML = res.page;
+        });
+    };
     
     function newGameRoom()
     {   
