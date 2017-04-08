@@ -125,14 +125,30 @@ exports.Game = class Game{
 
     }
 
+    setRoom(username, screen)
+    {
+        for(var i = 0;i < this.users.length; i++)
+        {
+            console.log(username + " " + this.users[i].user);
+            if(username == this.users[i].user)
+            {
+                this.users[i].screen = screen;
+            }
+        }
+        console.log(this.users);
+    }
+
     isUserPicking(sio, user, inquestion)
     {   
-        var myUser = [];
+        let pug = require('pug');
+        console.log(user);
+        console.log(inquestion);
         this.users.some(function (el){
+            console.log(el);
             if(el.screen == "questionpick")
             {   
                 //set game question
-                io.to(user.roomname).emit('gotoAnswer', {
+                sio.to(this.roomname).emit('gotoAnswer', {
                     question:
                         inquestion,
                     page: 

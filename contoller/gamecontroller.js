@@ -124,10 +124,11 @@ module.exports = (io, Categories, Questions) => {
                     questions
             });
             //set users screen to 
-            var queston = {question:"this is the Question", answer:"An answer"};
-            setTimeout(function(res){
+            gm.setRoom(user.username, "questionpick");
+            var question = {question:"this is the Question", answer:"An answer"};
+            setTimeout(function(io,user,question){
                 gm.isUserPicking(io, user.username, question);
-            }, 50000);
+            },30000,io,user,question);
             
         });
 
