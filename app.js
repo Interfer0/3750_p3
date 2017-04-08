@@ -36,6 +36,52 @@ const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection })
 const Cat = require('./models/catModel')(mongoose);
 const Quest = require('./models/questModel')(mongoose);
 
+/*Definitions, Famous People, Acronyms, Movie Headlines, and Ludicrous Laws*/
+Cat.find({}, function(d1,d2) {
+  if(d2)
+  {
+    var acat = new Cat;
+    acat.categoryName = "definitions";
+    acat.save();
+  }
+})
+
+Cat.find({}, function(d1,d2) {
+  if(d2)
+  {
+    var acat = new Cat;
+    acat.categoryName = "famous people";
+    acat.save();
+  }
+})
+
+Cat.find({}, function(d1,d2) {
+  if(!d2)
+  {
+    var acat = new Cat;
+    acat.categoryName = "acronyms";
+    acat.save();
+  }
+})
+
+Cat.find({}, function(d1,d2) {
+  if(d2)
+  {
+    var acat = new Cat;
+    acat.categoryName = "movie headlines";
+    acat.save();
+  }
+})
+
+Cat.find({}, function(d1,d2) {
+  if(d2)
+  {
+    var acat = new Cat;
+    acat.categoryName = "ludicrous laws";
+    acat.save();
+  }
+})
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./routes/game');

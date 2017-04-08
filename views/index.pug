@@ -8,18 +8,9 @@ block content
     meta(name='description', content='')
     meta(name='author', content='')
     title Landing Page - Start Bootstrap Theme
-    // Bootstrap Core CSS
     link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
-    // Custom CSS
-    // link(href='stylesheets/landing-page.css', rel='stylesheet')
-    // Custom Fonts
     link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
     link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic', rel='stylesheet', type='text/css')
-    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
-    // WARNING: Respond.js doesn't work if you view the page via file://
-    //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
   body
     // Header
     a(name='about')
@@ -29,7 +20,9 @@ block content
           .col-lg-12
             .intro-message
               h1 Welcome to Group 5's Balderdash Application!
+              br
+              p &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In this application we created a copy of the popular game, Balderdash. In the game, there is a reader and some number of guessers. The reader picks a category from the options given, and then reads the question. The guessers must then write down a possible answer that seems like it should fit the question. All participants are then shown the responses, and the each participant picks the response he or she believes is the correct answer. Points are scored for guessing the correct answer, but also for having others guess your answer as the correct answer.
+              p &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We created a website based on Node.js that will mimic this same feature set using websockets. We included a game creation page where a host can create a game, and allow users to then join that game. Players will then take turns selecting questions and answering, as the normal game of Balderdash would. At the end, scores are displayed and the option for starting a new game is offered as well.
+              br
               h3 Created by:
               h3 Quinn Anderson  |  Daniel Bigelow  |  Bobby Loock  |  Zachariah Scovill  |  Adam Stewart  |  Jonathan Wheeler
-
-  

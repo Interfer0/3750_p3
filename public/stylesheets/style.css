@@ -69,7 +69,7 @@ footer {
     position: fixed; 
     bottom: 1.5vh; 
     height: 1vh; 
-    background-color: #f8f8f8; 
+    /*background-color: #f8f8f8; */
 } 
  
 p.copyright { 
