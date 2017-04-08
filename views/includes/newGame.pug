@@ -3,9 +3,9 @@ block content
             div#enterRoom 
                 
                 input(type="text", id="roomInput" value="temproom")
-                select#CatList.catlists(size=16 onChange="moveToMyList()")
+                select#CatList.catlists(size=10 onChange="moveToMyList()")
                     option(value=-1 )
-                select#myCatList.catlists(size=16 onChange="moveToList()")
+                select#myCatList.catlists(size=10 onChange="moveToList()")
                     option(value=-1 )                      
                 input(type="text", id="playerInput", placeholder="# of players")
                 input(type="text", id="gamesInput", placeholder="# of Games")                          

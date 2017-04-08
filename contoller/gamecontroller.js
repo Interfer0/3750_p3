@@ -14,6 +14,7 @@ module.exports = (io, Categories, Questions) => {
     let users = [];
     let assignedRoom = [];
     let running_games = {};
+    let roomname = String("");
     let inst = require("./game");
     let pug = require('pug');
         /*
@@ -79,7 +80,12 @@ module.exports = (io, Categories, Questions) => {
         socket.on('displayQuestions', function(req, res){
             var pug = require('pug');
             var gm = running_games[user.roomname];
-            var questions = gm.getQuestions(Categories);
+            // var questions = gm.getQuestions(Categories,);
+            var questions = [];
+            for(var i = 0; i < gm.categories.length; i =+ 1){
+                questions.push(Questions.findOne().$where(gm.categories[i]))
+            }
+            
             res({
                 status:
                     200,
@@ -186,7 +192,7 @@ module.exports = (io, Categories, Questions) => {
             gm.category = category;
             gm.players = players;
             gm.gamerounds = gamerounds;
-            running_games[roomname] = gm;
+            running_games[roomname+"r"] = gm;
             var roomUsers;
             gm.addUserToRoom(socket, user.username, function(ret) {
                 roomUsers = ret;
@@ -250,11 +256,7 @@ module.exports = (io, Categories, Questions) => {
                     }
                 }
             } 
-        });
-
-        
-
-        
+        });   
 
         socket.on('getCats', function(req,res) {
              Categories.find('', function(data, categories) { 
@@ -274,7 +276,8 @@ module.exports = (io, Categories, Questions) => {
             var found = running_games[roomname]; 
             if(found){ 
                 return validRoomNumber(); 
-            return num;
+            }else{
+                return num;
             }
         }
 
@@ -292,3 +295,8 @@ module.exports = (io, Categories, Questions) => {
         return randomenumber;
     }
 
+    function sleep(milliSeconds){
+        var startTime = new Date().getTime();
+        while (new Date().getTime() < startTime + milliSeconds);
+    }
+    sleep(10000);

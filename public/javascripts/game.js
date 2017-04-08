@@ -37,12 +37,6 @@
         });
     });
 
-    socket.on('s2cmsg', function (data) {
-        //check message to determine what to do with it
-        chatWindow.append('<strong>' + data.person + ':</strong> ' + data.message + '<br>');
-        scrollChatWindow();
-    });
-
     socket.on('userList', function (data) {
         let html = '';
         data.sort();
@@ -147,6 +141,13 @@ var socket;
     {
         socket.emit('continueToPickclick',"",function(response) {
             document.getElementById('gameMat').innerHTML = response.page; 
+        });
+    }
+
+    function getQuestions(){
+        socket.emit('displayQuestions',"",function(response){
+            console.log(response);
+            return response;
         });
     }
 
