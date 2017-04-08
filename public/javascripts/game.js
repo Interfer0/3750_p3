@@ -176,18 +176,23 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         socket.emit('questionpicked', {questionid:id, question: question});
     }
 
+
+//Continue to work on displaying the questions.
     function continueToPickButton()
     {
         socket.emit('continueToPickclick',"",function(response) {
             document.getElementById('gameMat').innerHTML = response.page; 
+            var myElement = document.querySelector('#questions');
+            for(var i = 0; i < response.questions; i++){
+                var div = document.createElement('div');
+                    div.innerHTML = '<button id="' + response.questions[i].id +'" value="'+reponse.questions[i].question+'" onclick="toQuestDisplay()" />';
+                    myElem.appendChild(div);
+            }
         });
     }
 
-    function getQuestions(){
-        socket.emit('displayQuestions',"",function(response){
-            console.log(response);
-            return response;
-        });
+    function displayQuestions(){
+        
     }
 
     //get catagories
