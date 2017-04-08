@@ -9,7 +9,10 @@ a {
 h1,h2,h3 {
     text-align: center;
 }
-
+.col-centered{
+    float: none !important;
+    margin: 0 auto;
+}
 #chatWindow {
     height: 100px;
 }
