@@ -85,9 +85,9 @@ module.exports = (categories,question) => {
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('categoryschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+            db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
                 if (result != 0 && error == null) {
-                    db.collection('categoryschemas').deleteOne(question, function(err, result) {
+                    db.collection('questionschemas').deleteOne(question, function(err, result) {
                         assert.equal(null, err);
                         console.log('Question and Answer Deleted');
                         db.close();
