@@ -37,8 +37,9 @@ const Cat = require('./models/catModel')(mongoose);
 const Quest = require('./models/questModel')(mongoose);
 
 /*Definitions, Famous People, Acronyms, Movie Headlines, and Ludicrous Laws*/
-Cat.find({}, function(d1,d2) {
-  if(d2)
+///////////////////////////////////////////////////////////////////////////////////*START LOAD MONGO DATA*/
+Cat.findOne({categoryName: "definitions"}, function(d1,d2) {
+  if(!d2)
   {
     var acat = new Cat;
     acat.categoryName = "definitions";
@@ -46,8 +47,41 @@ Cat.find({}, function(d1,d2) {
   }
 })
 
-Cat.find({}, function(d1,d2) {
-  if(d2)
+Quest.findOne({categoryName: "definitions"},{question: "what is the definition of abaya?"},{answer: "full length sleeveless outer garment worn by arabs"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "definitions";
+    q.question = "what is the definition of abaya?";
+    q.answer = "full length sleeveless outer garment worn by arabs";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "definitions"},{question: "what is the definition of badmash?"},{answer: "an indian hooligan"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "definitions";
+    q.question = "what is the definition of badmash?";
+    q.answer = "an indian hooligan";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "definitions"},{question: "what is the definition of deasil?"},{answer: "clockwise or in the direction of the sun's course"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "definitions";
+    q.question = "what is the definition of deasil?";
+    q.answer = "clockwise or in the direction of the sun's course";
+    q.save();
+  }
+})
+
+Cat.findOne({categoryName: "famous people"}, function(d1,d2) {
+  if(!d2)
   {
     var acat = new Cat;
     acat.categoryName = "famous people";
@@ -55,7 +89,40 @@ Cat.find({}, function(d1,d2) {
   }
 })
 
-Cat.find({}, function(d1,d2) {
+Quest.findOne({categoryName: "famous people"},{question: "who is mary anning?"},{answer: "a fossil collector"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "famous people";
+    q.question = "who is mary anning?";
+    q.answer = "a fossil collector";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "famous people"},{question: "who is anton drexler?"},{answer: "he created the nazi party"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "famous people";
+    q.question = "who is anton drexler?";
+    q.answer = "he created the nazi party";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "famous people"},{question: "who is baldwin iv?"},{answer: "king of jerusalem"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "famous people";
+    q.question = "who is baldwin iv?";
+    q.answer = "king of jerusalem";
+    q.save();
+  }
+})
+
+Cat.findOne({categoryName: "acronyms"}, function(d1,d2) {
   if(!d2)
   {
     var acat = new Cat;
@@ -64,23 +131,123 @@ Cat.find({}, function(d1,d2) {
   }
 })
 
-Cat.find({}, function(d1,d2) {
-  if(d2)
+Quest.findOne({categoryName: "acronyms"}, {question: "what is the acronym laser?"},{answer: "light amplification by stimulated emission of radiation"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "acronyms";
+    q.question = "what is the acronym laser?";
+    q.answer = "light amplification by stimulated emission of radiation";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "acronyms"},{question: "what is the acronym taser?"},{answer: "thomas a. swift’s electric rifle"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "acronyms";
+    q.question = "what is the acronym taser?";
+    q.answer = "thomas a. swift’s electric rifle";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "acronyms"},{question:"what is the acronym zip in zip code?"},{answer: "zone improvement plan"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "acronyms";
+    q.question = "what is the acronym zip in zip code?";
+    q.answer = "zone improvement plan";
+    q.save();
+  }
+})
+
+Cat.findOne({categoryName: "movie taglines"}, function(d1,d2) {
+  if(!d2)
   {
     var acat = new Cat;
-    acat.categoryName = "movie headlines";
+    acat.categoryName = "movie taglines";
     acat.save();
   }
 })
 
-Cat.find({}, function(d1,d2) {
-  if(d2)
+Quest.findOne({categoryName: "movie taglines"},{question: "what movie had the tagline just because they serve you doesn't mean they like you?"},{answer: "clerks"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "movie taglines";
+    q.question = "what movie had the tagline just because they serve you doesn't mean they like you?";
+    q.answer = "clerks";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "movie taglines"},{question: "what movie had the tagline his story will touch you, even though he can't"},{answer: "edward scissorhands"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "movie taglines";
+    q.question = "what movie had the tagline his story will touch you, even though he can't";
+    q.answer = "edward scissorhands";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "movie taglines"},{question: "what movie has the tagline see our family and feel better about yours?"},{answer: "the simpsons movie"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "movie taglines";
+    q.question = "what movie has the tagline see our family and feel better about yours?";
+    q.answer = "the simpsons movie";
+    q.save();
+  }
+})
+
+Cat.findOne({categoryName: "ludicrous laws"}, function(d1,d2) {
+  if(!d2)
   {
     var acat = new Cat;
     acat.categoryName = "ludicrous laws";
     acat.save();
   }
 })
+
+Quest.findOne({categoryName: "ludicrous laws"},{question: "what country is it against the law to name a pig napoleon?"},{answer: "france"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "ludicrous laws";
+    q.question = "what country is it against the law to name a pig napoleon?";
+    q.answer = "france";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "ludicrous laws"},{question: "what city is it against state law to get a fish drunk?"},{answer: "ohio"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "ludicrous laws";
+    q.question = "what city is it against state law to get a fish drunk?";
+    q.answer = "ohio";
+    q.save();
+  }
+})
+
+Quest.findOne({categoryName: "ludicrous laws"},{question: "what state must women obtain written permission from their husbands to wear false teeth?"},{answer: "vermont"}, function(d1,d2) {
+  if(!d2)
+  {
+    var q = new Quest;
+    q.categoryName = "ludicrous laws";
+    q.question = "what state must women obtain written permission from their husbands to wear false teeth?";
+    q.answer = "vermont";
+    q.save();
+  }
+})
+///////////////////////////////////////////////////////////////////////////////////*END OF LOAD MONGO DATA*/
 
 var index = require('./routes/index');
 var users = require('./routes/users');
