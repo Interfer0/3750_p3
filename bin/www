@@ -46,7 +46,7 @@ io.use(passportSocketIo.authorize({
   store: sessionStore,        // requires a sessionstore, not a memorystore
 }));
 
-socketController(io,Categories,Quest);
+socketController(io,Categories,Questions);
 
 
 /**

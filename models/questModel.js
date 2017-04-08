@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+module.exports = function(mongoose) {
 /*
 const CategorySchema = new Schema({
     categoryName: {
@@ -25,5 +24,16 @@ const QuestionSchema = new Schema({
 }, {collection: 'Question'});
  
 //model of QuestionSchema
-const Questions = mongoose.model('Questions', QuestionSchema)
+const Questions = mongoose.model('Questions', QuestionSchema);
 */
+    var QuestSchema = new mongoose.Schema({
+        categoryName: String,
+        question: String,
+        answer: String
+    });
+
+    var Question = mongoose.model('QuestionSchema', QuestSchema);
+
+
+return Question;
+}

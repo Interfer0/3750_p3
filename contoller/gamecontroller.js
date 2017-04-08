@@ -1,12 +1,12 @@
-module.exports = (io, Categories) => { 
- 
+module.exports = (io, Categories, Questions) => { 
+    /*
     const mongoose = require('mongoose'); 
     var url = 'mongodb://localhost:27017/Balderdash'; 
     var db = mongoose.connection; 
     db.on('error', console.error.bind(console, 'connection error:')); 
     db.once('open', function() { 
         console.log('Connected from game controller'); 
-    }); 
+    }); */
     //var Categories = require('../models/catModel')(mongoose); 
 
     // server side tracker of logged in users

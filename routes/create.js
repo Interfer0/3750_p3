@@ -1,4 +1,4 @@
-module.exports = (categories) => {
+module.exports = (categories,question) => {
     var express = require('express');
     var router = express.Router();
     var mongo = require('mongodb').MongoClient;
@@ -54,9 +54,9 @@ module.exports = (categories) => {
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('QuestionSchema').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+            db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
                 if (result == 0 && error == null) {
-                    db.collection('QuestionSchema').insertOne(question, function(err, result) {
+                    db.collection('questionschemas').insertOne(question, function(err, result) {
                         assert.equal(null, err);
                         console.log('Question and Answer inserted');
                         db.close();
@@ -127,9 +127,9 @@ module.exports = (categories) => {
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('QuestionSchema').find({categoryName: question.categoryName}).count(function(error, result) {
+            db.collection('questionschemas').find({categoryName: question.categoryName}).count(function(error, result) {
                 if (result != 0 && error == null) {
-                    db.collection('QuestionSchema').remove(question, function(err, result) {
+                    db.collection('questionschemas').remove(question, function(err, result) {
                         assert.equal(null, err);
                         console.log('Question and Answer Deleted');
                         db.close();
@@ -151,7 +151,7 @@ module.exports = (categories) => {
         var resultArray = [];
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            var cursor = db.collection('QuestionSchema').find();
+            var cursor = db.collection('questionschemas').find();
             cursor.forEach(function(doc, err) {
                 assert.equal(null, err);
                 resultArray.push(doc);
@@ -185,9 +185,9 @@ module.exports = (categories) => {
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('QuestionSchema').find({question: question.question, answer: question.answer}).count(function(error, result) {
+            db.collection('questionschemas').find({question: question.question, answer: question.answer}).count(function(error, result) {
             if (result != 0 && error == null) {
-                    db.collection('QuestionSchema').updateOne(question, function(err, result) {
+                    db.collection('questionschemas').updateOne(question, function(err, result) {
                         assert.equal(null, err);
                         console.log('Question and/or Category Deleted');
                         db.close();

@@ -34,13 +34,13 @@ mongoose.connect(dbConfig.url);
 const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection });
 
 const Cat = require('./models/catModel')(mongoose);
-const Quest = require('./models/')
+const Quest = require('./models/questModel')(mongoose);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./routes/game');
 var select = require('./routes/select');
-var create = require('./routes/create')(Cat);
+var create = require('./routes/create')(Cat, Quest);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -128,3 +128,5 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 module.exports.sessionStore = sessionStore;
 module.exports.Cat = Cat;
+module.exports.Quest = Quest;
+
