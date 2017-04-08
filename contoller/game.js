@@ -2,6 +2,7 @@
 exports.Game = class Game{
 
     constructor(roomname,category,players,gamerounds){
+
         this.roomname = roomname;
         this.category = category;
         this.players = players;
@@ -37,9 +38,11 @@ exports.Game = class Game{
 
     addUserToRoom(socket, username, ret){
         //console.log(socket);
+       
         socket.join(this.roomname);
         //socket.to(user.roomid).emit(function_name);
         //socket.to(this.roomname).emit(username + " has join the game.");
+
         var found = this.users.some(function (el){
             return el.user === username;
         })
@@ -99,6 +102,7 @@ exports.Game = class Game{
     }
 
     randomPlayerContinue(sio,userid, response){
+        console.log("randomPayerContinue")
         this.currentPlayer = userid;
        sio.to(this.roomname).emit('gotoPickQuestion', {user:userid});
     }
@@ -119,6 +123,24 @@ exports.Game = class Game{
     moveUserToWait2(io)
     {
 
+    }
+
+    isUserPicking(sio, user, inquestion)
+    {   
+        var myUser = [];
+        this.users.some(function (el){
+            if(el.screen == "questionpick")
+            {   
+                //set game question
+                io.to(user.roomname).emit('gotoAnswer', {
+                    question:
+                        inquestion,
+                    page: 
+                        pug.renderFile('views/includes/requestAnswers.pug')
+                });
+            }
+        });
+        
     }
 
 };

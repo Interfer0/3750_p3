@@ -22,9 +22,7 @@ module.exports = (io, Categories, Questions) => {
         ***user can change the name property
         */
     io.sockets.on('connection', socket => {
-            // Questions.findOne({},function(err,data){
-            //     console.log(data);
-            // })
+        
 
          const user = { 
              username: socket.request.user.username,
@@ -84,6 +82,7 @@ module.exports = (io, Categories, Questions) => {
             var pug = require('pug');
             var gm = running_games[user.roomname];
             // var questions = gm.getQuestions(Categories,);
+            
             var questions = [];
             for(var i = 0; i < gm.categories.length; i =+ 1){
                 questions.push(Questions.findOne().$where(gm.categories[i]))
@@ -124,6 +123,12 @@ module.exports = (io, Categories, Questions) => {
                 stage:
                     questions
             });
+            //set users screen to 
+            var queston = {question:"this is the Question", answer:"An answer"};
+            setTimeout(function(res){
+                gm.isUserPicking(io, user.username, question);
+            }, 50000);
+            
         });
 
 
@@ -247,6 +252,7 @@ module.exports = (io, Categories, Questions) => {
                 gm.addUserToRoom(socket, user.username, function(ret) {
                     roomUsers = ret;
                 });
+                
                 res({  
                     status:
                         200,
@@ -301,7 +307,6 @@ module.exports = (io, Categories, Questions) => {
             }        
         }
     });// end on connection event
-};
 
 // function getQuestions(categories){
 //     Questions.findOne({},function(err,data){
@@ -332,3 +337,5 @@ module.exports = (io, Categories, Questions) => {
         while (new Date().getTime() < startTime + milliSeconds);
     }
     //sleep(10000);
+
+    };

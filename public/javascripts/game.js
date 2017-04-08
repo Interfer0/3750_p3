@@ -72,6 +72,7 @@
 
     socket.on('gotoPickQuestion', (data) => {
         //console.log(username + " | " + data.user);
+        console.log(data);
         if(data.user == username)
         {
             var button = document.createElement("button");
@@ -93,7 +94,7 @@
         var w2playerlist = document.querySelector('#Wait2playerlist');
         if(w2playerlist)
         {
-            w2playerist.innerHTML="";
+            w2playerlist.innerHTML="";
             for(var e in data.users){
                 var div = document.createElement('div',data.users[e].user);
                 div.innerHTML = data.users[e].user;
