@@ -150,8 +150,6 @@ module.exports = (io, Categories, Questions) => {
             });
         });
         
-        
-
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
             var room = validRoomNumber();
@@ -204,8 +202,6 @@ module.exports = (io, Categories, Questions) => {
             //console.log(Ulist);
             user.roomname = roomname;
             //Send success, send roomname
-            /*Don't know how to make this work yet. It needs to add the player as 
-            a player on the players screen under names.*/ 
             res({  
                 status:
                     200,
@@ -280,15 +276,12 @@ module.exports = (io, Categories, Questions) => {
             var found = running_games[num]; 
             if(found){ 
                 return validRoomNumber(); 
-            
             }
             else{
                 return num;
             }        
         }
-
     });// end on connection event
-
 };
 
     function getrandomroom() 
@@ -305,4 +298,4 @@ module.exports = (io, Categories, Questions) => {
         var startTime = new Date().getTime();
         while (new Date().getTime() < startTime + milliSeconds);
     }
-    sleep(10000);
+    //sleep(10000);

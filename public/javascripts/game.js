@@ -93,6 +93,7 @@
         var w2playerlist = document.querySelector('#Wait2playerlist');
         if(w2playerlist)
         {
+            w2playerist.innerHTML="";
             for(var e in data.users){
                 var div = document.createElement('div',data.users[e].user);
                 div.innerHTML = data.users[e].user;
