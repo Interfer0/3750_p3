@@ -1,20 +1,13 @@
-module.exports = (categories,question) => {
-    var express = require('express');
-    var router = express.Router();
-    var mongo = require('mongodb').MongoClient;
-    var objectId = require('mongodb').ObjectID;
-    var assert = require('assert');
-    const mongoose = require('mongoose');
-    var url = 'mongodb://localhost:27017/Balderdash';
-
+var express = require('express');
+var router = express.Router();
+const mongoose = require('mongoose');
+const questions = mongoose.model('QuestionSchema');
 
 /* GET home page. */
 router.get('/select', function(req, res, next) {
-  question.find().then(q => {
-            res.render('selectcq', { title: 'Delete categories', questions: q });
-        })
-        .catch(next);
+  questions.find().then(q => {
+    res.render('selectcq', { title: 'Select Categories and questions', questions: q });
+  })
 });
 
-        return router;
-    };   
+module.exports = router;
