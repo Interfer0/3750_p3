@@ -9,8 +9,11 @@ block content
     <li><a href='/Delete/Category'>Delete Category
     <li><a href='/Update/QuestionAnswer'>Update Question/Answer
   </ul>
-  <br>
-  <br>
-  <div>
-    <li>
-  </div>
+  br
+  br
+  form(method='post', action='/delete/questionAnswer')
+    .form-group
+      table
+        each q in questions
+            tr#q_list_item    
+              td #{q.question}

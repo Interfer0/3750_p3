@@ -41,7 +41,6 @@ module.exports = (categories,question) => {
             res.render('addQuestionAnswer', { title: 'Create Questions and Answers', categories: cat});
         })
         .catch(next);
-
     });
 
     // Process Add Question
@@ -69,8 +68,8 @@ module.exports = (categories,question) => {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////*DELETE*/
     /* GET delete page. */
     router.get('/Delete/QuestionAnswer', function(req, res, next) {
-        categories.find().then(cat => {
-            res.render('deleteQuestionAnswer', { title: 'Delete categories', categories: cat });
+        question.find().then(q => {
+            res.render('deleteQuestionAnswer', { title: 'Delete categories', questions: q });
         })
         .catch(next);
     });
@@ -78,14 +77,14 @@ module.exports = (categories,question) => {
     //Process Delete C,Q,A
     router.post('/delete/questionAnswer', function(req, res, next) {
     var question = {
-            categoryName: req.body.category,
-            question: req.body.question.toLowerCase(),
-            answer: req.body.answer.toLowerCase()
+            //categoryName: req.body.category,
+            question: req.body.question
+            //answer: req.body.answer.toLowerCase()
         };
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+            db.collection('questionschemas').find({question: question.question}).count(function(error, result) {
                 if (result != 0 && error == null) {
                     db.collection('questionschemas').deleteOne(question, function(err, result) {
                         assert.equal(null, err);
@@ -100,16 +99,19 @@ module.exports = (categories,question) => {
 
     //get delete category page
     router.get('/Delete/Category', function(req, res, next) {
-    res.render('deleteCategory', { title: 'Delete categories' });
+     categories.find().then(cat => {
+            res.render('deleteCategory', { title: 'Delete Cateogry', categories: cat});
+        })
+        .catch(next);
     });
 
     //process delete category
     router.post('/delete/category', function(req, res, next) {
     var item = {
-            categoryName: req.body.categoryName.toLowerCase(),
+            categoryName: req.body.categoryName
         };
     var question = {
-            categoryName: req.body.categoryName.toLowerCase()
+            categoryName: req.body.categoryName
         };
 
         mongo.connect(url, function(err, db) {
@@ -229,5 +231,27 @@ module.exports = (categories,question) => {
         res.redirect('/select');
     });
 
+    /* GET home page. */
+    router.get('/select', function(req, res, next) {
+        question.find().then(q => {
+            res.render('selectcq', { title: 'All Items', questions: q });
+        })
+        .catch(next);
+    });
+
         return router;
     };    
+
+// const Question = require('../models/questModel');
+// exports.index = (req, res) => {
+//   Question.find((err, questions) => {
+//     if (err) {
+//       console.log("Error: " + err);
+//     } else {
+//       res.render('/select', {
+//         title: 'website',
+//         questions: categoryName, questions: question, questions: answer,
+//       });
+//     }
+//   });
+// };
