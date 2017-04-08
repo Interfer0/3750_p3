@@ -17,6 +17,7 @@ module.exports = (io, Categories, Questions) => {
     let roomname = String("");
     let inst = require("./game");
     let pug = require('pug');
+    require('mongoose-query-random');
         /*
         ie:  running_game({roomid:1234,name:1234});
         ***user can change the name property
@@ -85,8 +86,12 @@ module.exports = (io, Categories, Questions) => {
             var gm = running_games[user.roomname];
             // var questions = gm.getQuestions(Categories,);
             var questions = [];
-            for(var i = 0; i < gm.categories.length; i =+ 1){
-                questions.push(Questions.findOne().$where(gm.categories[i]))
+
+            for(var i = 0; i < temp.length; i += 1){
+                Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
+                    console.log(data)
+                    questions.push(data);
+                })
             }
             
             res({
@@ -100,20 +105,15 @@ module.exports = (io, Categories, Questions) => {
         });
         
         socket.on('continueToPickclick', function(req,res){
-            // Questions.findOne({},function(err,data){
-            //     console.log(data);
-            // })
-            console.log("continueToPickclick callback.")
             var pug = require('pug');
             var gm = running_games[user.roomname];
             var temp = gm.category;
             var questions = [];
 
             for(var i = 0; i < temp.length; i += 1){
-                Questions.find({categoryName: gm.category[i].categoryName}).length
-                Questions.count({categoryName: gm.category[i].categoryName},function(err,data){
-                    console.log(data);
-                
+                Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
+                    console.log(data)
+                    questions.push(data);
                 })
             }
             res({  
@@ -121,7 +121,7 @@ module.exports = (io, Categories, Questions) => {
                     200,
                 page :
                     pug.renderFile('views/includes/questionsPick.pug'),
-                stage:
+                questions:
                     questions
             });
         });

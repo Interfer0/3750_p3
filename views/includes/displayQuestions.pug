@@ -1,10 +1,8 @@
 block content 
     script.
         var questionList = getQuestions();
-        div#disQuestions 
-            div#questions 
-                each val in questionList
-                    div(class="col-md-6")
-                        = +btn-primary(val)(onclick='toQuestDisplay(val.id,val)')
+    div#disQuestions 
+        div#questions 
+
 
 
