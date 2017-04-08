@@ -22,7 +22,9 @@ module.exports = (io, Categories, Questions) => {
         ***user can change the name property
         */
     io.sockets.on('connection', socket => {
-
+            // Questions.findOne({},function(err,data){
+            //     console.log(data);
+            // })
 
          const user = { 
              username: socket.request.user.username,
@@ -78,6 +80,7 @@ module.exports = (io, Categories, Questions) => {
         });
 
         socket.on('displayQuestions', function(req, res){
+            console.log("displayQuestion callback.")
             var pug = require('pug');
             var gm = running_games[user.roomname];
             // var questions = gm.getQuestions(Categories,);
@@ -97,13 +100,29 @@ module.exports = (io, Categories, Questions) => {
         });
         
         socket.on('continueToPickclick', function(req,res){
+            // Questions.findOne({},function(err,data){
+            //     console.log(data);
+            // })
+            console.log("continueToPickclick callback.")
+            var pug = require('pug');
+            var gm = running_games[user.roomname];
+            var temp = gm.category;
+            var questions = [];
+
+            for(var i = 0; i < temp.length; i += 1){
+                Questions.find({categoryName: gm.category[i].categoryName}).length
+                Questions.count({categoryName: gm.category[i].categoryName},function(err,data){
+                    console.log(data);
+                
+                })
+            }
             res({  
                 status:
                     200,
                 page :
                     pug.renderFile('views/includes/questionsPick.pug'),
                 stage:
-                    "questionsPick"
+                    questions
             });
         });
 
@@ -194,7 +213,7 @@ module.exports = (io, Categories, Questions) => {
             gm.category = category;
             gm.players = players;
             gm.gamerounds = gamerounds;
-            running_games[roomname+"r"] = gm;
+            running_games[roomname] = gm;
             var roomUsers;
             gm.addUserToRoom(socket, user.username, function(ret) {
                 roomUsers = ret;
@@ -283,6 +302,20 @@ module.exports = (io, Categories, Questions) => {
         }
     });// end on connection event
 };
+
+// function getQuestions(categories){
+//     Questions.findOne({},function(err,data){
+//         console.log(data);
+//     })
+//                 var gm = running_games[user.roomname];
+//             var temp = gm.category;
+//             var questions = [];
+//     var questions[]
+//     for(var i = 0; i < temp.length; i += 1){
+//         questions.push(Questions.findOne().$where(gm.category[i].categoryName))
+//     }
+//     return questions
+// }
 
     function getrandomroom() 
     {

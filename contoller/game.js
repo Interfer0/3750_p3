@@ -100,7 +100,7 @@ exports.Game = class Game{
 
     randomPlayerContinue(sio,userid, response){
         this.currentPlayer = userid;
-       sio.to(this.roomname).emit('displayQuestion', {user:userid});
+       sio.to(this.roomname).emit('gotoPickQuestion', {user:userid});
     }
 
     countRounds(){
