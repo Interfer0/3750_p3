@@ -1,13 +1,25 @@
 block content 
         div#gameInitial 
             div#enterRoom 
-                
+                h1 New Game
+                label The new game's room number
                 input(type="text", id="roomInput" value="temproom")
-                select#CatList.catlists(size=10 onChange="moveToMyList()")
-                    option(value=-1 )
-                select#myCatList.catlists(size=10 onChange="moveToList()")
-                    option(value=-1 )                      
+                br
+                div.row
+                    div.col-md-6
+                    label Select the category of questions
+                    select#CatList.catlists(size=10 onChange="moveToMyList()")
+                        option(value=-1 )
+
+                    div.col-md-6
+                        select#myCatList.catlists(size=10 onChange="moveToList()")
+                            option(value=-1 )                      
+
+                br
+                label How many people want to play?
                 input(type="text", id="playerInput", placeholder="# of players")
+                br
+                label How many games do you want to play?
                 input(type="text", id="gamesInput", placeholder="# of Games")                          
                 br
                 br
