@@ -125,23 +125,26 @@ module.exports = (io, Categories, Questions) => {
         });
 
         socket.on('submitAnswer',function(req,res) {
-            console.log(req);
             var gm = running_games[user.roomname];
             gm.saveUsersAnswer(req, user.username);
-            
-
+            //move user to waiting
+            res({
+                page:
+                    pug.renderFile('views/includes/wait2.pug')
+            })
+            gm.wait2status(io,user);
         });
 
         
         socket.on('displayQuestionandAnswer', function(req, res){
             var gm = running_games[user.roomname]; 
             gm.storePickedAnswer(req); 
-            gm.moveUserToWait2(io); 
+            gm.moveUserToWait3(io); 
             res({
                 status:
                     200,
                 page:
-                    pug.renderFile('views/includes/wait2.pug'),
+                    pug.renderFile('views/includes/wait3.pug'),
                 question:
                     question
             });
@@ -165,6 +168,7 @@ module.exports = (io, Categories, Questions) => {
         socket.on('whoami', function(req, res){ 
             res({ usr: users[socket.id]});           
         });
+
 
         socket.on('createNewGame', function(req,res) {
             //console.log(req);
@@ -273,12 +277,14 @@ module.exports = (io, Categories, Questions) => {
 
         function validRoomNumber(){
             var num = (Math.random()*10000) | 0;
-            var found = running_games[roomname]; 
+            var found = running_games[num]; 
             if(found){ 
                 return validRoomNumber(); 
-            }else{
-                return num;
+            
             }
+            else{
+                return num;
+            }        
         }
 
     });// end on connection event

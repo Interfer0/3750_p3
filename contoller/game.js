@@ -10,9 +10,7 @@ exports.Game = class Game{
         this.round = 1;
         this.roundquestion = {};
         this.answers = [];
-        
-        
-        
+
     };
 
     cnslPrint(){
@@ -70,16 +68,34 @@ exports.Game = class Game{
 
     saveUsersAnswer(req, username)
     {
-        console.log(req);
-        console.log(this.users);
+        var myUser;
         var found = this.users.some(function (el){
-            return el.user === username;
+            if(el.user === username)
+            {   
+                myUser = el;
+                return true;
+            } else {
+                return false;
+            }
         })
         if(found)
         {
-            this.answers.push({roundUsersAnswer:req, user:username,pickedanswer:"", score:0});
+            this.answers.push({user:username,answer:req.answer,pickedanswer:"", score:0});
         }
-        console.log(this.users);
+        myUser.screen = "wait2";
+    }
+
+    wait2status(sio,user){
+        //broadcase all usernames in wait2
+        var inWait2 = [];
+        this.users.some(function (el){
+            if(el.screen == "wait2")
+            {
+                inWait2.push(el);
+            }
+        });
+        sio.to(this.roomname).emit('usersInWait', {users:inWait2});
+        
     }
 
     randomPlayerContinue(sio,userid, response){
@@ -98,6 +114,11 @@ exports.Game = class Game{
     getQuestions(Categories, Questions)
     {
         
+    }
+
+    moveUserToWait2(io)
+    {
+
     }
 
 };

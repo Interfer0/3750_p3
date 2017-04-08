@@ -1,7 +1,7 @@
 
 //$(document).ready(function () {
     // let usersOnline = [];
-    socket = io.connect('http://localhost:3000');
+    var socket = io.connect('http://localhost:3000');
     let chatForm = $('#chatForm');
     let message = $('#chatInput');
     let chatWindow = $('#chatWindow');
@@ -84,9 +84,21 @@
     });
 
     socket.on('gotoAnswer', (data) => {
-        console.log(data);
         document.getElementById('gameMat').innerHTML = data.page;
         document.querySelector("#question") .innerHTML = data.question;
+    });
+
+    socket.on('usersInWait',function(data)
+    {
+        var w2playerlist = document.querySelector('#Wait2playerlist');
+        if(w2playerlist)
+        {
+            for(var e in data.users){
+                var div = document.createElement('div',data.users[e].user);
+                div.innerHTML = data.users[e].user;
+                w2playerlist.appendChild(div);
+            }
+        }
     });
     /*
     function displayQuestionandAnswer()
@@ -112,7 +124,7 @@
     { 
         socket.emit('questionpicked', {questionid:id, question: question}); 
     } 
-    
+
 //});
 $(document).on("click", "#submitRoomNumber", joinRoom);
 $(document).on("click", "#newGameButton", newGameRoom);
@@ -125,7 +137,17 @@ $(document).on("click", "#continueToPickButton", continueToPickButton);
 //This will cause all users to advance to the next page
 $(document).on('click', "#cheatToQuestDisplay", toQuestDisplay);  
 $(document).on('click', "#manageQuestions", toManage);
-var socket;
+$(document).on('click', "#submitAnswer", submitAnswer)
+
+    function submitAnswer()
+    {
+        var playerAnswer = document.querySelector('#playerAnswer').value;
+        socket.emit('submitAnswer', {answer:playerAnswer}, function(response){
+            document.getElementById('gameMat').innerHTML = response.page; 
+        })
+    }
+
+ 
 
     function toManage()
     {
@@ -155,7 +177,6 @@ var socket;
     function getCatagories()
     {
         socket.emit('getCats',"",function(response) {
-            console.log(response);
             document.getElementById('CatList').innerHTML = response; 
             
             var catlist = document.querySelector('#CatList' );
@@ -253,12 +274,6 @@ var socket;
                 updatewaitlist(res.users, res.stage);
                 updateTitle(res.room);
             }
-            //if room does not exist
-
-            //if room full
-
-            //if join accepted
-
         });
     }
 
