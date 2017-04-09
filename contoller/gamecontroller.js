@@ -78,31 +78,20 @@ module.exports = (io, Categories, Questions) => {
             
         });
 
-        socket.on('displayQuestions', function(req, res){
-            console.log("displayQuestion callback.")
-            var pug = require('pug');
-            var gm = running_games[user.roomname];
-            // var questions = gm.getQuestions(Categories,);
-            
-            var questions = [];
+        // socket.on('displayQuestions', function(req, res){
+        //     console.log("displayQuestion callback.")
+        //     var pug = require('pug');
+        //     var gm = running_games[user.roomname];
+        //     // var questions = gm.getQuestions(Categories,);
+        //     var questions = [];
 
-            for(var i = 0; i < temp.length; i += 1){
-                Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
-                    console.log(data)
-                    questions.push(data);
-                })
-            }
+        //     for(var i = 0; i < temp.length; i += 1){
+        //         Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
+        //             console.log(data)
+        //             questions.push(data);
+        //         })
+        //     }
             
-            res({
-                status:
-                    200,
-                page:
-                    pug.renderFile('views/includes/displayQuestions.pug'),
-                questions:
-                    questions
-            });
-        });
-
         /*
             Fired: when the chosen user clicks to continue to pick a question. 
             This also gets the questions and sends it with the questionsPick page. 
