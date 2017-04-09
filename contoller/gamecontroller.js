@@ -17,6 +17,7 @@ module.exports = (io, Categories, Questions) => {
     let roomname = String("");
     let inst = require("./game");
     let pug = require('pug');
+    require('mongoose-query-random');
         /*
         ie:  running_game({roomid:1234,name:1234});
         ***user can change the name property
@@ -77,27 +78,30 @@ module.exports = (io, Categories, Questions) => {
             
         });
 
-        socket.on('displayQuestions', function(req, res){
-            console.log("displayQuestion callback.")
-            var pug = require('pug');
-            var gm = running_games[user.roomname];
-            // var questions = gm.getQuestions(Categories,);
-            
-            var questions = [];
-            for(var i = 0; i < gm.categories.length; i =+ 1){
-                questions.push(Questions.findOne().$where(gm.categories[i]))
-            }
-            
-            res({
-                status:
-                    200,
-                page:
-                    pug.renderFile('views/includes/displayQuestions.pug'),
-                questions:
-                    questions
-            });
-        });
+        // socket.on('displayQuestions', function(req, res){
+        //     console.log("displayQuestion callback.")
+        //     var pug = require('pug');
+        //     var gm = running_games[user.roomname];
+        //     // var questions = gm.getQuestions(Categories,);
+        //     var questions = [];
 
+        //     for(var i = 0; i < temp.length; i += 1){
+        //         Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
+        //             console.log(data)
+        //             questions.push(data);
+        //         })
+        //     }
+            
+        //     res({
+        //         status:
+        //             200,
+        //         page:
+        //             pug.renderFile('views/includes/displayQuestions.pug'),
+        //         questions:
+        //             questions
+        //     });
+        // });
+        
         /*
             Fired: when the chosen user clicks to continue to pick a question. 
             This also gets the questions and sends it with the questionsPick page. 
@@ -106,22 +110,19 @@ module.exports = (io, Categories, Questions) => {
             var pug = require('pug');
             var gm = running_games[user.roomname];
             var temp = gm.category;
-            var questions = [];
+            
 
-            for(var i = 0; i < temp.length; i += 1){
-                Questions.find({categoryName: gm.category[i].categoryName}).length
-                Questions.count({categoryName: gm.category[i].categoryName},function(err,data){
-                    console.log(data);
-                
+            for(var i = 0; i < 4; i += 1){
+
+                 var test =  Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, async function(err,data){
+                    io.to(gm.roomname).emit('addThisQuestion', data);
                 })
             }
             res({  
                 status:
                     200,
                 page :
-                    pug.renderFile('views/includes/questionsPick.pug'),
-                stage:
-                    questions
+                    pug.renderFile('views/includes/questionsPick.pug')
             });
             //set users screen to 
             gm.setRoom(user.username, "questionpick");
@@ -131,6 +132,7 @@ module.exports = (io, Categories, Questions) => {
             
             
         });
+        
 
         /*
             FIRED: when a user has picked a question. This will send

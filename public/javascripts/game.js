@@ -118,6 +118,19 @@
         console.log(data.question);
     });
     /*
+        FIRED: when a question is pulled from the database
+        this will display the questions for the user to pick. 
+    */
+    socket.on('addThisQuestion', function(data) {
+        console.log("adding Question ");
+        console.log(data);
+        var myElement = document.querySelector('#questions');
+        if(myElement)
+        {
+            myElement.innerHTML += data[0].question;
+        }
+    });
+    /*
     function displayQuestionandAnswer()
     {
         socket.emit('displayQuestionandAnswer',"",function(res){
@@ -176,6 +189,8 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         socket.emit('questionpicked', {questionid:id, question: question});
     }
 
+
+//Continue to work on displaying the questions.
     function continueToPickButton()
     {
         socket.emit('continueToPickclick',"",function(response) {
@@ -183,11 +198,8 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         });
     }
 
-    function getQuestions(){
-        socket.emit('displayQuestions',"",function(response){
-            console.log(response);
-            return response;
-        });
+    function displayQuestions(){
+        
     }
 
     //get catagories
