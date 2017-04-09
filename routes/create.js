@@ -6,11 +6,12 @@ module.exports = (categories,question) => {
     var assert = require('assert');
     const mongoose = require('mongoose');
     var url = 'mongodb://localhost:27017/Balderdash';
+    const ensureAuthenticated = require('../lib/auth').ensureAuthenticated;
     //const categories = mongoose.model('categoryschemas');
 
     ////////////////////////////////////////////////////////////////////////////////////////////*INSERT CATEGORY*/
     /* GET create page. */
-    router.get('/Category/create', function(req, res, next) {
+    router.get('/Category/create', ensureAuthenticated, function(req, res, next) {
         res.render('addCategory', { title: 'Create categories' });
     });
 
@@ -36,7 +37,7 @@ module.exports = (categories,question) => {
     });
     ////////////////////////////////////////////////////////////////////////////////////////////*INSERT QUESTION & ANSWER*/
     /* GET create page. */
-    router.get('/Question/create', function(req, res, next) {
+    router.get('/Question/create', ensureAuthenticated, function(req, res, next) {
         categories.find().then(cat => {
             res.render('addQuestionAnswer', { title: 'Create Questions and Answers', categories: cat});
         })
@@ -67,7 +68,7 @@ module.exports = (categories,question) => {
     });
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////*DELETE*/
     /* GET delete page. */
-    router.get('/Delete/QuestionAnswer', function(req, res, next) {
+    router.get('/Delete/QuestionAnswer', ensureAuthenticated, function(req, res, next) {
         question.find().then(q => {
             res.render('deleteQuestionAnswer', { title: 'Delete categories', questions: q });
         })
@@ -98,7 +99,7 @@ module.exports = (categories,question) => {
     });
 
     //get delete category page
-    router.get('/Delete/Category', function(req, res, next) {
+    router.get('/Delete/Category', ensureAuthenticated, function(req, res, next) {
      categories.find().then(cat => {
             res.render('deleteCategory', { title: 'Delete Cateogry', categories: cat});
         })
@@ -144,7 +145,7 @@ module.exports = (categories,question) => {
 
     ///////////////////////////////////////////////////////////////////////////////////////////*FIND*/
     /* GET find page. */
-    router.get('/Find/create', function(req, res, next) {
+    router.get('/Find/create', ensureAuthenticated, function(req, res, next) {
     res.render('findQuestionAnswer', { title: 'Find questions and answers' });
     });
 
@@ -167,7 +168,7 @@ module.exports = (categories,question) => {
 
     ///////////////////////////////////////////////////////////////////////////////////////////*UPDATE*/
     //get update page
-    router.get('/Update/QuestionAnswer', function(req, res, next) {
+    router.get('/Update/QuestionAnswer', ensureAuthenticated, function(req, res, next) {
         var id = req.query.id;
         categories.find().then(cat => {
             question.findById(id, function(err,q) {
@@ -193,7 +194,7 @@ module.exports = (categories,question) => {
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////*INSERT GAME-END INFO*/
-    router.get('/endGame/create', function(req, res, next) {
+    router.get('/endGame/create', ensureAuthenticated, function(req, res, next) {
         res.render('######addQuestionAnswer', { title: 'End of Game Information' });
     });
     // Process Add Question
@@ -224,7 +225,7 @@ module.exports = (categories,question) => {
     });
 
     /* GET home page. */
-    router.get('/select', function(req, res, next) {
+    router.get('/select', ensureAuthenticated, function(req, res, next) {
         question.find().then(q => {
             res.render('selectcq', { title: 'All Items', questions: q });
         })
