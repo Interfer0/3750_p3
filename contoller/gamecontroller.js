@@ -64,11 +64,11 @@ module.exports = (io, Categories, Questions) => {
             io.to(user.roomname).emit('userListRoom', roomMembers); 
         });
         
-        // Client to Server message
+/*        // Client to Server message
         socket.on('c2smsg', function(data, callback){
             var chatObject = {person: user.username, message: data};
             socket.broadcast.emit('s2cmsg', chatObject);
-        });
+        });*/
 
         // Notify the chat room the user disconnected
         // update the server side tracker
@@ -127,7 +127,7 @@ module.exports = (io, Categories, Questions) => {
             gm.setRoom(user.username, "questionpick");
             var question = {question:"this is the Question", answer:"An answer"};
             setTimeout(function(io,user,question){
-                gm.isUserPicking(io, user.username, question);
+                gm.isUserPicking(io, user.username, user.roomname,question);
             },30000,io,user,question);
             
         });

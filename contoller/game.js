@@ -129,26 +129,25 @@ exports.Game = class Game{
     {
         for(var i = 0;i < this.users.length; i++)
         {
-            console.log(username + " " + this.users[i].user);
+
             if(username == this.users[i].user)
             {
                 this.users[i].screen = screen;
             }
         }
-        console.log(this.users);
     }
 
-    isUserPicking(sio, user, inquestion)
+    isUserPicking(sio, user, roomname, inquestion)
     {   
         let pug = require('pug');
-        console.log(user);
-        console.log(inquestion);
+
         this.users.some(function (el){
             console.log(el);
             if(el.screen == "questionpick")
             {   
                 //set game question
-                sio.to(this.roomname).emit('gotoAnswer', {
+                console.log(sio);
+                sio.to(roomname).emit('gotoAnswer', {
                     question:
                         inquestion,
                     page: 
