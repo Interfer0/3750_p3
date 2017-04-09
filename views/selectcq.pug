@@ -1,33 +1,43 @@
 extends layout
 block content
-
-  h1 Question Management Console
-  ul
-    li
-      a(href='/Category/create') Add New Category
-    li
-      a(href='/Question/create') Add New Question and Answer
-    li
-      a(href='/Find/create') Find Category/Question/Answer
-    li
-      a(href='/Delete/QuestionAnswer') Delete Question/Answer
-    li
-      a(href='/Delete/Category') Delete Category
-  br
-  form(method='post', action='/delete/questionAnswer')
-    .form-group
-      table
-        tr
-          th
-          th Category
-          th Question
-          th Answer
-        each q in questions
-            tr#q_list_item    
-              td 
-                - var id = q.id;
-                a(href='/Update/QuestionAnswer?id=' + id)
-                  input(type='button' value='Edit' ) 
-              td #{q.categoryName}
-              td #{q.question}
-              td #{q.answer}
+  div.container
+    div.row
+      div.col-md-12
+        h1 Question Management Console
+    div.row
+      div.col-sm-2
+        button.btn-info
+          a(href='/Category/create') Add New Category
+      div.col-sm-2
+        button.btn-info
+          a(href='/Question/create') Add New Question and Answer
+      div.col-sm-2
+        button.btn-info
+          a(href='/Find/create') Find Category/Question/Answer
+      div.col-sm-2
+        button.btn-info
+          a(href='/Delete/QuestionAnswer') Delete Question/Answer
+      div.col-sm-2
+        button.btn-info
+          a(href='/Delete/Category') Delete Category
+    
+    h2 Questions
+    div.row
+      div.col-md-12
+        form(method='post', action='/delete/questionAnswer')
+          .form-group
+            table
+              tr
+                th
+                th Category
+                th Question
+                th Answer
+              each q in questions
+                  tr#q_list_item    
+                    td 
+                      - var id = q.id;
+                      a(href='/Update/QuestionAnswer?id=' + id)
+                        input(type='button' value='Edit' ) 
+                    td #{q.categoryName}
+                    td #{q.question}
+                    td #{q.answer}
