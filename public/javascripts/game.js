@@ -167,10 +167,12 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         socket.emit('continueToPickclick',"",function(response) {
             document.getElementById('gameMat').innerHTML = response.page; 
             var myElement = document.querySelector('#questions');
+            myElement.innerHTML = '<p>Testing adding HTML</p>';
             for(var i = 0; i < response.questions; i++){
-                var div = document.createElement('div');
-                    div.innerHTML = '<button id="' + response.questions[i].id +'" value="'+reponse.questions[i].question+'" onclick="toQuestDisplay()" />';
-                    myElem.appendChild(div);
+                // var div = document.createElement('div');
+                //     div.innerHTML = '<div><button id="' + response.questions[i].id +'" value="'+reponse.questions[i].question+'" onclick="toQuestDisplay()" /></div>';
+                //     myElement.appendChild(div);
+                myElement.innerHTML = '<p>' + response.questions[i] + '</p>';
             }
         });
     }

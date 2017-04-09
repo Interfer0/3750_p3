@@ -80,29 +80,29 @@ module.exports = (io, Categories, Questions) => {
             users.splice(users.indexOf(user.username),1); // remove from user tracker
         });
 
-        socket.on('displayQuestions', function(req, res){
-            console.log("displayQuestion callback.")
-            var pug = require('pug');
-            var gm = running_games[user.roomname];
-            // var questions = gm.getQuestions(Categories,);
-            var questions = [];
+        // socket.on('displayQuestions', function(req, res){
+        //     console.log("displayQuestion callback.")
+        //     var pug = require('pug');
+        //     var gm = running_games[user.roomname];
+        //     // var questions = gm.getQuestions(Categories,);
+        //     var questions = [];
 
-            for(var i = 0; i < temp.length; i += 1){
-                Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
-                    console.log(data)
-                    questions.push(data);
-                })
-            }
+        //     for(var i = 0; i < temp.length; i += 1){
+        //         Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
+        //             console.log(data)
+        //             questions.push(data);
+        //         })
+        //     }
             
-            res({
-                status:
-                    200,
-                page:
-                    pug.renderFile('views/includes/displayQuestions.pug'),
-                questions:
-                    questions
-            });
-        });
+        //     res({
+        //         status:
+        //             200,
+        //         page:
+        //             pug.renderFile('views/includes/displayQuestions.pug'),
+        //         questions:
+        //             questions
+        //     });
+        // });
         
         socket.on('continueToPickclick', function(req,res){
             var pug = require('pug');
