@@ -102,6 +102,14 @@
             }
         }
     });
+
+
+    socket.on('gotopickBestAnswer',function(data)
+    {
+        document.getElementById('gameMat').innerHTML = data.page; 
+        console.log(data);
+        console.log(data.answers);
+    });
     /*
     function displayQuestionandAnswer()
     {
