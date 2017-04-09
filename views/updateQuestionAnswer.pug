@@ -4,21 +4,35 @@ block content
     //- <script>
     //-   var category = #{resultArray.categoryName}
     //- </script>
-    form(method='POST', action='/Update/Question')
-            .form-group
-                label Current Category '#{question.categoryName}'
-                br
-                label Category
-                        select.form-control(type='select', name='categoryName' value=question.categoryName)#category
-                            each cat in categories
-                                option(value=cat.categoryName) #{cat.categoryName}
-            .form-group
-                label Question
-                input.form-control(type='text', name='question', placeholder='Enter Question', value=question.question)
-            .form-group
-                label Answer
-                input.form-control(type='text', name='answer', placeholder='Enter Answer', value=question.answer)
-            .form-group
-                input.form-control(type='hidden' name='id' value=question.id)
-            button.btn.btn-primary(type='submit') Update
+    div.container
+        div.row
+            div.col-md-12
+                h1 Updating Question
+        form(method='POST', action='/Update/Question')
+            div.row
+                div.col-md-12
+                    .form-group
+                        label Current Category '#{question.categoryName}'
+                        br
+                        label Category
+                                select.form-control(type='select', name='categoryName' value=question.categoryName)#category
+                                    each cat in categories
+                                        option(value=cat.categoryName) #{cat.categoryName}
+            div.row
+                div.col-md-12
+                    .form-group
+                        label Question
+                        input.form-control(type='text', name='question', placeholder='Enter Question', value=question.question)
+            div.row
+                div.col-md-12
+                    .form-group
+                        label Answer
+                        input.form-control(type='text', name='answer', placeholder='Enter Answer', value=question.answer)
+            div.row
+                div.col-md-12
+                    .form-group
+                        input.form-control(type='hidden' name='id' value=question.id)
+            div.row
+                div.col-md-4
+                    button.btn.btn-primary(type='submit') Update
     

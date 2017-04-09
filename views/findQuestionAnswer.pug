@@ -1,14 +1,21 @@
 extends layout
 
 block content
-    form(method='get', action='/find/Question')
-            .form-group
-                label Category
-                input.form-control(type='text', name='categories', placeholder='Enter Category', required)
-            .form-group
-                label Question
-                input.form-control(type='text', name='question', placeholder='Enter Question', required)
-            .form-group
-                label Answer
-                input.form-control(type='text', name='answer', placeholder='Enter Answer', required)
-            button.btn.btn-primary(type='submit') Find
+    div.container
+        div.row
+            form(method='get', action='/find/Question')
+                div.col-md-12
+                    .form-group
+                        label Category
+                        input.form-control(type='text', name='categories', placeholder='Enter Category', required)
+                div.row
+                    div.col-md-12
+                        .form-group
+                            label Question
+                            input.form-control(type='text', name='question', placeholder='Enter Question', required)
+                div.row
+                    div.col-md-12
+                        .form-group
+                            label Answer
+                            input.form-control(type='text', name='answer', placeholder='Enter Answer', required)
+                button.btn.btn-primary(type='submit') Find
