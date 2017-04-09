@@ -74,7 +74,7 @@ module.exports = (io, Categories, Questions) => {
         // update the server side tracker
         socket.on('disconnect', socket => {
             io.sockets.emit('userLoggedOut', user.username);
-            users.splice(users.indexOf(user.username),1); // remove from user tracker
+            
         });
 
         socket.on('displayQuestions', function(req, res){
@@ -97,12 +97,12 @@ module.exports = (io, Categories, Questions) => {
                     questions
             });
         });
-        
+
+        /*
+            Fired: when the chosen user clicks to continue to pick a question. 
+            This also gets the questions and sends it with the questionsPick page. 
+        */
         socket.on('continueToPickclick', function(req,res){
-            // Questions.findOne({},function(err,data){
-            //     console.log(data);
-            // })
-            console.log("continueToPickclick callback.")
             var pug = require('pug');
             var gm = running_games[user.roomname];
             var temp = gm.category;
@@ -126,19 +126,21 @@ module.exports = (io, Categories, Questions) => {
             //set users screen to 
             gm.setRoom(user.username, "questionpick");
             var question = {question:"this is the Question", answer:"An answer"};
-            setTimeout(function(io,user,question){
-                gm.isUserPicking(io, user.username, user.roomname,question);
-            },30000,io,user,question);
+            
+                gm.questionPickingTimeout(io, user.username, user.roomname,question);
+            
             
         });
 
-
+        /*
+            FIRED: when a user has picked a question. This will send
+            all users to the requestAnswers screen.  
+        */
         socket.on('questionpicked', function(req,res) {
-
             var gm = running_games[user.roomname];
             //console.log(gm);
             //save question in game
-            gm.pickquestion(io,req, function(res) {
+            gm.pickquestion(io,req,user, function(res) {
                 //console.log(res);
                 io.to(user.roomname).emit('gotoAnswer', {
                     question:
@@ -149,6 +151,13 @@ module.exports = (io, Categories, Questions) => {
             });
         });
 
+        /*
+            FIRED: when a user selects and answer. 
+            This calls to the game object to save the answer to the game answers array
+            This then provides the wait2 screen for the users game. 
+            Lastly it moves the user within the game to the wait2 screen, if they are the last user,
+            it will move all users to pick best answer
+        */
         socket.on('submitAnswer',function(req,res) {
             var gm = running_games[user.roomname];
             gm.saveUsersAnswer(req, user.username);
@@ -175,6 +184,9 @@ module.exports = (io, Categories, Questions) => {
             });
         });
         
+        /*
+            FIRED: when the user enters the screen to create a new game
+        */
         socket.on('newGameRoom', function (req, res){
             var pug = require('pug');
             var room = validRoomNumber();
@@ -192,7 +204,10 @@ module.exports = (io, Categories, Questions) => {
             res({ usr: users[socket.id]});           
         });
 
-
+        /*
+            FIRED: when the user creates a new game
+            This creates the game object, then moves the user into the wait01 screen
+        */
         socket.on('createNewGame', function(req,res) {
             //console.log(req);
             var roomname = req.roomname; //string of desired roomname;
@@ -241,6 +256,10 @@ module.exports = (io, Categories, Questions) => {
             });
         });
 
+        /*
+            FIRED: when user joins a room
+            Moves user to wait01, and updates list for all users
+        */
         socket.on('joinRoom', function(req,res) {
             var gm;
             
@@ -273,7 +292,7 @@ module.exports = (io, Categories, Questions) => {
                     {
                         var x = gm.randomHost();
                         var uid = Object.keys(users).find(key=> users[key] === x);
-                        console.log (x + " " + uid);
+                        //console.log (x + " " + uid);
                         gm.randomPlayerContinue(io,x);
                     }
                     else if(gm.currentPlayer == user.username)
