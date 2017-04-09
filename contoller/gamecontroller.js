@@ -108,23 +108,22 @@ module.exports = (io, Categories, Questions) => {
             var pug = require('pug');
             var gm = running_games[user.roomname];
             var temp = gm.category;
-            var questions = [];
+            
 
-            for(var i = 0; i < temp.length; i += 1){
-                Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, function(err,data){
-                    console.log(data)
-                    questions.push(data);
+            for(var i = 0; i < 4; i += 1){
+
+                 var test =  Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, async function(err,data){
+                    io.to(gm.roomname).emit('addThisQuestion', data);
                 })
             }
             res({  
                 status:
                     200,
                 page :
-                    pug.renderFile('views/includes/questionsPick.pug'),
-                questions:
-                    questions
+                    pug.renderFile('views/includes/questionsPick.pug')
             });
         });
+        
 
 
         socket.on('questionpicked', function(req,res) {
