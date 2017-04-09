@@ -107,8 +107,15 @@
     socket.on('gotopickBestAnswer',function(data)
     {
         document.getElementById('gameMat').innerHTML = data.page; 
+        document.querySelector('#displayquestion').value = data.question;
+        var Elem = document.querySelector('#answers');
+        for(var i = 0; i < data.answers.length; i++)
+        {
+            Elem.innerHTML += data.answers[i].answer + "<br>";
+        }
+
         console.log(data);
-        console.log(data.answers);
+        console.log(data.question);
     });
     /*
     function displayQuestionandAnswer()

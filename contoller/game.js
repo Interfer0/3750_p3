@@ -69,6 +69,7 @@ exports.Game = class Game{
     }
 
     wait2status(sio,user){
+        let pug = require('pug');
         //change users screen to wait2
         this.setRoom(user.username, "wait2");
         //broadcase all usernames in wait2
