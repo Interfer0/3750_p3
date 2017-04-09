@@ -1,11 +1,33 @@
 extends layout
-
 block content
-  <ul>
-    <li><a href='/Category/create'>Add New Category
-    <li><a href='/Question/create'>Add New Question and Answer
-    <li><a href='/Find/create'>Find Category/Question/Answer
-    <li><a href='/Delete/QuestionAnswer'>Delete Question/Answer
-    <li><a href='/Delete/Category'>Delete Category
-    <li><a href='/Update/QuestionAnswer'>Update Question/Answer
-  </ul>
+
+  h1 Question Management Console
+  ul
+    li
+      a(href='/Category/create') Add New Category
+    li
+      a(href='/Question/create') Add New Question and Answer
+    li
+      a(href='/Find/create') Find Category/Question/Answer
+    li
+      a(href='/Delete/QuestionAnswer') Delete Question/Answer
+    li
+      a(href='/Delete/Category') Delete Category
+  br
+  form(method='post', action='/delete/questionAnswer')
+    .form-group
+      table
+        tr
+          th
+          th Category
+          th Question
+          th Answer
+        each q in questions
+            tr#q_list_item    
+              td 
+                - var id = q.id;
+                a(href='/Update/QuestionAnswer?id=' + id)
+                  input(type='button' value='Edit' ) 
+              td #{q.categoryName}
+              td #{q.question}
+              td #{q.answer}

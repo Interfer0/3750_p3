@@ -3,12 +3,10 @@ extends layout
 block content
     .container
         h1 Delete Category Form
-        //include ./includes/messages.pug
-        form(method='post', action='/delete/category')
+        form(method='post', action='/delete/category/')
             .form-group
-                //- label Category
-                //- <select>#addCategory
-                //-     <option>
-                label Category
-                input.form-control(type='text', id='catergoryName', name='categoryName', placeholder='Category', required)
-            button.btn.btn-primary(type='submit') Delete Category
+                label Select a Category To Delete
+                    select.form-control(type='select', name='categoryName')#category
+                        each cat in categories
+                            option(value=cat.categoryName) #{cat.categoryName}
+            button.btn.btn-primary(type='submit') Delete

@@ -20,7 +20,19 @@ h1,h2,h3 {
 .login {
     color: green;
 }
+table, td, th { 
+border: 1px solid #ddd;
+text-align: left;
+}
 
+table {
+border-collapse: collapse;
+width: 100%;
+}
+
+th, td {
+padding: 15px;
+}
 .logout {
     color: red;
 }
@@ -72,7 +84,7 @@ footer {
     position: fixed; 
     bottom: 1.5vh; 
     height: 1vh; 
-    background-color: #f8f8f8; 
+    /*background-color: #f8f8f8; */
 } 
  
 p.copyright { 
