@@ -228,8 +228,24 @@ $(document).on('click', "#submitAnswer", submitAnswer)
             }
         );
     }
+
+    //Clear validation errors
+    $(document).on('click', "#roomInput", clearInputError)
+    $(document).on('click', "#playerInput", clearInputError)
+    $(document).on('click', "#gamesInput", clearInputError)
+    $(document).on('click', "#CatList", clearInputError)
+    $(document).on('click', "#myCatList", clearInputError)
+    //$(document).on('click', "#submitRoomNumber", clearInputError)
     
 
+    
+    function clearInputError(){
+        var lblError = document.getElementById("lblError");
+
+        this.style = "background-color: white";
+        this.placeholder = "";
+        lblError.style.display = "none";
+    }
 
     //send new game info
     function startNewGame()
@@ -240,27 +256,56 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         var catInput = [];
         
         var cats = document.querySelector('#myCatList').options;
-        for(aaa in cats){ //a array of all categories selected
-            if(!isNaN(aaa) && cats[aaa].value != "-1")
-            {   
-                catInput.push({_id:cats[aaa].value,categoryName:cats[aaa].text});
-            }
-        }
-        socket.emit("createNewGame",{
-            "roomname" : roomname,
-            "players" : playerInput,
-            "gamerounds" : numberofgames,
-            "category" : catInput
-        }, function (res){
-            //handle failure
-            if(res.status == 200)
-            {   
-                document.getElementById('gameMat').innerHTML = res.page; 
-                updatewaitlist(res.users, res.stage);
-                updateTitle(res.room);
-            }
-        });
+        
+        //validation field variables
+        var submit = document.getElementById("newGameSubmitButton");
+        var roomInput = document.getElementById("roomInput");
+        var playerInput = document.getElementById("playerInput");
+        var gamesInput = document.getElementById("gamesInput");
+        var myList = document.getElementById("myCatList");
+        var myListlength = document.getElementById("myCatList").childElementCount;   
+        var lblError = document.getElementById("lblError");   
 
+        clearInputError();       
+        if(roomInput.value === ""){
+            roomInput.style = "background-color:#ffb3b3";
+            roomInput.placeholder = "REQUIRED";
+        }
+        if(gamesInput.value === ""){
+            gamesInput.style = "background-color:#ffb3b3";
+            gamesInput.placeholder = "REQUIRED";
+        }
+        if(playerInput.value === ""){
+            playerInput.style = "background-color:#ffb3b3";
+            playerInput.placeholder = "REQUIRED";
+        }
+        if(myListlength < 6){
+            lblError.style.display = "inline";
+            return;
+        } 
+        else{
+
+            for(aaa in cats){ //a array of all categories selected
+                if(!isNaN(aaa) && cats[aaa].value != "-1")
+                {   
+                    catInput.push({_id:cats[aaa].value,categoryName:cats[aaa].text});
+                }
+            }
+            socket.emit("createNewGame",{
+                "roomname" : roomname,
+                "players" : playerInput,
+                "gamerounds" : numberofgames,
+                "category" : catInput
+            }, function (res){
+                //handle failure
+                if(res.status == 200)
+                {   
+                    document.getElementById('gameMat').innerHTML = res.page; 
+                    updatewaitlist(res.users, res.stage);
+                    updateTitle(res.room);
+                }
+            });
+        }//end else
     };
 
 
@@ -268,14 +313,22 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     //join room
     function joinRoom()
     {
-        socket.emit('joinRoom',{room : document.getElementById('roomInput').value}, function(res){
-            if(res.status == 200)
-            {
-                document.getElementById('gameMat').innerHTML = res.page;   
-                updatewaitlist(res.users, res.stage);
-                updateTitle(res.room);
-            }
-        });
+        var roomInput = document.getElementById('roomInput');
+
+        if(roomInput.value === ""){
+            roomInput.style = "background-color: #ffb3b3";
+            roomInput.placeholder = "REQUIRED";
+        }
+        else{
+            socket.emit('joinRoom',{room : document.getElementById('roomInput').value}, function(res){
+                if(res.status == 200)
+                {
+                    document.getElementById('gameMat').innerHTML = res.page;   
+                    updatewaitlist(res.users, res.stage);
+                    updateTitle(res.room);
+                }
+            });
+        }//end else
     }
 
     function updatewaitlist(users){
@@ -303,7 +356,6 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         var myElem = document.querySelector('#roomnametitle');
         myElem.innerHTML = room;
     }
-
 
 function moveToMyList()
 {
