@@ -85,7 +85,8 @@ module.exports = (categories,question,gameEnd) => {
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('questionschemas').find({question: question.question}).count(function(error, result) {
+            db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+            //db.collection('questionschemas').find({question: question.question}).count(function(error, result) {
                 if (result != 0 && error == null) {
                     db.collection('questionschemas').deleteOne(question, function(err, result) {
                         assert.equal(null, err);
@@ -145,25 +146,36 @@ module.exports = (categories,question,gameEnd) => {
 
     ///////////////////////////////////////////////////////////////////////////////////////////*FIND*/
     /* GET find page. */
-    router.get('/Find/create', ensureAuthenticated, function(req, res, next) {
-    res.render('findQuestionAnswer', { title: 'Find questions and answers' });
+   router.get('/Find/create', function(req, res, next) {
+       question.find().then(q => {
+            res.render('/select/', { title: 'Find Questions and Answers', question: q});
+        })
+        .catch(next);
+    /router.get('/Find/create', ensureAuthenticated, function(req, res, next) {
+    /res.render('findQuestionAnswer', { title: 'Find questions and answers' });
     });
 
-    //process find question
-    router.get('/find/Question', function(req, res, next) {
-        var resultArray = [];
+    // Process Add Question
+    router.post('/create/addQuestionAnswer', (req, res, next) => {
+        var question = {
+            categoryName: req.body.category,
+            question: req.body.question.toLowerCase(),
+            answer: req.body.answer.toLowerCase()
+        };
+
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            var cursor = db.collection('questionschemas').find();
-            cursor.forEach(function(doc, err) {
-                assert.equal(null, err);
-                resultArray.push(doc);
-            }, function() {
-                console.log('Item found ' + resultArray[0]);
-                db.close();
-                res.redirect('/select');
+            db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+                if (result == 0 && error == null) {
+                    db.collection('questionschemas').insertOne(question, function(err, result) {
+                        assert.equal(null, err);
+                        console.log('Question and Answer inserted');
+                        db.close();
+                    });
+                }
             });
         });
+        res.redirect('/select');
     });
 
     ///////////////////////////////////////////////////////////////////////////////////////////*UPDATE*/
