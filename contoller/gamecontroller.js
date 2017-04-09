@@ -92,6 +92,16 @@ module.exports = (io, Categories, Questions) => {
         //         })
         //     }
             
+        //     res({
+        //         status:
+        //             200,
+        //         page:
+        //             pug.renderFile('views/includes/displayQuestions.pug'),
+        //         questions:
+        //             questions
+        //     });
+        // });
+        
         /*
             Fired: when the chosen user clicks to continue to pick a question. 
             This also gets the questions and sends it with the questionsPick page. 
