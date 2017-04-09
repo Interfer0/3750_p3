@@ -127,7 +127,11 @@
         var myElement = document.querySelector('#questions');
         if(myElement)
         {
-            myElement.innerHTML += data[0].question;
+            myElement.innerHTML += '<div>' +
+            '<form method="post">'+
+            '<input type=text name =' + data[0]._id +' value='+data[0].question+'>'+
+            '<button type="button" value="submit" onclick="submitAnswer()">Choose</button>'+
+            '</div><div><br></div>';
         }
     });
     /*
