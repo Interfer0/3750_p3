@@ -20,8 +20,7 @@ exports.Game = class Game{
     }
 
     pickquestion(sio,req,user, res){
-        this.roundquestion = "Where am I?";// this needs to get the question from db in its scheme BSON
-        
+        this.roundquestion = req.question;
         //update all users to createAnswer screen
         for( var i = 0, len = this.users.length; i<len; i++)
         {
@@ -143,13 +142,16 @@ exports.Game = class Game{
 
     questionPickingTimeout(sio, user, roomname, question)
     {   
+
         let pug = require('pug');
         setTimeout(function(io,user,roomname,question,gm){
-            
+
             gm.users.some(function (el){
 
                 if(el.screen == "questionpick")
                 {   
+
+                    gm.rounquestion = question;
                     //set game question
                     for(var i = 0; i< gm.users.length; i++)
                     {
@@ -182,7 +184,7 @@ exports.Game = class Game{
                 if(el.screen == "requestAnswers")
                 {   
                     //set game question
-                    var shuffledAnswers = gm.shuffle(this.answers);
+                    var shuffledAnswers = gm.shuffle(gm.answers);
                     gm.roundquestion = question;
                     for(var i = 0;i < gm.users.length; i++)
                     {

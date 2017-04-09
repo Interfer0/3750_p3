@@ -86,7 +86,9 @@
 
     socket.on('gotoAnswer', (data) => {
         document.getElementById('gameMat').innerHTML = data.page;
-        document.querySelector("#question") .innerHTML = data.question;
+        document.querySelector("#question") .innerHTML = data.question[0].question;
+        console.log("here");
+        console.log(data.question);
     });
 
     socket.on('usersInWait',function(data)

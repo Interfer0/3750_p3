@@ -109,12 +109,12 @@ module.exports = (io, Categories, Questions) => {
         socket.on('continueToPickclick', function(req,res){
             var pug = require('pug');
             var gm = running_games[user.roomname];
-            var temp = gm.category;
+            var temp = gm.shuffle(gm.category);
             
 
-            for(var i = 0; i < 4; i += 1){
+            for(var i = 0; i < 5; i += 1){
 
-                 var test =  Questions.find({categoryName: gm.category[i].categoryName}).random(1, true, async function(err,data){
+                 Questions.find({categoryName: temp[i].categoryName}).random(1, true, async function(err,data){
                     io.to(gm.roomname).emit('addThisQuestion', data);
                 })
             }
@@ -126,9 +126,11 @@ module.exports = (io, Categories, Questions) => {
             });
             //set users screen to 
             gm.setRoom(user.username, "questionpick");
-            var question = {question:"this is the Question", answer:"An answer"};
             
-                gm.questionPickingTimeout(io, user.username, user.roomname,question);
+            Questions.find({categoryName: temp[0].categoryName}).random(1, true, async function(err,data){
+                    gm.questionPickingTimeout(io, user.username, user.roomname,data);
+            })
+                
             
             
         });
