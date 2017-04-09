@@ -114,7 +114,7 @@ module.exports = (io, Categories, Questions) => {
 
             for(var i = 0; i < 5; i += 1){
 
-                 Questions.find({categoryName: temp[i].categoryName}).random(1, true, async function(err,data){
+                 Questions.find({categoryName: temp[i].categoryName}).random(1, true, function(err,data){
                     io.to(gm.roomname).emit('addThisQuestion', data);
                 })
             }
@@ -127,7 +127,7 @@ module.exports = (io, Categories, Questions) => {
             //set users screen to 
             gm.setRoom(user.username, "questionpick");
             
-            Questions.find({categoryName: temp[0].categoryName}).random(1, true, async function(err,data){
+            Questions.find({categoryName: temp[0].categoryName}).random(1, true, function(err,data){
                     gm.questionPickingTimeout(io, user.username, user.roomname,data);
             })
                 

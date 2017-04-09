@@ -124,8 +124,6 @@
         this will display the questions for the user to pick. 
     */
     socket.on('addThisQuestion', function(data) {
-        console.log("adding Question ");
-        console.log(data);
         var myElement = document.querySelector('#questions');
         if(myElement)
         {
@@ -238,7 +236,6 @@ $(document).on('click', "#submitAnswer", submitAnswer)
             document.querySelector("#roomInput").value = res.roomid; 
         });
         socket.emit('getCats', "", function(res){
-            console.log(res);
             var catlist = document.querySelector('#CatList' );
             for(var r in res.categories)
             {

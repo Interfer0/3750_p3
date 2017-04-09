@@ -152,6 +152,7 @@ exports.Game = class Game{
                 {   
 
                     gm.rounquestion = question;
+                    gm.roundA
                     //set game question
                     for(var i = 0; i< gm.users.length; i++)
                     {
