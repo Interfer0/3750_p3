@@ -170,6 +170,24 @@
         }
     });
 
+    socket.on('timesUp', function(data) {
+        socket.emit('newRound', function(data) {
+            document.getElementById('gameMat').innerHTML = data.page;
+            var Elem = document.querySelector('#Endtotals');
+            if(Elem)
+            {
+                for(var i = 0; i < data.users; i++)
+                {
+                    var div = document.createElement('div');
+                    div.innerHTML = data.users[i].user + ": " + data.users[i].score + "<br>"
+                    Elem.appendChild(div);
+                }
+            } else {
+            updatewaitlist(data.users);
+            }
+        });
+    });
+
     socket.on('showScores', function(data) {
         document.getElementById('gameMat').innerHTML = data.page;
         var Elem = document.querySelector('#users');

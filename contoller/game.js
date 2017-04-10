@@ -93,7 +93,7 @@ exports.Game = class Game{
 
     sendUserlistWait3(sio,req,user)
     {
-        var pug = require('pug');
+        let pug = require('pug');
                 //set users screen object to wait3
         this.setRoom(user.username, "wait3");
         //if all users are in wait3, move user to round score
@@ -107,6 +107,7 @@ exports.Game = class Game{
         }
         if(allOnWait3)
         {
+            //var pug = require('pug');
             //calculate score, emit to score screen, kick of new time for engame activities
             var scorelist = this.calculateScores();
             sio.to(this.roomname).emit('showScores',{
@@ -118,7 +119,13 @@ exports.Game = class Game{
                     this.users
             })
             //wait and send continue to new game to users
-            
+                    let pug = require('pug');
+        
+        //set the timer for answering
+        setTimeout(function(sio,room){
+            sio.to(room).emit('timesUp');
+        },10000,sio,this.roomname);
+
         } else
         {
             //emit wait3 userlist
@@ -319,13 +326,26 @@ exports.Game = class Game{
                     {
                         if(this.users[i].user != this.users[r].chosenAnswer.user)
                         {
-                            this.users[r].user.score += 1;
+                            this.users[r].score += 1;
                         }
                     }
                 }
             }
         }
         return scores;
+    }
+
+    resetGame()
+    {
+        for(var i = 0; i < this.users.length; i++)
+        {
+            this.users[i].screen = "wait1";
+            this.users[i].chosenAnswer = {};
+
+        }
+        this.round += 1;
+        this.roundquestion = {};
+        this.answers = [];
     }
 
 };

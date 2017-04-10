@@ -336,14 +336,14 @@ module.exports = (io, Categories, Questions) => {
                 {
                     user.roomname = req.room;
                     gm = running_games[req.room];
-                    var roomUsers;
+                    gm.resetGame();
                     res({  
                         status:
                             200,
                         page :
                             pug.renderFile('views/includes/wait01.pug',[room = gm.roomname]),
                         users :
-                            roomUsers,
+                            gm.users,
                         room :
                             req.room,
                         stage:
@@ -357,7 +357,14 @@ module.exports = (io, Categories, Questions) => {
             }
             else
             {
-                //place holder for last round
+
+                res({
+                    page:
+                        pug.renderFile('views/gameover.pug'),
+                    users:
+                        this.users
+                })
+                delete running_games[user.roomname];
             }
         });
 
