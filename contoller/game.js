@@ -93,8 +93,8 @@ exports.Game = class Game{
 
     sendUserlistWait3(sio,req,user)
     {
-        let pug = require('pug');
-                //set users screen object to wait3
+        let Pug = require('pug');
+        //set users screen object to wait3
         this.setRoom(user.username, "wait3");
         //if all users are in wait3, move user to round score
         var allOnWait3 = true;
@@ -114,7 +114,7 @@ exports.Game = class Game{
                 scores:
                     scorelist,
                 page:
-                    pug.renderFile('views/includes/endRound.pug'),
+                    Pug.renderFile('views/includes/endRound.pug'),
                 users:
                     this.users
             })

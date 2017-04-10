@@ -329,13 +329,13 @@ module.exports = (io, Categories, Questions) => {
         });
 
         socket.on('newRound', function(req,res){
-            var gm;
+            var gm = running_games[req.room];
             if(gm.gamerounds > 0){
                 //check if room exists return room doesn't exist if false
                 if(running_games[req.room] != null)
                 {
                     user.roomname = req.room;
-                    gm = running_games[req.room];
+                    
                     gm.resetGame();
                     res({  
                         status:
