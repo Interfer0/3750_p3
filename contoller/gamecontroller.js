@@ -307,11 +307,12 @@ module.exports = (io, Categories, Questions) => {
                     {
                         var x = gm.randomHost();
                         var uid = Object.keys(users).find(key=> users[key] === x);
-                        //console.log (x + " " + uid);
-                        gm.randomPlayerContinue(io,x);
+                        
+                        gm.randomPlayerContinue(io,x,res);
                     }
                     else if(gm.currentPlayer == user.username)
                     {
+                        
                         gm.randomPlayerContinue(io, user.username,res);
                     }
                 }

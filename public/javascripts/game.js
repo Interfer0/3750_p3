@@ -70,8 +70,8 @@
         updatewaitlist(data.users);
     })
 
-    socket.on('gotoPickQuestion', (data) => {
-        console.log(username + " | " + data.user);
+    socket.on('gotoPickQuestion', (data) => { 
+        //console.log(username + " | " + data.user); 
         if(data.user == username)
         {
             var button = document.createElement("button");
@@ -123,6 +123,7 @@
         }
     });
 
+
     
 
     /*
@@ -167,6 +168,38 @@
                 }
             }
         }
+    });
+
+    socket.on('showScores', function(data) {
+        document.getElementById('gameMat').innerHTML = data.page;
+        var Elem = document.querySelector('#users');
+        for(var i = 0; i < data.scores.length;i++)
+        {
+            var div = document.createElement('div');
+            div.innerHTML = data.scores[i].user + " chose the answer of " + 
+            data.scores[i].chose.answer + " by " + data.scores[i].chose.user + " who received 1 point."
+
+            if(data.scores[i].user == data.scores[i].chose.user)
+            {
+                div.innerHTML = data.scores[i].user + " chose their own answer and receiver no points";
+            }
+            if(data.scores[i].chose.isCorrect)
+            {
+                div.innerHTML = data.scores[i].user + " chose the correct answer and was awarded 2 points";
+            }
+            Elem.appendChild(div);
+        }
+        var Elem2 = document.querySelector('#totals');
+        var div = document.createElement('div');
+        div.innerHTML = "Game Totals";
+        Elem2.appendChild(div);
+        for(var i = 0; i < data.users.length; i++)
+            {
+                var div = document.createElement('div');
+                div.innerHTML = data.users[i].user + ": " + data.users[i].score + "<br>"
+                Elem2.appendChild(div);
+            }
+
     });
 
     /*
@@ -223,7 +256,6 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     */
     function submitpickedBestAnswer(te)
     {
-        console.log(te.srcElement.value);
         socket.emit('chosenBestAnswer', te.srcElement.value, function(data){
             //display wait3 screen
             document.getElementById('gameMat').innerHTML = data.page; 
@@ -251,7 +283,6 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     }
 
     function displayQuestions(te){
-        console.log(te.srcElement.value);
         socket.emit('questionpicked', te.srcElement.value, function(data){
         //display wait3 screen
           document.getElementById('gameMat').innerHTML = data.page; 

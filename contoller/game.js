@@ -47,7 +47,8 @@ exports.Game = class Game{
                 user:username, 
                 screen:"wait1", 
                 socketID:socket.id,
-                chosenAnswer:{}
+                chosenAnswer:{},
+                score: 0
             });
         }
         console.log(username + " has joined " + this.roomname);
@@ -63,8 +64,6 @@ exports.Game = class Game{
 
     saveUsersAnswer(req, username)
     {
-        console.log("saving users answer");
-        console.log(req);
         for(var i = 0;i < this.users.length; i++)
         {
             if(username == this.users[i].user)
@@ -94,6 +93,7 @@ exports.Game = class Game{
 
     sendUserlistWait3(sio,req,user)
     {
+        var pug = require('pug');
                 //set users screen object to wait3
         this.setRoom(user.username, "wait3");
         //if all users are in wait3, move user to round score
@@ -109,6 +109,16 @@ exports.Game = class Game{
         {
             //calculate score, emit to score screen, kick of new time for engame activities
             var scorelist = this.calculateScores();
+            sio.to(this.roomname).emit('showScores',{
+                scores:
+                    scorelist,
+                page:
+                    pug.renderFile('views/includes/endRound.pug'),
+                users:
+                    this.users
+            })
+            //wait and send continue to new game to users
+            
         } else
         {
             //emit wait3 userlist
@@ -162,7 +172,8 @@ exports.Game = class Game{
     }
 
     randomPlayerContinue(sio,userid, response){
-        this.currentPlayer = userid;
+
+            this.currentPlayer = userid;
        sio.to(this.roomname).emit('gotoPickQuestion', {user:userid});
     }
 
@@ -293,20 +304,28 @@ exports.Game = class Game{
         var scores = [];
         for(var i = 0; i < this.users.length; i++)
         {
-            console.log(this.users[i].chosenAnswer);
+            
             scores.push({user:this.users[i].user, chose:this.users[i].chosenAnswer});
+            if(this.users[i].chosenAnswer.isCorrect)
+            {
+                this.users[i].score += 2;
+            }
+
             if(this.users[i].chosenAnswer.user)
             {
-                for(var i = 0; i < this.users.length;i++)
+                for(var r = 0; r < this.users.length;r++)
                 {
-                    if(this.users[i].chosenAnswer.user == this.users[i].user)
+                    if(this.users[r].chosenAnswer.user == this.users[r].user)
                     {
-
+                        if(this.users[i].user != this.users[r].chosenAnswer.user)
+                        {
+                            this.users[r].user.score += 1;
+                        }
                     }
                 }
             }
         }
-        console.log(scores);
+        return scores;
     }
 
 };
