@@ -85,8 +85,8 @@ module.exports = (categories,question,gameEnd) => {
 
         mongo.connect(url, function(err, db) {
             assert.equal(null, err);
-            db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
-            //db.collection('questionschemas').find({question: question.question}).count(function(error, result) {
+            //db.collection('questionschemas').find({categoryName: question.categoryName, question: question.question, answer: question.answer}).count(function(error, result) {
+            db.collection('questionschemas').find({question: question.question}).count(function(error, result) {
                 if (result != 0 && error == null) {
                     db.collection('questionschemas').deleteOne(question, function(err, result) {
                         assert.equal(null, err);
