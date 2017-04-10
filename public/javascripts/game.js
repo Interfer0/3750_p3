@@ -200,6 +200,7 @@ $(document).on("click", "#newGameButton", newGameRoom);
 $(document).on("click", "#newGameSubmitButton", startNewGame);
 $(document).on("click", "#cancelQuestions", cancelNewGame);
 $(document).on("click", "#continueToPickButton", continueToPickButton);
+$(document).on("click", "#addAllCategoriesButton", moveAllToList);
 
 //#cheatToQuestDisplay should be changed to any button pressed for a question
 //That click will then take the question, or question id and return it to the server
@@ -408,7 +409,13 @@ function moveToList()
   catlist.selectedIndex = -1;
   mycatlist.selectedIndex = -1;
 }
-    
+
+function moveAllToList()
+{
+    $('#CatList option').clone().appendTo('#myCatList');
+    $('#CatList option').remove();
+}
+
     //wait in new room
     
     //add new user 
