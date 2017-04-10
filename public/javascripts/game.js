@@ -135,7 +135,7 @@
         {
             var div = document.createElement('div');
             div.innerHTML = data[0].question;
-            div.value = data[0].question;
+            div.value = data;
             div.onclick  = displayQuestions;
             div.style.background = "blue";
             div.style.margin = "10px";
@@ -250,6 +250,7 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     }
 
     function displayQuestions(te){
+        console.log(te.srcElement.value);
         socket.emit('questionpicked', te.srcElement.value, function(data){
         //display wait3 screen
           document.getElementById('gameMat').innerHTML = data.page; 

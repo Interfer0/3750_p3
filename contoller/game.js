@@ -20,10 +20,9 @@ exports.Game = class Game{
     }
 
     pickquestion(sio,req,user, res){
-        console.log(req);
-        this.roundquestion = req.question;
+        this.roundquestion = req;
         this.answers.push({
-                    answer:req.question[0].answer,
+                    answer:req[0].answer,
                     isCorrect:true
                 });
         //update all users to createAnswer screen

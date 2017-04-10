@@ -152,7 +152,7 @@ module.exports = (io, Categories, Questions) => {
         */
         socket.on('questionpicked', function(req,res) {
             var gm = running_games[user.roomname];
-            //console.log(gm);
+            console.log(req);
             //save question in game
             gm.pickquestion(io,req,user, function(res) {
                 //console.log(res);
