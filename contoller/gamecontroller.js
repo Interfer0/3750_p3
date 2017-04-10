@@ -327,6 +327,40 @@ module.exports = (io, Categories, Questions) => {
             }) 
         });
 
+        socket.on('newRound', function(req,res){
+            var gm;
+            if(gm.gamerounds > 0){
+                //check if room exists return room doesn't exist if false
+                if(running_games[req.room] != null)
+                {
+                    user.roomname = req.room;
+                    gm = running_games[req.room];
+                    var roomUsers;
+                    res({  
+                        status:
+                            200,
+                        page :
+                            pug.renderFile('views/includes/wait01.pug',[room = gm.roomname]),
+                        users :
+                            roomUsers,
+                        room :
+                            req.room,
+                        stage:
+                            "wait1"
+                    });            
+                    var x = gm.randomHost();
+                    var uid = Object.keys(users).find(key=> users[key] === x);
+                    //console.log (x + " " + uid);
+                    gm.randomPlayerContinue(io,x);
+                }
+            }
+            else
+            {
+                //place holder for last round
+            }
+        });
+
+
         function getUser() {
             return user;
         }
@@ -342,20 +376,6 @@ module.exports = (io, Categories, Questions) => {
             }        
         }
     });// end on connection event
-
-// function getQuestions(categories){
-//     Questions.findOne({},function(err,data){
-//         console.log(data);
-//     })
-//                 var gm = running_games[user.roomname];
-//             var temp = gm.category;
-//             var questions = [];
-//     var questions[]
-//     for(var i = 0; i < temp.length; i += 1){
-//         questions.push(Questions.findOne().$where(gm.category[i].categoryName))
-//     }
-//     return questions
-// }
 
     function getrandomroom() 
     {
