@@ -136,7 +136,7 @@
             var div = document.createElement('div');
             div.innerHTML = data[0].question;
             div.value = data[0].question;
-            div.onclick  = clickedQuestion;
+            div.onclick  = displayQuestions;
             div.style.background = "blue";
             div.style.margin = "10px";
             div.style.padding = "5px";
@@ -248,8 +248,11 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         });
     }
 
-    function displayQuestions(){
-        
+    function displayQuestions(te){
+        socket.emit('questionpicked', te.srcElement.value, function(data){
+        //display wait3 screen
+          document.getElementById('gameMat').innerHTML = data.page; 
+        });
     }
 
     //get catagories
