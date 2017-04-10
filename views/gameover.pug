@@ -1,9 +1,12 @@
-extends layout2
+extends layout
 
 block content
     .container
         h1 Game Over
         include ./includes/messages.pug
+        form(method='post', action='/create/GameOver')
+            .form-group
+                label Players
         <ul>
             //Need to modify to display player data
             <li><data values=users:userId>player 1</data></li>

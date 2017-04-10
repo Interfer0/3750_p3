@@ -353,7 +353,59 @@ function moveToList()
   catlist.selectedIndex = -1;
   mycatlist.selectedIndex = -1;
 }
-    
+
+$(document).on("click", "#addAllCategories", moveAllToList());
+function moveAllToList()
+{
+    var from_array = new Array('Pink',1,2,'Green',4,'Yellow');
+    // this array has the values for the source list
+    var to_array = new Array('Red',3,5);
+    // this array has the values for the destination list(if any)
+    function moveoutid()
+    {
+    var sda = document.getElementById('xxx');
+    var len = sda.length;
+    var sda1 = document.getElementById('yyy');
+    for(var j=0; j<len; j++)
+    {
+    if(sda[j].selected)
+    {
+    var tmp = sda.options[j].text;
+    var tmp1 = sda.options[j].value;
+    sda.remove(j);j--;
+    var y=document.createElement('option');
+    y.text=tmp;
+    try
+    {sda1.add(y,null);
+    }
+    catch(ex)
+    {
+    sda1.add(y);
+    } }
+    }}function moveinid(){
+    var sda = document.getElementById('xxx');
+    var sda1 = document.getElementById('yyy');
+    var len = sda1.length;
+    for(var j=0; j<len; j++)
+    {
+    if(sda1[j].selected)
+    {
+    var tmp = sda1.options[j].text;
+    var tmp1 = sda1.options[j].value;
+    sda1.remove(j); j--;
+    var y=document.createElement('option');
+    y.text=tmp;
+    try
+    {
+    sda.add(y,null);
+    }
+    catch(ex)
+    { sda.add(y); }}
+    }
+    }
+
+}
+
     //wait in new room
     
     //add new user 

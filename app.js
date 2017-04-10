@@ -35,6 +35,7 @@ const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection })
 
 const Cat = require('./models/catModel')(mongoose);
 const Quest = require('./models/questModel')(mongoose);
+const GE = require('./models/category')(mongoose);
 
 /*Definitions, Famous People, Acronyms, Movie Headlines, and Ludicrous Laws*/
 ///////////////////////////////////////////////////////////////////////////////////*START LOAD MONGO DATA*/
@@ -253,7 +254,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var game = require('./routes/game');
 var select = require('./routes/select');
-var create = require('./routes/create')(Cat, Quest);
+var create = require('./routes/create')(Cat, Quest, GE);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

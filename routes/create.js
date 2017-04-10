@@ -1,4 +1,4 @@
-module.exports = (categories,question) => {
+module.exports = (categories,question,gameEnd) => {
     var express = require('express');
     var router = express.Router();
     var mongo = require('mongodb').MongoClient;
@@ -194,11 +194,15 @@ module.exports = (categories,question) => {
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////*INSERT GAME-END INFO*/
-    router.get('/endGame/create', ensureAuthenticated, function(req, res, next) {
-        res.render('######addQuestionAnswer', { title: 'End of Game Information' });
+    router.get('/EndGame/create', ensureAuthenticated, function(req, res, next) {
+        gameEnd.find().then(ge => {
+            res.render('gameover', { title: 'End of Game Information', gameEnd: g});
+        })
+        .catch(next);
     });
-    // Process Add Question
-    router.post('/create/######addQuestionAnswer', (req, res, next) => {
+
+    // Process end of game info
+    router.post('/create/GameOver', (req, res, next) => {
         var endInfo = {
             gameRoomName: req.body.gameRoomName.toLowerCase(),
             player: req.body.player.toLowerCase(),
