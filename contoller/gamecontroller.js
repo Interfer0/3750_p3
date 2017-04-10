@@ -152,7 +152,6 @@ module.exports = (io, Categories, Questions) => {
         */
         socket.on('questionpicked', function(req,res) {
             var gm = running_games[user.roomname];
-            console.log(req);
             //save question in game
             gm.pickquestion(io,req,user, function(res) {
                 //console.log(res);
@@ -300,8 +299,10 @@ module.exports = (io, Categories, Questions) => {
                         "wait1"
                 });            
                 //if room is now full, pick a random user and send them the next button. 
+                console.log(gm.players + " | " + gm.users.length);
                 if(gm.players == gm.users.length)
                 {
+                    console.log("here now01")
                     if(gm.currentPlayer == undefined)
                     {
                         var x = gm.randomHost();
@@ -311,7 +312,7 @@ module.exports = (io, Categories, Questions) => {
                     }
                     else if(gm.currentPlayer == user.username)
                     {
-                        gm.randomPlayerContinue(io, user.username);
+                        gm.randomPlayerContinue(io, user.username,res);
                     }
                 }
             } 

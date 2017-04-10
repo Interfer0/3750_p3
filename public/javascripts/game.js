@@ -71,7 +71,7 @@
     })
 
     socket.on('gotoPickQuestion', (data) => {
-        //console.log(username + " | " + data.user);
+        console.log(username + " | " + data.user);
         if(data.user == username)
         {
             var button = document.createElement("button");
@@ -326,7 +326,7 @@ $(document).on('click', "#submitAnswer", submitAnswer)
 
         this.style = "background-color: white";
         this.placeholder = "";
-        lblError.style.display = "none";
+        //lblError.style.display = "none";
     }
 
     //send new game info
@@ -342,7 +342,7 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         //validation field variables
         var submit = document.getElementById("newGameSubmitButton");
         var roomInput = document.getElementById("roomInput");
-        var playerInput = document.getElementById("playerInput");
+        var playerInput2 = document.getElementById("playerInput");
         var gamesInput = document.getElementById("gamesInput");
         var myList = document.getElementById("myCatList");
         var myListlength = document.getElementById("myCatList").childElementCount;   
@@ -357,9 +357,9 @@ $(document).on('click', "#submitAnswer", submitAnswer)
             gamesInput.style = "background-color:#ffb3b3";
             gamesInput.placeholder = "REQUIRED";
         }
-        if(playerInput.value === ""){
-            playerInput.style = "background-color:#ffb3b3";
-            playerInput.placeholder = "REQUIRED";
+        if(playerInput2.value === ""){
+            playerInput2.style = "background-color:#ffb3b3";
+            playerInput2.placeholder = "REQUIRED";
         }
         if(myListlength < 6){
             lblError.style.display = "inline";
