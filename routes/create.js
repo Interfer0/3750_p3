@@ -151,8 +151,8 @@ module.exports = (categories,question,gameEnd) => {
             res.render('/select/', { title: 'Find Questions and Answers', question: q});
         })
         .catch(next);
-    /router.get('/Find/create', ensureAuthenticated, function(req, res, next) {
-    /res.render('findQuestionAnswer', { title: 'Find questions and answers' });
+    //router.get('/Find/create', ensureAuthenticated, function(req, res, next) {
+    //res.render('findQuestionAnswer', { title: 'Find questions and answers' });
     });
 
     // Process Add Question
