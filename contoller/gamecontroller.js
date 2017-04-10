@@ -130,11 +130,19 @@ module.exports = (io, Categories, Questions) => {
             Questions.find({categoryName: temp[0].categoryName}).random(1, true, function(err,data){
                     gm.questionPickingTimeout(io, user.username, user.roomname,data);
             })
-                
-            
-            
         });
         
+        socket.on('chosenBestAnswer', function(req,res)
+        {
+            var pug = require('pug');
+            var gm = running_games[user.roomname];
+            gm.saveUsersBestAnswer(io,req,user);
+            res({
+                page:
+                    pug.renderFile('views/includes/wait3.pug')
+            });
+            
+        });
 
         /*
             FIRED: when a user has picked a question. This will send
@@ -156,7 +164,7 @@ module.exports = (io, Categories, Questions) => {
         });
 
         /*
-            FIRED: when a user selects and answer. 
+            FIRED: when a user selects an answer. 
             This calls to the game object to save the answer to the game answers array
             This then provides the wait2 screen for the users game. 
             Lastly it moves the user within the game to the wait2 screen, if they are the last user,

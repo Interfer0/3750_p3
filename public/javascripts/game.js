@@ -140,6 +140,15 @@
             '</div><div><br></div>';
         }
     });
+
+    /*
+        FIRED: when user enters wait3
+    */
+    socket.on('usersInWait3', function(data){
+        var Elem = document.querySelector('##listPlayers3');
+        
+    });
+
     /*
     function displayQuestionandAnswer()
     {
@@ -193,8 +202,11 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     */
     function submitpickedBestAnswer(te)
     {
-        socket.emit('')
-        console.log(te.srcElement.value);
+        socket.emit('chosenBestAnswer', te.srcElement.value, function(data){
+            //display wait3 screen
+            document.getElementById('gameMat').innerHTML = response.page; 
+        });
+
     }
 
     function toManage()
