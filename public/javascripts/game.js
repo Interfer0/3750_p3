@@ -133,11 +133,19 @@
         var myElement = document.querySelector('#questions');
         if(myElement)
         {
-            myElement.innerHTML += '<div>' +
-            '<form method="post">'+
-            '<input type=text name =' + data[0]._id +' value='+data[0].question+'>'+
-            '<button type="button" value="submit" onclick="submitAnswer()">Choose</button>'+
-            '</div><div><br></div>';
+            var div = document.createElement('div');
+            div.innerHTML = data[0].question;
+            div.value = data[0].question;
+            div.onclick  = clickedQuestion;
+            div.style.background = "blue";
+            div.style.margin = "10px";
+            div.style.padding = "5px";
+            myElement.appendChild(div);
+            // myElement.innerHTML += '<div>' +
+            // '<form method="post">'+
+            // '<input type=text name =' + data[0]._id +' value='+data[0].question+'>'+
+            // '<button type="button" value="submit" onclick="submitAnswer()">Choose</button>'+
+            // '</div><div><br></div>';
         }
     });
 
@@ -175,9 +183,9 @@
     } 
  
     //send picked question 
-    function clickedQuestion(){ 
+    function clickedQuestion(te){ 
         console.log("return selected question"); 
-        socket.emit('displayQuestion', displayQuestion); 
+        socket.emit('displayQuestion',te.srcElement.value, displayQuestion); 
     } 
 
     //receive picked question 
