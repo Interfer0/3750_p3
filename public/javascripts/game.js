@@ -72,7 +72,6 @@
 
     socket.on('gotoPickQuestion', (data) => {
         //console.log(username + " | " + data.user);
-        console.log(data);
         if(data.user == username)
         {
             var button = document.createElement("button");
@@ -87,8 +86,6 @@
     socket.on('gotoAnswer', (data) => {
         document.getElementById('gameMat').innerHTML = data.page;
         document.querySelector("#question") .innerHTML = data.question[0].question;
-        console.log("here");
-        console.log(data.question);
     });
 
     socket.on('usersInWait',function(data)
@@ -105,20 +102,29 @@
         }
     });
 
-
+    /*
+        FIRED: when moving ito screen to pick the best answer
+    */
     socket.on('gotopickBestAnswer',function(data)
     {
         document.getElementById('gameMat').innerHTML = data.page; 
-        document.querySelector('#displayquestion').value = data.question;
+        document.querySelector('#displayquestion').innerHTML = data.question[0].question;
         var Elem = document.querySelector('#answers');
         for(var i = 0; i < data.answers.length; i++)
         {
-            Elem.innerHTML += data.answers[i].answer + "<br>";
+            var div = document.createElement('div');
+            div.innerHTML = data.answers[i].answer;
+            div.value = data.answers[i];
+            div.onclick  = submitpickedBestAnswer;
+            div.style.background = "blue";
+            div.style.margin = "10px";
+            div.style.padding = "5px";
+            Elem.appendChild(div);
         }
-
-        console.log(data);
-        console.log(data.question);
     });
+
+    
+
     /*
         FIRED: when a question is pulled from the database
         this will display the questions for the user to pick. 
@@ -181,7 +187,15 @@ $(document).on('click', "#submitAnswer", submitAnswer)
         })
     }
 
- 
+    /*
+        gets the value from the picked best answer and sends to server,
+        then moves user to wait3
+    */
+    function submitpickedBestAnswer(te)
+    {
+        socket.emit('')
+        console.log(te.srcElement.value);
+    }
 
     function toManage()
     {

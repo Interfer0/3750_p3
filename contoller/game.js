@@ -20,7 +20,12 @@ exports.Game = class Game{
     }
 
     pickquestion(sio,req,user, res){
+        console.log(req);
         this.roundquestion = req.question;
+        this.answers.push({
+                    answer:req.question[0].answer,
+                    isCorrect:true
+                });
         //update all users to createAnswer screen
         for( var i = 0, len = this.users.length; i<len; i++)
         {
@@ -58,11 +63,17 @@ exports.Game = class Game{
 
     saveUsersAnswer(req, username)
     {
+        
         for(var i = 0;i < this.users.length; i++)
         {
             if(username == this.users[i].user)
             {
-                this.answers.push({user:username,answer:req.answer,pickedanswer:"", score:0});
+                this.answers.push({
+                    user:username,
+                    answer:req.answer,
+                    pickedanswer:"", 
+                    score:0
+                });
             }
         }
     }
@@ -151,8 +162,11 @@ exports.Game = class Game{
                 if(el.screen == "questionpick")
                 {   
 
-                    gm.rounquestion = question;
-                    gm.roundA
+                    gm.roundquestion = question;
+                    gm.answers.push({
+                        answer:question[0].answer,
+                        isCorrect:true
+                    });
                     //set game question
                     for(var i = 0; i< gm.users.length; i++)
                     {
