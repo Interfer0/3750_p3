@@ -222,6 +222,7 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     */
     function submitpickedBestAnswer(te)
     {
+        console.log(te.srcElement.value);
         socket.emit('chosenBestAnswer', te.srcElement.value, function(data){
             //display wait3 screen
             document.getElementById('gameMat').innerHTML = data.page; 

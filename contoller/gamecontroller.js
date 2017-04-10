@@ -134,6 +134,7 @@ module.exports = (io, Categories, Questions) => {
         
         socket.on('chosenBestAnswer', function(req,res)
         {
+            
             var pug = require('pug');
             var gm = running_games[user.roomname];
             gm.saveUsersBestAnswer(io,req,user);

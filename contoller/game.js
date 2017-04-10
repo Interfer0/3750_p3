@@ -64,7 +64,8 @@ exports.Game = class Game{
 
     saveUsersAnswer(req, username)
     {
-        
+        console.log("saving users answer");
+        console.log(req);
         for(var i = 0;i < this.users.length; i++)
         {
             if(username == this.users[i].user)
@@ -72,7 +73,7 @@ exports.Game = class Game{
                 this.answers.push({
                     user:username,
                     answer:req.answer,
-                    pickedanswer:"", 
+
                     score:0
                 });
             }
@@ -108,6 +109,7 @@ exports.Game = class Game{
         if(allOnWait3)
         {
             //calculate score, emit to score screen, kick of new time for engame activities
+            var scorelist = this.calculateScores();
         } else
         {
             //emit wait3 userlist
@@ -287,6 +289,25 @@ exports.Game = class Game{
         return array;
     }
 
+    calculateScores()
+    {
+        var scores = [];
+        for(var i = 0; i < this.users.length; i++)
+        {
+            console.log(this.users[i].chosenAnswer);
+            scores.push({user:this.users[i].user, chose:this.users[i].chosenAnswer});
+            if(this.users[i].chosenAnswer.user)
+            {
+                for(var i = 0; i < this.users.length;i++)
+                {
+                    if(this.users[i].chosenAnswer.user == this.users[i].user)
+                    {
 
+                    }
+                }
+            }
+        }
+        console.log(scores);
+    }
 
 };
