@@ -230,12 +230,11 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     }
 
     //Clear validation errors
-    $(document).on('click', "#roomInput", clearInputError)
-    $(document).on('click', "#playerInput", clearInputError)
-    $(document).on('click', "#gamesInput", clearInputError)
-    $(document).on('click', "#CatList", clearInputError)
-    $(document).on('click', "#myCatList", clearInputError)
-    //$(document).on('click', "#submitRoomNumber", clearInputError)
+    $(document).on('click', "#roomInput", clearInputError);
+    $(document).on('click', "#playerInput", clearInputError);
+    $(document).on('click', "#gamesInput", clearInputError);
+    $(document).on('click', "#CatList", clearInputError);
+    $(document).on('click', "#myCatList", clearInputError);
     
 
     
