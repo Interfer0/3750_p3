@@ -299,10 +299,10 @@ module.exports = (io, Categories, Questions) => {
                         "wait1"
                 });            
                 //if room is now full, pick a random user and send them the next button. 
-                console.log(gm.players + " | " + gm.users.length);
+                
                 if(gm.players == gm.users.length)
                 {
-                    console.log("here now01")
+                    
                     if(gm.currentPlayer == undefined)
                     {
                         var x = gm.randomHost();

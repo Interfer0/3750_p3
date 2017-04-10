@@ -163,7 +163,6 @@ exports.Game = class Game{
 
     randomPlayerContinue(sio,userid, response){
         this.currentPlayer = userid;
-        console.log("here");
        sio.to(this.roomname).emit('gotoPickQuestion', {user:userid});
     }
 
