@@ -79,30 +79,33 @@ exports.Game = class Game{
         }
     }
 
-    saveUsersBestAnswer(io,req,user)
+    saveUsersBestAnswer(sio,req,user)
     {
         console.log(req);
         //save users answer
         for(var i = 0;i < this.users.length; i++)
         {
-            if(username == this.users[i].user)
+            if(user.username == this.users[i].user)
             {
                 this.users[i].chosenAnswer = req;
             }
         }
+    }
 
-        //set users screen object to wait3
+    sendUserlistWait3(sio,req,user)
+    {
+                //set users screen object to wait3
         this.setRoom(user.username, "wait3");
         //if all users are in wait3, move user to round score
-        /*var allOnWait3 = true;
-        if(var i = 0; i < this.users.length; i++)
+        var allOnWait3 = true;
+        for(var i = 0; i < this.users.length; i++)
         {
-            if(this.user[i].screen != wait3)
+            if(this.users[i].screen != "wait3")
             {
                 allOnWait3 = false;
             }
         }
-        if(allonWait3)
+        if(allOnWait3)
         {
             //calculate score, emit to score screen, kick of new time for engame activities
         } else
@@ -117,8 +120,6 @@ exports.Game = class Game{
             });
             sio.to(this.roomname).emit('usersInWait3', {users:inWait3});
         }
-        */
-        
     }
 
     wait2status(sio,user){

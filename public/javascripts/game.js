@@ -145,8 +145,20 @@
         FIRED: when user enters wait3
     */
     socket.on('usersInWait3', function(data){
-        var Elem = document.querySelector('##listPlayers3');
-        
+        var Elem = document.querySelector('#listPlayers3');
+        if(Elem)
+        {
+            Elem.innerHTML = "";
+            for(var e in data)
+            {
+                Elem.innerHTML="";
+                for(var e in data.users){
+                    var div = document.createElement('div',data.users[e].user);
+                    div.innerHTML = data.users[e].user;
+                    Elem.appendChild(div);
+                }
+            }
+        }
     });
 
     /*
@@ -204,7 +216,7 @@ $(document).on('click', "#submitAnswer", submitAnswer)
     {
         socket.emit('chosenBestAnswer', te.srcElement.value, function(data){
             //display wait3 screen
-            document.getElementById('gameMat').innerHTML = response.page; 
+            document.getElementById('gameMat').innerHTML = data.page; 
         });
 
     }

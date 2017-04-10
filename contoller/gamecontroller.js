@@ -141,6 +141,7 @@ module.exports = (io, Categories, Questions) => {
                 page:
                     pug.renderFile('views/includes/wait3.pug')
             });
+            gm.sendUserlistWait3(io,req,user);
             
         });
 
